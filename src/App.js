@@ -65,8 +65,9 @@ function App() {
       if (e.type !== 8 && e.type !== 9) return;
       if (time.length === 0) time.push(e.deltaTime);
       else
-        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 90);
+        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 105.2);
     })
+    console.log(time);
     let iter = 0;
     track.forEach((e, i) => {
 
