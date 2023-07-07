@@ -22,7 +22,7 @@ const NoteDisplay = ({ note }) => {
             return <><span style={{
                 backgroundColor: n ? 'red' : 'white',
             }}>{string}</span>&nbsp;&nbsp;
-                {i % 12 === 11 && <br />}
+                {i % 24 === 23 && <br />}
             </>
         })}
     </div >

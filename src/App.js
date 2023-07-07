@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
@@ -6,18 +6,43 @@ import './App.css';
 import MidiParser from 'midi-parser-js';
 import NoteDisplay from './features/note/NoteDisplay';
 
+import * as Tone from 'tone';
+
+import inxtoNote from './features/note/inxtoNote';
+
 function App() {
   const [note, setNote] = React.useState(new Array(128).fill(false));
   const [midi, setMidi] = React.useState(null);
-  let timer = [];
-  const action = (inx, activate) => {
-    setNote(
-      note.map((n, i) => {
-        if (i === inx) return activate ? true : false;
-        return n;
-      })
-    );
+  const timer = React.useRef([]);
+  const synth = React.useRef(null);
 
+  React.useEffect(() => {
+    synth.current = new Tone.Sampler({
+      urls: {
+        A1: "A1.mp3",
+        A2: "A2.mp3",
+      },
+      release: 1,
+      baseUrl: "https://tonejs.github.io/audio/salamander/",
+      onload: () => {
+        synth.current.triggerAttackRelease(["C5"], 0.1);
+      }
+    }).toDestination();
+  }, [])
+
+
+  const action = (inx, activate) => {
+    setNote((note) => {
+      if (activate) synth.current.triggerAttackRelease(inxtoNote[inx], 0.1);
+      note[inx] = activate;
+      return [...note];
+    }
+    );
+  }
+
+  const createTimer = (callback, time) => {
+    let id = setTimeout(callback, time);
+    timer.current.push(id);
   }
 
   const clickEvent = () => {
@@ -37,36 +62,27 @@ function App() {
     let time = []
     track.forEach((e, i) => {
       if (e.type !== 8 && e.type !== 9) return;
-      console.log(i);
       if (time.length === 0) time.push(e.deltaTime);
       else
-        time.push(time[time.length - 1] + e.deltaTime);
-      console.log(time);
+        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 85);
     })
-    console.log(time);
+    let iter = 0;
     track.forEach((e, i) => {
 
       if (e.type !== 8 && e.type !== 9) return;
-      setTimeout(() => {
+      createTimer(() => {
         time += e.deltaTime;
         action(e.data[0], e.type === 9 ? true : false);
-      }
-        , time)
-
-      // timer  = []...timer
-      // setTimeout(() => {
-      //   console.log(e);
-      //   action(e.data[0], e.type === 9 ? true : false);
-      // }
-      //   , e.deltaTime * i * 100)])
-
+      }, time[iter]);
+      iter++;
     })
 
   }
 
   const stop = () => {
-    timer.forEach(t => clearTimeout(t));
-    // setTimer([]);
+    timer.current.forEach((e) => {
+      clearTimeout(e);
+    })
     setNote(
       note.map((n, i) => {
         return false;
