@@ -16,6 +16,7 @@ function App() {
   const timer = React.useRef([]);
   const synth = React.useRef(null);
 
+  // 컴포넌트가 렌더링될 때 Tone.js 객체를 생성한다.
   React.useEffect(() => {
     synth.current = new Tone.Sampler({
       urls: {
@@ -56,24 +57,29 @@ function App() {
         synth.current.triggerAttackRelease(["C5"], 0.05);
       }
     }).toDestination();
+
   }, [])
 
 
+  // 입력된 노트에 대해 활성화, 소리 재생을 결정하여 실행함.
   const action = (inx, activate) => {
     setNote((note) => {
       if (activate) synth.current.triggerAttack(inxtoNote[inx]);
       else synth.current.triggerRelease(inxtoNote[inx]);
+
       note[inx] = activate;
       return [...note];
     }
     );
   }
 
+  // 타이머를 생성하는 함수, TimerID를 timer.current에 저장한다.
   const createTimer = (callback, time) => {
     let id = setTimeout(callback, time);
     timer.current.push(id);
   }
 
+  // 업로드된 MIDI 파일을 BASE64로 받은 다음, MIDI 파일을 파싱한다. 그리고 결과를 setMidi로 저장한다.
   const clickEvent = () => {
     let reader = new FileReader();
     reader.readAsDataURL(ref.current.files[0]);
@@ -84,11 +90,30 @@ function App() {
     }
   }
 
+  // 올바른 트랙을 찾는 함수
+  const extarctEvent = (tracks) => {
+    let valid_index = 0;
+    if (tracks.length === 1) return 0;
+    tracks.forEach((e, i) => {
+      if (valid_index !== 0) return;
+      e.event.forEach((e2, i2) => {
+        if (e2.type === 8 || e2.type === 9) {
+          valid_index = i;
+          return;
+        }
+      })
+    })
+    return valid_index;
+  }
+
+  // MIDI 파일을 재생하는 함수
   const play = () => {
     if (midi === null) return;
-    let track = midi.track[0].event;
+    console.log(extarctEvent(midi.track));
+    let track = midi.track[extarctEvent(midi.track)].event;
 
     let time = []
+    // 각 이벤트의 시간을 계산한다.
     track.forEach((e, i) => {
       if (e.type !== 8 && e.type !== 9) return;
       if (time.length === 0) time.push(e.deltaTime);
@@ -96,6 +121,8 @@ function App() {
         time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 105.2);
     })
     console.log(time);
+
+    // 각 이벤트의 시간에 맞춰 타이머를 생성한다.
     let iter = 0;
     track.forEach((e, i) => {
 
@@ -109,6 +136,7 @@ function App() {
 
   }
 
+  // 재생을 중지하는 함수
   const stop = () => {
     timer.current.forEach((e) => {
       clearTimeout(e);
