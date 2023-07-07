@@ -9,15 +9,18 @@ import NoteDisplay from './features/note/NoteDisplay';
 function App() {
   const [note, setNote] = React.useState(new Array(128).fill(false));
   const [midi, setMidi] = React.useState(null);
-  let timer = [];
+  const timer = React.useRef([]);
   const action = (inx, activate) => {
-    setNote(
-      note.map((n, i) => {
-        if (i === inx) return activate ? true : false;
-        return n;
-      })
+    setNote((note) => {
+      note[inx] = activate;
+      return [...note];
+    }
     );
+  }
 
+  const createTimer = (callback, time) => {
+    let id = setTimeout(callback, time);
+    timer.current.push(id);
   }
 
   const clickEvent = () => {
@@ -37,36 +40,27 @@ function App() {
     let time = []
     track.forEach((e, i) => {
       if (e.type !== 8 && e.type !== 9) return;
-      console.log(i);
       if (time.length === 0) time.push(e.deltaTime);
       else
-        time.push(time[time.length - 1] + e.deltaTime);
-      console.log(time);
+        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 50);
     })
-    console.log(time);
+    let iter = 0;
     track.forEach((e, i) => {
 
       if (e.type !== 8 && e.type !== 9) return;
-      setTimeout(() => {
+      createTimer(() => {
         time += e.deltaTime;
         action(e.data[0], e.type === 9 ? true : false);
-      }
-        , time)
-
-      // timer  = []...timer
-      // setTimeout(() => {
-      //   console.log(e);
-      //   action(e.data[0], e.type === 9 ? true : false);
-      // }
-      //   , e.deltaTime * i * 100)])
-
+      }, time[iter]);
+      iter++;
     })
 
   }
 
   const stop = () => {
-    timer.forEach(t => clearTimeout(t));
-    // setTimer([]);
+    timer.current.forEach((e) => {
+      clearTimeout(e);
+    })
     setNote(
       note.map((n, i) => {
         return false;
