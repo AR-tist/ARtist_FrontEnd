@@ -25,7 +25,7 @@ function App() {
       release: 1,
       baseUrl: "https://tonejs.github.io/audio/salamander/",
       onload: () => {
-        synth.current.triggerAttackRelease(["C5"], 0.1);
+        synth.current.triggerAttackRelease(["C5"], 0.05);
       }
     }).toDestination();
   }, [])
@@ -33,7 +33,8 @@ function App() {
 
   const action = (inx, activate) => {
     setNote((note) => {
-      if (activate) synth.current.triggerAttackRelease(inxtoNote[inx], 0.1);
+      if (activate) synth.current.triggerAttack(inxtoNote[inx]);
+      else synth.current.triggerRelease(inxtoNote[inx]);
       note[inx] = activate;
       return [...note];
     }
@@ -57,14 +58,14 @@ function App() {
 
   const play = () => {
     if (midi === null) return;
-    let track = midi.track[1].event;
+    let track = midi.track[0].event;
 
     let time = []
     track.forEach((e, i) => {
       if (e.type !== 8 && e.type !== 9) return;
       if (time.length === 0) time.push(e.deltaTime);
       else
-        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 85);
+        time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 90);
     })
     let iter = 0;
     track.forEach((e, i) => {
@@ -83,6 +84,7 @@ function App() {
     timer.current.forEach((e) => {
       clearTimeout(e);
     })
+    synth.current.releaseAll();
     setNote(
       note.map((n, i) => {
         return false;
