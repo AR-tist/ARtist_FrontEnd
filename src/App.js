@@ -11,11 +11,6 @@ import * as mm from '@magenta/music/es6';
 
 import inxtoNote from './features/note/inxtoNote';
 
-// import MyComponent from './MyComponent';
-import { OnsetsAndFrames } from '@magenta/music';
-import { sequenceProtoToMidi } from '@magenta/music';
-
-
 function App() {
   const [note, setNote] = React.useState(new Array(128).fill(false));
   const [midi, setMidi] = React.useState(null);
@@ -23,10 +18,11 @@ function App() {
 
   const timer = React.useRef([]);
   const synth = React.useRef(null);
-  
+
   //모델 선언
   const [model, setModel] = React.useState(null);
 
+  const [isFirstTime, setDownLoad] = React.useState(false);
   //모델 초기화
   function initModel() {
     const newModel = new mm.OnsetsAndFrames('https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni');
@@ -34,6 +30,7 @@ function App() {
       setModel(newModel);
       setIsModelInitialized(true);
     });
+    
   }
 
   React.useEffect(() => {
@@ -104,6 +101,8 @@ function App() {
     timer.current.push(id);
   }
 
+  const [result, setResult] = React.useState(null);
+
   // 업로드된 MIDI 파일을 BASE64로 받은 다음, MIDI 파일을 파싱한다. 그리고 결과를 setMidi로 저장한다.
   const clickEventOriginMidi = () => {
     let reader = new FileReader();
@@ -124,12 +123,14 @@ function App() {
       let base64String = uint8ArrayToBase64(midiData);
       let result = MidiParser.Base64(base64String)
       console.log(result);
-      setMidi(result);    
+      setMidi(result);
+      setResult(midiData); 
     } catch (error) {
       console.error(error);
       // 에러 처리 로직 추가
     } finally {
       setIsLoading(false); // 변환 작업 완료
+      setDownLoad(true);
     }
   };
   
@@ -142,7 +143,7 @@ function App() {
       binary += String.fromCharCode(uint8Array[i]);
     }
   
-    return btoa(binary);
+    return btoa(binary); 
   }
   
 
@@ -226,6 +227,19 @@ function App() {
       })
     );
   }
+
+  // midi를 다운로드 하는 함수
+  const downLoad = () => {
+    const element = document.createElement("a");
+    console.log(result);
+    const file = new Blob([result], { type: "audio/midi" });
+    element.href = URL.createObjectURL(file);
+    element.download = "converted.midi";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
   const ref = React.useRef(null);
   return (
     <div className="App">
@@ -235,6 +249,7 @@ function App() {
         <button onClick={clickEventOriginMidi}>midiOrigin</button>
         <button onClick={play}>play</button>
         <button onClick={stop}>stop</button>
+        {isFirstTime && <button onClick={downLoad}>downLoadMidi</button>}
         {isLoading && <p>변환 중...</p>}
         <NoteDisplay note={note} />
         <img src={logo} className="App-logo" alt="logo" />
