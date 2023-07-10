@@ -7,14 +7,39 @@ import MidiParser from 'midi-parser-js';
 import NoteDisplay from './features/note/NoteDisplay';
 
 import * as Tone from 'tone';
+import * as mm from '@magenta/music/es6';
 
 import inxtoNote from './features/note/inxtoNote';
+
+// import MyComponent from './MyComponent';
+import { OnsetsAndFrames } from '@magenta/music';
+import { sequenceProtoToMidi } from '@magenta/music';
+
 
 function App() {
   const [note, setNote] = React.useState(new Array(128).fill(false));
   const [midi, setMidi] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const timer = React.useRef([]);
   const synth = React.useRef(null);
+  
+  //모델 선언
+  const [model, setModel] = React.useState(null);
+
+  //모델 초기화
+  function initModel() {
+    const newModel = new mm.OnsetsAndFrames('https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni');
+    newModel.initialize().then(() => {
+      setModel(newModel);
+      setIsModelInitialized(true);
+    });
+  }
+
+  React.useEffect(() => {
+    initModel();
+  }, []);
+
 
   // 컴포넌트가 렌더링될 때 Tone.js 객체를 생성한다.
   React.useEffect(() => {
@@ -80,16 +105,69 @@ function App() {
   }
 
   // 업로드된 MIDI 파일을 BASE64로 받은 다음, MIDI 파일을 파싱한다. 그리고 결과를 setMidi로 저장한다.
-  const clickEvent = () => {
-    let reader = new FileReader();
-    reader.readAsDataURL(ref.current.files[0]);
-    reader.onload = () => {
-      let result = MidiParser.Base64(reader.result)
+  // const clickEvent = () => {
+  //   let reader = new FileReader();
+  //   reader.readAsDataURL(ref.current.files[0]);
+  //   reader.onload = () => {
+  //     let result = MidiParser.Base64(reader.result)
+  //     console.log(result);
+  //     setMidi(result);
+  //   }
+  // }
+
+  const clickEvent = async () => {
+    console.log("MIDI 변환 시작");
+    setIsLoading(true); // 변환 작업이 진행 중임을 표시
+  
+    try {
+      let midiData = await convertMP3toMIDI(ref.current.files[0]);
+      let base64String = uint8ArrayToBase64(midiData);
+      let result = MidiParser.Base64(base64String)
       console.log(result);
-      setMidi(result);
+      setMidi(result);    
+    } catch (error) {
+      console.error(error);
+      // 에러 처리 로직 추가
+    } finally {
+      setIsLoading(false); // 변환 작업 완료
+    }
+  };
+  
+  // 모델 결과 midiData를 
+  function uint8ArrayToBase64(uint8Array) {
+    let binary = '';
+    const length = uint8Array.length;
+  
+    for (let i = 0; i < length; i++) {
+      binary += String.fromCharCode(uint8Array[i]);
+    }
+  
+    return btoa(binary);
+  }
+  
+
+  // MIDI 변환 하는 함수
+  async function convertMP3toMIDI(mp3FilePath) {
+    if (!model) {
+      throw new Error('Model is not initialized');
+    }
+  
+    // MIDI 변환
+    try {
+      const ns = await model.transcribeFromAudioFile(mp3FilePath);
+      const midiData = mm.sequenceProtoToMidi(ns);
+      console.log(midiData);
+        
+      return midiData;
+    } catch (error) {
+      console.error(error);
+      // 에러처리
+      throw new Error('Failed to convert MP3 to MIDI');
     }
   }
-
+  //모델이 초기화 되었는지 체크 이 값을 통해 midi버튼 활성화
+  const [isModelInitialized, setIsModelInitialized] = React.useState(false);
+  
   // 올바른 트랙을 찾는 함수
   const extarctEvent = (tracks) => {
     let valid_index = 0;
@@ -153,9 +231,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <input type="file" ref={ref}></input>
-        <button onClick={clickEvent}>midi</button>
+        {isModelInitialized && <button id="midi" onClick={clickEvent}>midi</button>}
         <button onClick={play}>play</button>
         <button onClick={stop}>stop</button>
+        {isLoading && <p>변환 중...</p>}
         <NoteDisplay note={note} />
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
