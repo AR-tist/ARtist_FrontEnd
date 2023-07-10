@@ -105,15 +105,15 @@ function App() {
   }
 
   // 업로드된 MIDI 파일을 BASE64로 받은 다음, MIDI 파일을 파싱한다. 그리고 결과를 setMidi로 저장한다.
-  // const clickEvent = () => {
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(ref.current.files[0]);
-  //   reader.onload = () => {
-  //     let result = MidiParser.Base64(reader.result)
-  //     console.log(result);
-  //     setMidi(result);
-  //   }
-  // }
+  const clickEventOriginMidi = () => {
+    let reader = new FileReader();
+    reader.readAsDataURL(ref.current.files[0]);
+    reader.onload = () => {
+      let result = MidiParser.Base64(reader.result)
+      console.log(result);
+      setMidi(result);
+    }
+  }
 
   const clickEvent = async () => {
     console.log("MIDI 변환 시작");
@@ -232,6 +232,7 @@ function App() {
       <header className="App-header">
         <input type="file" ref={ref}></input>
         {isModelInitialized && <button id="midi" onClick={clickEvent}>midi</button>}
+        <button onClick={clickEventOriginMidi}>midiOrigin</button>
         <button onClick={play}>play</button>
         <button onClick={stop}>stop</button>
         {isLoading && <p>변환 중...</p>}
