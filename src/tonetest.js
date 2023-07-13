@@ -3,7 +3,7 @@ import Keyboard from './Keyboard';
 import './tonetest.css';
 import * as Tone from 'tone';
 
-const tonetest = () => {
+const Tonetest = () => {
   useEffect(() => {
     const synth = new Tone.Synth().toDestination();
 
@@ -57,4 +57,4 @@ const tonetest = () => {
   );
 };
 
-export default tonetest;
+export default Tonetest;

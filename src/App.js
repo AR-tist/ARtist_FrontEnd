@@ -11,6 +11,7 @@ import * as mm from '@magenta/music/es6';
 
 import inxtoNote from './features/note/inxtoNote';
 
+
 function App() {
   const [note, setNote] = React.useState(new Array(128).fill(false));
   const [midi, setMidi] = React.useState(null);
@@ -30,7 +31,7 @@ function App() {
       setModel(newModel);
       setIsModelInitialized(true);
     });
-    
+
   }
 
   React.useEffect(() => {
@@ -117,14 +118,14 @@ function App() {
   const clickEvent = async () => {
     console.log("MIDI 변환 시작");
     setIsLoading(true); // 변환 작업이 진행 중임을 표시
-  
+
     try {
       let midiData = await convertMP3toMIDI(ref.current.files[0]);
       let base64String = uint8ArrayToBase64(midiData);
       let result = MidiParser.Base64(base64String)
       console.log(result);
       setMidi(result);
-      setResult(midiData); 
+      setResult(midiData);
     } catch (error) {
       console.error(error);
       // 에러 처리 로직 추가
@@ -133,32 +134,32 @@ function App() {
       setDownLoad(true);
     }
   };
-  
+
   // 모델 결과 midiData를 
   function uint8ArrayToBase64(uint8Array) {
     let binary = '';
     const length = uint8Array.length;
-  
+
     for (let i = 0; i < length; i++) {
       binary += String.fromCharCode(uint8Array[i]);
     }
-  
-    return btoa(binary); 
+
+    return btoa(binary);
   }
-  
+
 
   // MIDI 변환 하는 함수
   async function convertMP3toMIDI(mp3FilePath) {
     if (!model) {
       throw new Error('Model is not initialized');
     }
-  
+
     // MIDI 변환
     try {
       const ns = await model.transcribeFromAudioFile(mp3FilePath);
       const midiData = mm.sequenceProtoToMidi(ns);
       console.log(midiData);
-        
+
       return midiData;
     } catch (error) {
       console.error(error);
@@ -168,7 +169,7 @@ function App() {
   }
   //모델이 초기화 되었는지 체크 이 값을 통해 midi버튼 활성화
   const [isModelInitialized, setIsModelInitialized] = React.useState(false);
-  
+
   // 올바른 트랙을 찾는 함수
   const extarctEvent = (tracks) => {
     let valid_index = 0;
@@ -244,6 +245,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+
         <input type="file" ref={ref}></input>
         {isModelInitialized && <button id="midi" onClick={clickEvent}>midi</button>}
         <button onClick={clickEventOriginMidi}>midiOrigin</button>
