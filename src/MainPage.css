@@ -1,0 +1,33 @@
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .top_menu button {
+    margin-right: 10px; 
+  }
+  
+  .songs {
+    padding: 10px;
+  }
+  
+  .song-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .upload-button {
+    margin-bottom: 100px;
+  }
+  
