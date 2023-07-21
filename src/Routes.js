@@ -1,5 +1,5 @@
 import NotePlayPage from "./pages/NotePlay/NotePlayPage"
-import MidiListPage from "./pages/MidiList/MidiListPage.js"
+import MidiListPage from "./pages/MidiList/MidiListPage"
 import MidiPlayPage from "./pages/MidiPlay/MidiPlayPage"
 import { Routes, Route } from "react-router-dom"
 
