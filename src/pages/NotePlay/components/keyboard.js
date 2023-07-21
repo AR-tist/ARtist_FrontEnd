@@ -85,6 +85,8 @@ export class Keyboard {
             else if (key === "u") this.pushNote(this.start_idx + 2, 1);
             else if (key === "o") this.pushNote(this.start_idx + 3, 1);
             else if (key === "p") this.pushNote(this.start_idx + 4, 1);
+            else if (key === 'x' && this.octave < 6) this.octave += 1;
+            else if (key === 'z' && this.octave > 3) this.octave -= 1;
         });
         document.addEventListener('keyup', (event) => {
             if (event.repeat) return;
@@ -114,27 +116,28 @@ export class Keyboard {
 
     pushNote(idx, mode = 0) {
         if (mode === 0) {
-            this.w_notes[idx].getRect().setFillStyle(0xaaaaaa);
+            this.w_notes[idx + (this.octave - 4) * 7].getRect().setFillStyle(0xaaaaaa);
             console.log(idx)
             idx = idx + this.octave * 7;
             console.log(idx)
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         }
         else {
-            this.b_notes[idx].setFillStyle(0x333333);
-            idx = idx - 8 + this.octave * 7;
+            this.b_notes[idx + (this.octave - 4) * 5].setFillStyle(0x333333);
+            idx = idx + this.octave * 5;
+            console.log(idx)
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }
     }
     releaseNote(idx, mode = 0) {
         if (mode === 0) {
-            this.w_notes[idx].getRect().setFillStyle(0xffffff);
+            this.w_notes[idx + (this.octave - 4) * 7].getRect().setFillStyle(0xffffff);
             idx = idx + this.octave * 7;
             this.tone.triggerRelease([inxtoNoteW[idx]]);
         }
         else {
-            this.b_notes[idx].setFillStyle(0x000000);
-            idx = idx - 8 + this.octave * 7;
+            this.b_notes[idx + (this.octave - 4) * 5].setFillStyle(0x000000);
+            idx = idx + this.octave * 5;
             this.tone.triggerRelease([inxtoNoteB[idx]]);
         }
     }
