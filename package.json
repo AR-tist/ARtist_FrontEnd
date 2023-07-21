@@ -11,6 +11,7 @@
     "axios": "^1.4.0",
     "buffer": "^6.0.3",
     "fs": "^0.0.1-security",
+    "inko": "^1.1.1",
     "magenta": "^0.0.0",
     "midi-parser-js": "^4.0.4",
     "phaser": "^3.60.0",

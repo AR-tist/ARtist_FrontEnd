@@ -1,4 +1,5 @@
 import MidiParser from 'midi-parser-js';
+import { Inko } from 'inko';
 // 업로드된 MIDI 파일을 BASE64로 받은 다음, MIDI 파일을 파싱한다. 그리고 결과를 setMidi로 저장한다.
 export const fileToMidi = (fileURL) => {
     return new Promise((resolve, reject) => {
@@ -41,3 +42,17 @@ export const extarctEvent = (tracks) => {
     return valid_index;
 }
 
+
+export const isKor = (str) => {
+    return /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(str);
+}
+
+export const getKey = (str) => {
+    let key = '';
+    if (isKor(str)) {
+        const inko = new Inko();
+        key = inko.ko2en(str);
+    } else
+        key = str.toLowerCase();
+    return key;
+}

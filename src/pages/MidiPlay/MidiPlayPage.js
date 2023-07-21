@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { fileToMidi, extarctEvent } from '../../utils/Utils';
+import { inxtoNote } from '../../utils/tone';
 import NoteDisplay from './components/NoteDisplay';
 import * as Tone from 'tone';
-import inxtoNote from './components/inxtoNote';
 
 const MidiPlayPage = () => {
     const synth = useRef(null);
