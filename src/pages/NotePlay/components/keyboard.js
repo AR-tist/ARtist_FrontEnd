@@ -1,5 +1,5 @@
 import * as Tone from 'tone';
-import { inxtoNoteW } from '../../../utils/tone';
+import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
 import { getKey } from '../../../utils/Utils';;
 export class Keyboard {
     constructor(scene, width, height) {
@@ -64,6 +64,7 @@ export class Keyboard {
     }
     setInput(document) {
         document.addEventListener('keydown', (event) => {
+            if (event.repeat) return;
             if (this.tone.loaded !== true) return;
             const key = getKey(event.key);
             if (key === 'a') this.pushNote(this.start_idx);
@@ -77,8 +78,16 @@ export class Keyboard {
             else if (key === 'l') this.pushNote(this.start_idx + 8);
             else if (key === ';') this.pushNote(this.start_idx + 9);
             else if (key === "'") this.pushNote(this.start_idx + 10);
+            else if (key === "w") this.pushNote(this.start_idx - 2, 1);
+            else if (key === "e") this.pushNote(this.start_idx - 1, 1);
+            else if (key === "t") this.pushNote(this.start_idx, 1);
+            else if (key === "y") this.pushNote(this.start_idx + 1, 1);
+            else if (key === "u") this.pushNote(this.start_idx + 2, 1);
+            else if (key === "o") this.pushNote(this.start_idx + 3, 1);
+            else if (key === "p") this.pushNote(this.start_idx + 4, 1);
         });
         document.addEventListener('keyup', (event) => {
+            if (event.repeat) return;
             if (this.tone.loaded !== true) return;
             const key = getKey(event.key);
 
@@ -93,14 +102,28 @@ export class Keyboard {
             else if (key === 'l') this.releaseNote(this.start_idx + 8);
             else if (key === ';') this.releaseNote(this.start_idx + 9);
             else if (key === "'") this.releaseNote(this.start_idx + 10);
+            else if (key === "w") this.releaseNote(this.start_idx - 2, 1);
+            else if (key === "e") this.releaseNote(this.start_idx - 1, 1);
+            else if (key === "t") this.releaseNote(this.start_idx, 1);
+            else if (key === "y") this.releaseNote(this.start_idx + 1, 1);
+            else if (key === "u") this.releaseNote(this.start_idx + 2, 1);
+            else if (key === "o") this.releaseNote(this.start_idx + 3, 1);
+            else if (key === "p") this.releaseNote(this.start_idx + 4, 1);
         });
     }
 
     pushNote(idx, mode = 0) {
         if (mode === 0) {
             this.w_notes[idx].getRect().setFillStyle(0xaaaaaa);
+            console.log(idx)
             idx = idx + this.octave * 7;
-            this.tone.triggerAttackRelease([inxtoNoteW[idx]]);
+            console.log(idx)
+            this.tone.triggerAttack([inxtoNoteW[idx]]);
+        }
+        else {
+            this.b_notes[idx].setFillStyle(0x333333);
+            idx = idx - 8 + this.octave * 7;
+            this.tone.triggerAttack([inxtoNoteB[idx]]);
         }
     }
     releaseNote(idx, mode = 0) {
@@ -108,6 +131,11 @@ export class Keyboard {
             this.w_notes[idx].getRect().setFillStyle(0xffffff);
             idx = idx + this.octave * 7;
             this.tone.triggerRelease([inxtoNoteW[idx]]);
+        }
+        else {
+            this.b_notes[idx].setFillStyle(0x000000);
+            idx = idx - 8 + this.octave * 7;
+            this.tone.triggerRelease([inxtoNoteB[idx]]);
         }
     }
 }
