@@ -3,6 +3,9 @@ import Modal from 'react-modal';
 
 import axios from 'axios';
 
+// react-modal에 대한 앱 요소 설정
+Modal.setAppElement('#root'); // 루트 요소의 ID가 'root'라고 가정합니다
+
 axios.defaults.baseURL = 'http://localhost:4444';
 
 const UploadPopup = ({ onClose }) => {
