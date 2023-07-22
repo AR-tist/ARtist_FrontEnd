@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Song = ({ title }) => {
+import PropTypes from 'prop-types';
+
+const Song = ({ title, downloadUrl }) => {
   const navigate = useNavigate();
   const midiPlay = () => {
     navigate(`/midi/${1}`);
@@ -14,6 +16,12 @@ const Song = ({ title }) => {
 
   const handleDownload = () => {
     // Download 로직 작성
+    if (downloadUrl) {
+      const fullDownloadUrl = `http://13.125.173.158:4444${downloadUrl}`;
+      window.open(fullDownloadUrl);
+    } else {
+      console.error('Download URL is not available.');
+    }
   };
 
   const handleDelete = () => {
@@ -31,6 +39,12 @@ const Song = ({ title }) => {
       </div>
     </>
   );
+};
+
+// Define prop types
+Song.propTypes = {
+  title: PropTypes.string.isRequired,
+  downloadUrl: PropTypes.string, // downloadUrl prop는 optional
 };
 
 export default Song;
