@@ -13,8 +13,8 @@ const MidiListPage = () => {
     }, []);
 
     const fetchMidiList = () => {
-        axios
-          .get('http://13.125.173.158:4444/list')
+        axios 
+          .get('/list')
           .then(response => {
             setMidiList(response.data);
         })
