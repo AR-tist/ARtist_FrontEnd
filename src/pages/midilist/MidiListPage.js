@@ -6,22 +6,22 @@ import './MidiListPage.css';
 
 const MidiListPage = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
-    const [midiList, setMidiList] = useState([]);
+    // const [midiList, setMidiList] = useState([]);
 
-    useEffect(() => {
-        fetchMidiList();
-    }, []);
+    // useEffect(() => {
+    //     fetchMidiList();
+    // }, []);
 
-    const fetchMidiList = () => {
-        axios 
-          .get('/list')
-          .then(response => {
-            setMidiList(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching MIDI list:', error);
-        });
-    };
+    // const fetchMidiList = () => {
+    //     axios 
+    //       .get('/list')
+    //       .then(response => {
+    //         setMidiList(response.data);
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching MIDI list:', error);
+    //     });
+    // };
 
     const handleUploadClick = () => {
         setPopupVisible(true); // 팝업 창 열기
@@ -39,11 +39,15 @@ const MidiListPage = () => {
                 </button>
             </div>
             
-            {midiList.map((midi, index) => (
-                <div className="song-container" key={index}>
-                    <Song title={midi.title} downloadUrl={midi.downloadUrl} />
-                </div>
-            ))}
+            <div className="song-container">
+                <Song title="제목 1" />
+            </div>
+            <div className="song-container">
+                <Song title="제목 2" />
+            </div>
+            <div className="song-container">
+                <Song title="제목 3" />
+            </div>
 
             {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
 

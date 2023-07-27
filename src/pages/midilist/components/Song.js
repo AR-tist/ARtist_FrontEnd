@@ -26,6 +26,7 @@ const Song = ({ title, downloadUrl }) => {
 
   const handleDelete = () => {
     // Delete 로직 작성
+    navigate(`/graphic/${1}`);
   };
 
   return (
