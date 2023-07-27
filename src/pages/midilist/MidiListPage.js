@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import Song from './components/Song';
 import UploadPopup from './components/UploadPopup';
 import './MidiListPage.css';
@@ -13,14 +13,14 @@ const MidiListPage = () => {
     }, []);
 
     const fetchMidiList = () => {
-        axios 
-          .get('/list')
-          .then(response => {
-            setMidiList(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching MIDI list:', error);
-        });
+        axios
+            .get('/list')
+            .then(response => {
+                setMidiList(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching MIDI list:', error);
+            });
     };
 
     const handleUploadClick = () => {
@@ -38,7 +38,7 @@ const MidiListPage = () => {
                     업로드
                 </button>
             </div>
-            
+
             {midiList.map((midi, index) => (
                 <div className="song-container" key={index}>
                     <Song title={midi.title} downloadUrl={midi.downloadUrl} />

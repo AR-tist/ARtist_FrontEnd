@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
+import axiosInstance from '../../../utils/axios';
 
 const Song = ({ title, downloadUrl }) => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Song = ({ title, downloadUrl }) => {
   const handleDownload = () => {
     // Download 로직 작성
     if (downloadUrl) {
-      const fullDownloadUrl = `http://13.125.173.158:4444${downloadUrl}`;
+      const fullDownloadUrl = `${axiosInstance.getUri()}${downloadUrl}`;
       window.open(fullDownloadUrl);
     } else {
       console.error('Download URL is not available.');
