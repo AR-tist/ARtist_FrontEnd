@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../../utils/axios';
 import Song from './components/Song';
 import UploadPopup from './components/UploadPopup';
 import './MidiListPage.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMidi, fetchMidiList } from '../../store/slices/midi/midiAcition';
 
 const MidiListPage = () => {
-    const [isPopupVisible, setPopupVisible] = useState(false);
-    const [midiList, setMidiList] = useState([]);
+    const dispatch = useDispatch();
+    const midiList = useSelector(state => state.midi.midiList);
+    const test = useSelector(state => state.midi.midi);
+    const [isPopupVisible, setPopupVisible] = useState(false);;
 
     useEffect(() => {
-        fetchMidiList();
+        dispatch(fetchMidiList());
     }, []);
-
-    const fetchMidiList = () => {
-        axios
-            .get('/list')
-            .then(response => {
-                setMidiList(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching MIDI list:', error);
-            });
-    };
 
     const handleUploadClick = () => {
         setPopupVisible(true); // 팝업 창 열기
@@ -38,7 +30,7 @@ const MidiListPage = () => {
                     업로드
                 </button>
             </div>
-
+            {test}
             {midiList.map((midi, index) => (
                 <div className="song-container" key={index}>
                     <Song title={midi.title} downloadUrl={midi.downloadUrl} />

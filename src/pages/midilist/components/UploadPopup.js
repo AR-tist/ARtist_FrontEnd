@@ -1,44 +1,47 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import axios from 'axios';
+import axiosInstance from './../../../utils/axios';
 
+import { useDispatch } from 'react-redux';
+import { fetchMidiList } from '../../../store/slices/midi/midiAcition';
 // react-modal에 대한 앱 요소 설정
 Modal.setAppElement('#root'); // 루트 요소의 ID가 'root'라고 가정합니다
 
-axios.defaults.baseURL = 'http://localhost:4444';
 
 const UploadPopup = ({ onClose }) => {
+    const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
 
     const handleUpload = fileType => {
         if (fileType === 'MIDI') {
             console.log('Uploading MIDI file...');
-    
+
             const formData = new FormData();
             formData.append('file', file);
             formData.append('title', title);
-    
-            axios.post('/upload', formData, {
+
+            axiosInstance.post('/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            .then(response => {
-                console.log('Upload successful:', response.data);
-            })
-            .catch(error => {
-                console.error('Upload failed:', error);
-            });
+                .then(response => {
+                    console.log('Upload successful:', response.data);
+                    dispatch(fetchMidiList());
+                })
+                .catch(error => {
+                    console.error('Upload failed:', error);
+                });
         } else {
             console.log('Invalid file type selected. Not uploading.');
         }
-    
+
         onClose(); // 팝업 창 닫기
     };
-    
-    
+
+
 
     const handleCancel = () => {
         onClose(); // 팝업 창 닫기
