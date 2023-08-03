@@ -56,7 +56,9 @@ export class Keyboard {
             }
             for (let i = 0; i < 6; i++) {
                 if (i === 2) continue;
-                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000));
+                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000)
+                    .setDepth(2));
+                    
             }
         }
         this.start_idx = 7;
@@ -145,13 +147,14 @@ export class Keyboard {
 
 export class NoteP {
     constructor(scene, x, y, width, height, color, board_attr) {
-        this.rect = scene.add.rectangle(x, y, width, height, color);
-        this.board = scene.add.graphics();
+        this.rect = scene.add.rectangle(x, y, width, height, color)
+            .setDepth(2);
+        this.board = scene.add.graphics()
+            .setDepth(3);
 
         const { b_width, b_color } = board_attr;
         this.board.lineStyle(b_width, b_color)
         this.board.strokeRect(x - width / 2, y - height / 2, width, height)
-
     }
 
     getRect() {
