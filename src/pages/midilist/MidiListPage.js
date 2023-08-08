@@ -3,13 +3,12 @@ import Song from './components/Song';
 import UploadPopup from './components/UploadPopup';
 import './MidiListPage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMidi, fetchMidiList } from '../../store/slices/midi/midiAcition';
+import { fetchMidiList } from '../../store/slices/midi/midiAction';
 
 const MidiListPage = () => {
     const dispatch = useDispatch();
     const midiList = useSelector(state => state.midi.midiList);
-    const test = useSelector(state => state.midi.midi);
-    const [isPopupVisible, setPopupVisible] = useState(false);;
+    const [isPopupVisible, setPopupVisible] = useState(false);
 
     useEffect(() => {
         dispatch(fetchMidiList());
@@ -30,7 +29,7 @@ const MidiListPage = () => {
                     업로드
                 </button>
             </div>
-            {test}
+
             {midiList.map((midi, index) => (
                 <div className="song-container" key={index}>
                     <Song title={midi.title} downloadUrl={midi.downloadUrl} />

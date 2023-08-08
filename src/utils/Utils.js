@@ -7,7 +7,6 @@ export const fileToMidi = (fileURL) => {
         reader.readAsDataURL(fileURL); // ref.current.files[0]
         reader.onload = () => {
             const result = MidiParser.Base64(reader.result);
-            console.log(result);
             resolve(result);
         }
         reader.onerror = reject;

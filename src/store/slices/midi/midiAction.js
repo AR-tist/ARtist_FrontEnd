@@ -1,6 +1,6 @@
 import { Actions } from './midiSlice';
 import axiosInstance from '../../../utils/axios';
-import { useDispatch } from 'react-redux';
+
 
 export const fetchMidiList = () => {
     return (dispatch) => {
@@ -15,8 +15,14 @@ export const fetchMidiList = () => {
     }
 };
 
-export const fetchMidi = (id) => {
+export const setLoading = (loading) => {
     return (dispatch) => {
-        dispatch(Actions.setmidi({ midi: id }));
-    };
+        dispatch(Actions.setLoading({ loading: loading }));
+    }
+}
+
+export const setMidi = (midi) => {
+    return (dispatch) => {
+        dispatch(Actions.setmidi({ midi: midi }));
+    }
 }

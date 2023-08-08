@@ -4,22 +4,20 @@ const midiSlice = createSlice({
     name: "midi",
     initialState: {
         midiList: [],
-        midiFile: null,
         midi: null,
-        timer: [],
+        loading: false
     },
 
     reducers: {
         setmidilist(state, action) {
             state.midiList = action.payload.midilist;
         },
-        setmidiFile(state, action) {
-            state.midiFile = action.payload.midiFile;
-        },
         setmidi(state, action) {
             state.midi = action.payload.midi;
         },
-
+        setLoading(state, action) {
+            state.loading = action.payload.loading;
+        }
     },
 });
 

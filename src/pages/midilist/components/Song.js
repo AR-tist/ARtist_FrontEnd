@@ -1,18 +1,40 @@
+import { setLoading, setMidi } from '../../../store/slices/midi/midiAction';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import axiosInstance from '../../../utils/axios';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { fileToMidi } from '../../../utils/Utils';
 
 const Song = ({ title, downloadUrl }) => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const midiPlay = () => {
-    navigate(`/midi/${1}`);
+  const midiLoad = async (dest) => {
+    const fullDownloadUrl = `${axiosInstance.getUri()}${downloadUrl}`;
+    dispatch(setLoading(true));
+    axios({
+      method: 'get',
+      url: fullDownloadUrl,
+      responseType: 'blob',
+    }).then(async (res) => {
+      const midi = await fileToMidi(res.data);
+      dispatch(setMidi(midi));
+      dispatch(setLoading(false));
+      navigate(dest);
+    });
+  }
+
+
+  const midiPlay = async () => {
+    midiLoad(`/midi/${1}`);
   }
 
   const handlePlay = () => {
     // Play 로직 작성
-    navigate(`/play/${1}`);
+    midiLoad(`/play/${1}`);
   };
 
   const handleDownload = () => {
