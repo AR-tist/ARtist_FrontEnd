@@ -31,7 +31,7 @@ export class NoteGenerator {
 
         this.noteArray.forEach(n=>{
             if (n.startAt <= this.timerCount) {
-                n.rect.y += this.speed;
+                n.graphic.y += this.speed;
             }
             // console.log(n.startAt);
         });
@@ -70,15 +70,28 @@ export class NoteRectangle {
             }
         }
 
-        this.rect = scene.add.rectangle(
-            pos, // x 
-            -length, // y
-            s_w, // width
-            length,    // height
-            0x4488aa    // color
-            )
-            .setDepth(1)
-            .setOrigin(0,0);
+        // this.rect = scene.add.rectangle(
+        //     pos, // x 
+        //     -length, // y
+        //     s_w, // width
+        //     length,    // height
+        //     0x4488aa    // color
+        //     )
+        //     .setDepth(1)
+        //     .setOrigin(0,0);
+
+        const line = 3;
+
+        this.graphic = scene.add.graphics().setDepth(1);
+        this.graphic.lineStyle(line, 0x4488aa, 1.0);
+        this.graphic.fillStyle(0xFFFFFF, 1.0);
+        this.graphic.fillRect(pos, -length, s_w, length);
+        this.graphic.strokeRect(
+            pos + line,
+            -length + line, 
+            s_w - line*2, 
+            length - line*2
+            );
 
     }
     // getRect() {
