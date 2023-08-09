@@ -51,7 +51,9 @@ const MidiListPage = () => {
                     
                     <div className="track">
                         <div className="top-bar">
-                            <h5 className="n"> 번호</h5> <h5 className="s"> 곡 </h5> <h5 className="p" > 재생 다운로드 삭제</h5>
+                            <h5 className="n"> 번호</h5> 
+                            <h5 className="s"> 곡 </h5> 
+                            <h5 className="p" > 재생 다운로드 삭제</h5>
                         </div>
                     
                         {midiList.map((midi, index) => (
