@@ -32,7 +32,7 @@ const MidiListPage = () => {
 
             {midiList.map((midi, index) => (
                 <div className="song-container" key={index}>
-                    <Song title={midi.title} downloadUrl={midi.downloadUrl} />
+                    <Song title={midi.title} downloadUrl={midi.downloadUrl} deleteUrl={midi.deleteUrl} />
                 </div>
             ))}
 
