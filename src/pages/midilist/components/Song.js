@@ -8,13 +8,9 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { fileToMidi } from '../../../utils/Utils';
 
-<<<<<<< HEAD
 import './Song.css';
 
-const Song = ({ title, downloadUrl }) => {
-=======
 const Song = ({ title, downloadUrl, deleteUrl }) => {
->>>>>>> 2c6ab037f37c2ab790524a5cbd1f9736d5958583
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -68,13 +64,13 @@ const Song = ({ title, downloadUrl, deleteUrl }) => {
         <button className="midi-button" onClick={midiPlay}>MIDI
         </button>
         <button className="play-button" onClick={handlePlay}>
-          <img className="play-img" src="img\재생버튼흰색.png" alt="재생"/>
+          <img className="play-img" src="img\재생버튼흰색.png" alt="재생" />
         </button>
         <button className="download-button" onClick={handleDownload}>
-          <img className="download-img" src="img\다운로드흰색.png" alt="다운로드"/>
+          <img className="download-img" src="img\다운로드흰색.png" alt="다운로드" />
         </button>
         <button className="delete-button" onClick={handleDelete}>
-          <img className="delete-img" src="img\삭제흰색.png" alt="삭제"/>
+          <img className="delete-img" src="img\삭제흰색.png" alt="삭제" />
         </button>
       </div>
     </>
