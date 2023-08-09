@@ -3,8 +3,11 @@ import { fileToMidi, extarctEvent } from '../../utils/Utils';
 import { inxtoNote } from '../../utils/tone';
 import NoteDisplay from './components/NoteDisplay';
 import * as Tone from 'tone';
+import { useSelector } from 'react-redux';
+
 
 const MidiPlayPage = () => {
+    const midiFile = useSelector(state => state.midi.midi)
     const synth = useRef(null);
     useEffect(() => {
         synth.current = new Tone.Sampler({
@@ -49,7 +52,6 @@ const MidiPlayPage = () => {
     }
         , [])
 
-    const [midi, setMidi] = useState(null);
     const [note, setNote] = useState(new Array(128).fill(false));
     const timer = useRef([]);
 
@@ -58,10 +60,6 @@ const MidiPlayPage = () => {
         let id = setTimeout(callback, time);
         timer.current.push(id);
     }
-
-    const uploadEvent = async (event) => {
-        setMidi(await fileToMidi(event.target.files[0]))
-    };
 
     // 입력된 노트에 대해 활성화, 소리 재생을 결정하여 실행함.
     const action = (inx, activate) => {
@@ -76,9 +74,9 @@ const MidiPlayPage = () => {
     }
 
     const play = () => {
-        if (midi === null) return;
-        console.log(extarctEvent(midi.track));
-        let track = midi.track[extarctEvent(midi.track)].event;
+        if (midiFile === null) return;
+        console.log(extarctEvent(midiFile.track));
+        let track = midiFile.track[extarctEvent(midiFile.track)].event;
 
         let time = []
         // 각 이벤트의 시간을 계산한다.
@@ -86,7 +84,7 @@ const MidiPlayPage = () => {
             if (e.type !== 8 && e.type !== 9) return;
             if (time.length === 0) time.push(e.deltaTime);
             else
-                time.push(time[time.length - 1] + e.deltaTime * midi.timeDivision / 105.2);
+                time.push(time[time.length - 1] + e.deltaTime * midiFile.timeDivision / 105.2);
         })
         console.log(time);
 
@@ -116,7 +114,6 @@ const MidiPlayPage = () => {
         );
     }
     return (<>
-        <input type="file" onChange={uploadEvent}></input>
         <button onClick={play}>play</button>
         <button onClick={stop}>stop</button>
         <NoteDisplay note={note} />

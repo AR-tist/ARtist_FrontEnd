@@ -3,19 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 const midiSlice = createSlice({
     name: "midi",
     initialState: {
-        midiFile: null,
+        midiList: [],
         midi: null,
-        timer: [],
+        loading: false
     },
 
     reducers: {
-        setmidiFile(state, action) {
-            state.midiFile = action.payload.midiFile;
+        setmidilist(state, action) {
+            state.midiList = action.payload.midilist;
         },
         setmidi(state, action) {
             state.midi = action.payload.midi;
         },
-
+        setLoading(state, action) {
+            state.loading = action.payload.loading;
+        }
     },
 });
 
