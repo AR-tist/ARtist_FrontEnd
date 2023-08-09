@@ -1,33 +1,121 @@
+body {
+  background-color: #616380;
+}
 
-.header {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .top_menu button {
-    margin-right: 10px; 
-  }
-  
-  .songs {
-    padding: 10px;
-  }
-  
-  .song-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .upload-button {
-    margin-bottom: 100px;
-  }
-  
+.home-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.home-img {
+  width: 30px;
+  height: 30px;
+}
+.mypage-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  margin-left: 1800px;
+}
+.mypage-img {
+  width: 28px;
+  height: 28px;
+}
+.menu-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.menu-img {
+  width: 25px;
+  height: 25px;
+}
+
+
+h2 {
+  color: white;
+  margin-left: 10px;
+}
+
+.n {
+  color: #ccc;
+  margin-left: 10px;
+  word-spacing: 10px;
+}
+.s {
+  color: #ccc;
+  margin-left: 80px;
+  word-spacing: 10px;
+}
+.p {
+  color: #ccc;
+  margin-left: 1100px;
+  margin-right: 24px;
+  word-spacing: 15px;
+}
+
+.Mytrack {
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 3px solid #ccc;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.track-group {
+  display: flex;
+}
+
+.selected-song-information {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 110px;
+  margin-right: 50px;
+}
+.selected-song-img {
+  width: 250px;
+  height: 250px;
+}
+
+.track {
+  margin-left: 10px;
+}
+
+.top-bar {
+  display: flex;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.song-container { /*곡 묶여있는 div*/
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.button-group { /* 재생, 다운로드, 삭제 버튼 묶여있는 div*/
+  display: flex;
+  gap: 25px;
+  margin-right: 15px;
+}
+
+.upload-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.upload-img {
+  width: 20px;
+  height: 20px;
+}
+

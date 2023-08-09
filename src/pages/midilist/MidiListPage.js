@@ -24,20 +24,48 @@ const MidiListPage = () => {
 
     return (
         <>
-            <div className="upload-button">
-                <button onClick={handleUploadClick} style={{ position: 'fixed', top: 0, right: 0 }}>
-                    업로드
+            <div className="body">
+
+                <button className="home-button">
+                    <img className="home-img" src="img\artist_logo흰색.png" alt="홈"/>
                 </button>
-            </div>
+                <button className="mypage-button">
+                    <img className="mypage-img" src="img\마이페이지흰색.png" alt="마이페이지"/>
+                </button>
+                <button className="menu-button">
+                    <img className="menu-img" src="img\메뉴흰색.png" alt="메뉴"/>
+                </button>
 
-            {midiList.map((midi, index) => (
-                <div className="song-container" key={index}>
-                    <Song title={midi.title} downloadUrl={midi.downloadUrl} />
+                <div className="Mytrack">
+                    <h2>My Tracks</h2>
+                    
+                    <button className="upload-button" onClick={handleUploadClick}>
+                        <img className="upload-img" src="img\업로드버튼흰색.png" alt="업로드"/>
+                    </button>
                 </div>
-            ))}
-
+                
+                <div className="track-group">
+                    <div className='selected-song-information'>
+                        <img className='selected-song-img' src="img\세븐앨범커버.jpg" alt="업로드"/>
+                    </div>
+                    
+                    <div className="track">
+                        <div className="top-bar">
+                            <h5 className="n"> 번호</h5> <h5 className="s"> 곡 </h5> <h5 className="p" > 재생 다운로드 삭제</h5>
+                        </div>
+                    
+                        {midiList.map((midi, index) => (
+                            <div className="song-container" key={index}>
+                                <Song title={midi.title} downloadUrl={midi.downloadUrl} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                
+                
+                
             {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
-
+            </div>
         </>
     );
 
