@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
 import { Keyboard } from "./keyboard";
+import { useEffect, useRef } from 'react';
 
 var example = { // json형식 예시
   "title": "twinkletwinkle", // 제목 및 기본 정보
@@ -63,15 +64,12 @@ var example = { // json형식 예시
   ]
 }
 
-export default class StageScene extends Phaser.Scene {
+const StageScene = () => {
+  const game = useRef(null);
 
-  constructor() {
-    super('StageScene'); // 식별자
+  function preload() {
   }
-
-  // preload(){ 
-  // }
-  create() {   // 생성
+  function create() {   // 생성
     const { x, y, width, height } = this.cameras.main;
     this.cameras.main.setBackgroundColor('#f5f5f5')
 
@@ -83,9 +81,45 @@ export default class StageScene extends Phaser.Scene {
     piano.setInput(document);
 
   }
-  update(time, delta) {   // 화면 갱신
+  function update(time, delta) {   // 화면 갱신
 
     this.noteGraphic.goDown();
   }
 
+  useEffect(() => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const config = {
+      type: Phaser.AUTO,   // WebGL or Canvas 맞춤 선택
+      width: width,
+      height: height,
+      physics: {
+        default: 'arcade',   // arcade 엔진
+        arcade: {
+          debug: false,   // 디버깅 사용
+        }
+      },
+      scale: { // 배율설정
+        mode: Phaser.Scale.FIT,  // 자동맞춤
+        autoCenter: Phaser.Scale.CENTER_BOTH,    // 중앙
+        width: width,    // 비율설정용 폭
+        height: height,  // 비율설정용 높이
+      },
+      scene: {
+        preload,
+        create,
+        update
+      }
+    }
+    const _game = new Phaser.Game(config);
+
+    game.current = _game;
+
+    return () => {
+      _game.destroy(true);    // 나갈 때 destroy
+      game.current = undefined;
+    };
+  }, []);
 }
+
+export default StageScene;
