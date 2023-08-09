@@ -5,66 +5,6 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
 
-var example = { // json형식 예시
-  "title": "twinkletwinkle", // 제목 및 기본 정보
-  "notes": [
-    {
-      "note": 7,     // 음
-      "startAt": 0,  // 시작 시간 
-      "endAt": 90    // 끝 시간
-    },
-    {
-      "note": 9,
-      "startAt": 0,
-      "endAt": 190
-    },
-    {
-      "note": 7,
-      "startAt": 100,
-      "endAt": 190
-    },
-    {
-      "note": 7,
-      "startAt": 200,
-      "endAt": 390
-    },
-    {
-      "note": 11,
-      "startAt": 200,
-      "endAt": 290
-    },
-    {
-      "note": 11,
-      "startAt": 300,
-      "endAt": 390
-    },
-    {
-      "note": 12,
-      "startAt": 400,
-      "endAt": 490
-    },
-    {
-      "note": 3,
-      "startAt": 400,
-      "endAt": 590
-    },
-    {
-      "note": 12,
-      "startAt": 500,
-      "endAt": 590
-    },
-    {
-      "note": 11,
-      "startAt": 600,
-      "endAt": 790
-    },
-    {
-      "note": 7,
-      "startAt": 600,
-      "endAt": 790
-    }
-  ]
-}
 
 const StageScene = () => {
   const game = useRef(null);
@@ -103,7 +43,7 @@ const StageScene = () => {
 
 
     // note 불러오기
-    this.noteGraphic = new NoteGenerator(this, width, height, notes);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes, 0, 10);
 
     // 키보드 불러오기
     let piano = new Keyboard(this, width, height, 0, 10);
