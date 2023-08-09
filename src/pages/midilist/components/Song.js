@@ -34,7 +34,7 @@ const Song = ({ title, downloadUrl }) => {
 
   const handlePlay = () => {
     // Play 로직 작성
-    midiLoad(`/play/${1}`);
+    midiLoad(`/graphic/${1}`);
   };
 
   const handleDownload = () => {

@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
 import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { extarctEvent } from '../../../utils/Utils';
 
 var example = { // json형식 예시
   "title": "twinkletwinkle", // 제목 및 기본 정보
@@ -66,18 +68,45 @@ var example = { // json형식 예시
 
 const StageScene = () => {
   const game = useRef(null);
-
+  const midiFile = useSelector(state => state.midi.midi);
+  console.log(midiFile);
   function preload() {
   }
   function create() {   // 생성
     const { x, y, width, height } = this.cameras.main;
     this.cameras.main.setBackgroundColor('#f5f5f5')
 
+    const track = midiFile.track[extarctEvent(midiFile.track)].event;
+
+    let time = 0;
+    let pre_notes = {}
+    track.forEach((e, i) => {
+      if (e.type !== 8 && e.type !== 9) return;
+      if (e.type === 9) {
+        if (pre_notes[e.data[0]] === undefined)
+          pre_notes[e.data[0]] = []
+        pre_notes[e.data[0]].push({ "note": e.data[0], "startAt": time });
+      }
+      else {
+        pre_notes[e.data[0]][pre_notes[e.data[0]].length - 1]["endAt"] = time;
+      }
+      time += e.deltaTime * midiFile.timeDivision / 105.2;
+    })
+
+    let notes = [];
+    for (let key in pre_notes) {
+      pre_notes[key].forEach(e => {
+        notes.push(e);
+      })
+    }
+    console.log(notes);
+
+
     // note 불러오기
-    this.noteGraphic = new NoteGenerator(this, width, height, example.notes);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes);
 
     // 키보드 불러오기
-    let piano = new Keyboard(this, width, height);
+    let piano = new Keyboard(this, width, height, 0, 10);
     piano.setInput(document);
 
   }

@@ -75,6 +75,7 @@ const MidiPlayPage = () => {
 
     const play = () => {
         if (midiFile === null) return;
+        console.log(midiFile);
         console.log(extarctEvent(midiFile.track));
         let track = midiFile.track[extarctEvent(midiFile.track)].event;
 
@@ -94,7 +95,6 @@ const MidiPlayPage = () => {
 
             if (e.type !== 8 && e.type !== 9) return;
             createTimer(() => {
-                time += e.deltaTime;
                 action(e.data[0], e.type === 9 ? true : false);
             }, time[iter]);
             iter++;

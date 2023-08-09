@@ -2,7 +2,7 @@ import * as Tone from 'tone';
 import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
 import { getKey } from '../../../utils/Utils';;
 export class Keyboard {
-    constructor(scene, width, height) {
+    constructor(scene, width, height, start_idx = 1, last_idx = 4) {
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -46,10 +46,14 @@ export class Keyboard {
 
         this.w_notes = [];
         this.b_notes = []
-        let num = 4
-        let { s_w, s_h } = { s_w: width / num / 7, s_h: height * 0.2 }
+        this.octave = 0;
+        this.start_idx = start_idx;
+        this.num = last_idx;
+        if (this.num > 10) this.num = 10;
+        if (this.num + this.start_idx > 10) this.num = this.num - this.start_idx;
+        let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 }
 
-        for (let j = 0; j < num; j++) {
+        for (let j = 0; j < this.num; j++) {
             for (let i = 0; i < 7; i++) {
                 console.log(i * s_w)
                 this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 4, b_color: 0x000000 }))
@@ -58,88 +62,90 @@ export class Keyboard {
                 if (i === 2) continue;
                 this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000)
                     .setDepth(2));
-                    
+
             }
         }
-        this.start_idx = 7;
-        this.octave = 4;
     }
+
     setInput(document) {
         document.addEventListener('keydown', (event) => {
             if (event.repeat) return;
             if (this.tone.loaded !== true) return;
             const key = getKey(event.key);
-            if (key === 'a') this.pushNote(this.start_idx);
-            else if (key === 's') this.pushNote(this.start_idx + 1);
-            else if (key === 'd') this.pushNote(this.start_idx + 2);
-            else if (key === 'f') this.pushNote(this.start_idx + 3);
-            else if (key === 'g') this.pushNote(this.start_idx + 4);
-            else if (key === 'h') this.pushNote(this.start_idx + 5);
-            else if (key === 'j') this.pushNote(this.start_idx + 6);
-            else if (key === 'k') this.pushNote(this.start_idx + 7);
-            else if (key === 'l') this.pushNote(this.start_idx + 8);
-            else if (key === ';') this.pushNote(this.start_idx + 9);
-            else if (key === "'") this.pushNote(this.start_idx + 10);
-            else if (key === "w") this.pushNote(this.start_idx - 2, 1);
-            else if (key === "e") this.pushNote(this.start_idx - 1, 1);
-            else if (key === "t") this.pushNote(this.start_idx, 1);
-            else if (key === "y") this.pushNote(this.start_idx + 1, 1);
-            else if (key === "u") this.pushNote(this.start_idx + 2, 1);
-            else if (key === "o") this.pushNote(this.start_idx + 3, 1);
-            else if (key === "p") this.pushNote(this.start_idx + 4, 1);
-            else if (key === 'x' && this.octave < 6) this.octave += 1;
-            else if (key === 'z' && this.octave > 3) this.octave -= 1;
+            if (key === 'a') this.pushNote(0);
+            else if (key === 's') this.pushNote(1);
+            else if (key === 'd') this.pushNote(2);
+            else if (key === 'f') this.pushNote(3);
+            else if (key === 'g') this.pushNote(4);
+            else if (key === 'h') this.pushNote(5);
+            else if (key === 'j') this.pushNote(6);
+            else if (key === 'k') this.pushNote(7);
+            else if (key === 'l') this.pushNote(8);
+            else if (key === ';') this.pushNote(9);
+            else if (key === "'") this.pushNote(10);
+            else if (key === "w") this.pushNote(0, 1);
+            else if (key === "e") this.pushNote(1, 1);
+            else if (key === "t") this.pushNote(2, 1);
+            else if (key === "y") this.pushNote(3, 1);
+            else if (key === "u") this.pushNote(4, 1);
+            else if (key === "o") this.pushNote(5, 1);
+            else if (key === "p") this.pushNote(6, 1);
+            else if (key === 'x' && this.octave < this.num - 1) this.octave += 1;
+            else if (key === 'z' && this.octave > 0) this.octave -= 1;
         });
         document.addEventListener('keyup', (event) => {
             if (event.repeat) return;
             if (this.tone.loaded !== true) return;
             const key = getKey(event.key);
 
-            if (key === 'a') this.releaseNote(this.start_idx);
-            else if (key === 's') this.releaseNote(this.start_idx + 1);
-            else if (key === 'd') this.releaseNote(this.start_idx + 2);
-            else if (key === 'f') this.releaseNote(this.start_idx + 3);
-            else if (key === 'g') this.releaseNote(this.start_idx + 4);
-            else if (key === 'h') this.releaseNote(this.start_idx + 5);
-            else if (key === 'j') this.releaseNote(this.start_idx + 6);
-            else if (key === 'k') this.releaseNote(this.start_idx + 7);
-            else if (key === 'l') this.releaseNote(this.start_idx + 8);
-            else if (key === ';') this.releaseNote(this.start_idx + 9);
-            else if (key === "'") this.releaseNote(this.start_idx + 10);
-            else if (key === "w") this.releaseNote(this.start_idx - 2, 1);
-            else if (key === "e") this.releaseNote(this.start_idx - 1, 1);
-            else if (key === "t") this.releaseNote(this.start_idx, 1);
-            else if (key === "y") this.releaseNote(this.start_idx + 1, 1);
-            else if (key === "u") this.releaseNote(this.start_idx + 2, 1);
-            else if (key === "o") this.releaseNote(this.start_idx + 3, 1);
-            else if (key === "p") this.releaseNote(this.start_idx + 4, 1);
+            if (key === 'a') this.releaseNote(0);
+            else if (key === 's') this.releaseNote(1);
+            else if (key === 'd') this.releaseNote(2);
+            else if (key === 'f') this.releaseNote(3);
+            else if (key === 'g') this.releaseNote(4);
+            else if (key === 'h') this.releaseNote(5);
+            else if (key === 'j') this.releaseNote(6);
+            else if (key === 'k') this.releaseNote(7);
+            else if (key === 'l') this.releaseNote(8);
+            else if (key === ';') this.releaseNote(9);
+            else if (key === "'") this.releaseNote(10);
+            else if (key === "w") this.releaseNote(0, 1);
+            else if (key === "e") this.releaseNote(1, 1);
+            else if (key === "t") this.releaseNote(2, 1);
+            else if (key === "y") this.releaseNote(3, 1);
+            else if (key === "u") this.releaseNote(4, 1);
+            else if (key === "o") this.releaseNote(5, 1);
+            else if (key === "p") this.releaseNote(6, 1);
         });
     }
 
     pushNote(idx, mode = 0) {
+
         if (mode === 0) {
-            this.w_notes[idx + (this.octave - 4) * 7].getRect().setFillStyle(0xaaaaaa);
-            console.log(idx)
-            idx = idx + this.octave * 7;
-            console.log(idx)
+            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7) return
+            this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xaaaaaa);
+            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         }
         else {
-            this.b_notes[idx + (this.octave - 4) * 5].setFillStyle(0x333333);
-            idx = idx + this.octave * 5;
-            console.log(idx)
+            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7 - 2) return
+            this.b_notes[idx + (this.octave) * 5].setFillStyle(0x333333);
+            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }
     }
     releaseNote(idx, mode = 0) {
         if (mode === 0) {
-            this.w_notes[idx + (this.octave - 4) * 7].getRect().setFillStyle(0xffffff);
-            idx = idx + this.octave * 7;
+            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7) return
+            this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
             this.tone.triggerRelease([inxtoNoteW[idx]]);
         }
         else {
-            this.b_notes[idx + (this.octave - 4) * 5].setFillStyle(0x000000);
-            idx = idx + this.octave * 5;
+            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7 - 2) return
+            console.log(this.b_notes[idx + (this.octave) * 5])
+            this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
             this.tone.triggerRelease([inxtoNoteB[idx]]);
         }
     }

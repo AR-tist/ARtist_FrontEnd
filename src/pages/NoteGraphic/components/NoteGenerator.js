@@ -5,10 +5,10 @@ export class NoteGenerator {
     constructor(scene, width, height, notes) {
 
         this.noteArray = [];
-        this.speed = 2 *1.5;
+        this.speed = 2 * 1.5;
         this.timerCount = 0;
 
-        notes.forEach(n=>{
+        notes.forEach(n => {
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height));
         });
         // console.log(this.noteArray);
@@ -22,14 +22,14 @@ export class NoteGenerator {
     }
 
     playTimer() {
-        
-        this.timerCount += 1 *1.5;
+
+        this.timerCount += 1 * 1.5;
         // console.log(this.timerCount);
     }
 
     goDown() {
 
-        this.noteArray.forEach(n=>{
+        this.noteArray.forEach(n => {
             if (n.startAt <= this.timerCount) {
                 n.rect.y += this.speed;
             }
@@ -50,24 +50,24 @@ export class NoteRectangle {
         const length = (endAt - startAt) * 1.21;  // 사각형의 길이
 
         this.rect = scene.add.rectangle(
-            (note) * s_w, // x 
+            (note - 48) * s_w, // x 
             -length, // y
             s_w, // width
             length,    // height
             0x4488aa    // color
-            )
+        )
             .setDepth(1)
-            .setOrigin(0,0);
+            .setOrigin(0, 0);
 
     }
     // getRect() {
     //     return this.rect;
     // }
 
-//      this.scene.physics.add.overlap(rect, piano, this.checkCollision);  // 충돌 판정
+    //      this.scene.physics.add.overlap(rect, piano, this.checkCollision);  // 충돌 판정
     // 충돌 감지 함수
-//     checkCollision(rect, piano) {
-//         rect.gameObject.destroy();
-//     }
+    //     checkCollision(rect, piano) {
+    //         rect.gameObject.destroy();
+    //     }
 
 }

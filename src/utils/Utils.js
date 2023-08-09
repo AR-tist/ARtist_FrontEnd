@@ -52,6 +52,6 @@ export const getKey = (str) => {
     //     const inko = new Inko();
     //     key = inko.ko2en(str);
     // } else
-        key = str.toLowerCase();
+    key = str.toLowerCase();
     return key;
 }
