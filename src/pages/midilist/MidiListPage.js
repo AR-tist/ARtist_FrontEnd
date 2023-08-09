@@ -24,7 +24,6 @@ const MidiListPage = () => {
 
     return (
         <>
-
             <div className="body">
 
                 <button className="home-button">
@@ -43,32 +42,28 @@ const MidiListPage = () => {
                     <button className="upload-button" onClick={handleUploadClick}>
                         <img className="upload-img" src="img\업로드버튼흰색.png" alt="업로드" />
                     </button>
+                </div>
 
-                    {midiList.map((midi, index) => (
-                        <div className="song-container" key={index}>
-                            <Song title={midi.title} downloadUrl={midi.downloadUrl} deleteUrl={midi.deleteUrl} />
-                        </div>))}
+                <div className="track-group">
+                    <div className='selected-song-information'>
+                        <img className='selected-song-img' src="img\세븐앨범커버.jpg" alt="업로드" />
+                    </div>
 
-                    <div className="track-group">
-                        <div className='selected-song-information'>
-                            <img className='selected-song-img' src="img\세븐앨범커버.jpg" alt="업로드" />
+                    <div className="track">
+                        <div className="top-bar">
+                            <h5 className="n"> 번호</h5>
+                            <h5 className="s"> 곡 </h5>
+                            <h5 className="p" > 재생 다운로드 삭제</h5>
                         </div>
 
-                        <div className="track">
-                            <div className="top-bar">
-                                <h5 className="n"> 번호</h5>
-                                <h5 className="s"> 곡 </h5>
-                                <h5 className="p" > 재생 다운로드 삭제</h5>
+                        {midiList.map((midi, index) => (
+                            <div className="song-container" key={index}>
+                                <Song title={midi.title} downloadUrl={midi.downloadUrl} />
                             </div>
-
-                            {midiList.map((midi, index) => (
-                                <div className="song-container" key={index}>
-                                    <Song title={midi.title} downloadUrl={midi.downloadUrl} />
-                                </div>
-                            ))}
-                        </div>
+                        ))}
                     </div>
                 </div>
+
 
 
 
