@@ -1,4 +1,4 @@
-import { setLoading, setMidi } from '../../../store/slices/midi/midiAction';
+import { setLoading, setMidi, fetchMidiList } from '../../../store/slices/midi/midiAction';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,9 +8,13 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { fileToMidi } from '../../../utils/Utils';
 
+<<<<<<< HEAD
 import './Song.css';
 
 const Song = ({ title, downloadUrl }) => {
+=======
+const Song = ({ title, downloadUrl, deleteUrl }) => {
+>>>>>>> 2c6ab037f37c2ab790524a5cbd1f9736d5958583
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -36,7 +40,7 @@ const Song = ({ title, downloadUrl }) => {
 
   const handlePlay = () => {
     // Play 로직 작성
-    midiLoad(`/play/${1}`);
+    midiLoad(`/graphic/${1}`);
   };
 
   const handleDownload = () => {
@@ -50,7 +54,11 @@ const Song = ({ title, downloadUrl }) => {
   };
 
   const handleDelete = () => {
-    // Delete 로직 작성
+    console.log(`${axiosInstance.getUri()}${deleteUrl}`);
+    axiosInstance.delete(`${axiosInstance.getUri()}${deleteUrl}`).then((res) => {
+      console.log(res);
+      dispatch(fetchMidiList());
+    });
   };
 
   return (

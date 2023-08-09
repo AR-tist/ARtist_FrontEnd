@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
-import { Keyboard } from "./keyboard";
+import { Keyboard } from "../../NoteGraphic/components/keyboard";
 
 const Piano = () => {
     const game = useRef(null);

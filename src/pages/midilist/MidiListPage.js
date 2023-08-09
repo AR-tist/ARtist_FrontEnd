@@ -36,12 +36,18 @@ const MidiListPage = () => {
                     <img className="menu-img" src="img\메뉴흰색.png" alt="메뉴"/>
                 </button>
 
+<<<<<<< HEAD
                 <div className="Mytrack">
                     <h2>My Tracks</h2>
                     
                     <button className="upload-button" onClick={handleUploadClick}>
                         <img className="upload-img" src="img\업로드버튼흰색.png" alt="업로드"/>
                     </button>
+=======
+            {midiList.map((midi, index) => (
+                <div className="song-container" key={index}>
+                    <Song title={midi.title} downloadUrl={midi.downloadUrl} deleteUrl={midi.deleteUrl} />
+>>>>>>> 2c6ab037f37c2ab790524a5cbd1f9736d5958583
                 </div>
                 
                 <div className="track-group">
