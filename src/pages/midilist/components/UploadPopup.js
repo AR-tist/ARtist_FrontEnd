@@ -9,6 +9,7 @@ import { fetchMidiList } from '../../../store/slices/midi/midiAction';
 import * as mm from '@magenta/music/es6';
 
 import './UploadPopup.css';
+import YoutubeUploadModal from './YoutubeUploadModal';
 
 
 // react-modal에 대한 앱 요소 설정
@@ -19,7 +20,14 @@ const UploadPopup = ({ onClose }) => {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
-    const [youtube, setYoutube] = useState('');
+    
+    const [isYoutubeModalOpen, setIsYoutubeModalOpen] = useState(false);
+    const [youtubeLink, setYoutubeLink] = useState('');
+
+    const handleYoutubeUpload = link => {
+        console.log('Uploading YouTube link:', link);
+        onClose(); // YouTube modal 닫기
+    };
 
     const [isDragging, setIsDragging] = useState(false);
     const [draggedFile, setDraggedFile] = useState(null);
@@ -90,8 +98,6 @@ const UploadPopup = ({ onClose }) => {
             // const midiData = mm.sequenceProtoToMidi(ns);
             // console.log(midiData);*/
         }
-        else if (fileType === 'YOUTUBE') {
-        }
         else {
             console.log('Invalid file type selected. Not uploading.');
         }
@@ -114,12 +120,6 @@ const UploadPopup = ({ onClose }) => {
         const titleValue = event.target.value;
         setTitle(titleValue);
     };
-
-    const handleYoutubeChange = event => {
-        const value = event.target.value;
-        setYoutube(value);
-    };
-
 
     const handleDragOver = event => {
         event.preventDefault();
@@ -230,15 +230,15 @@ const UploadPopup = ({ onClose }) => {
                     </button>
                 </div>
 
-                <input className="youtube-link" type="text" value={title} onChange={handleYoutubeChange}
-                    placeholder="유튜브 링크를 입력하세요"
+                <button className="goto-youtube-Upload-button" onClick={() => setIsYoutubeModalOpen(true)}>
+                    Go to upload a YouTube link →
+                </button>
+                
+                <YoutubeUploadModal
+                    isOpen={isYoutubeModalOpen}
+                    onClose={() => setIsYoutubeModalOpen(false)}
+                    handleYoutubeUpload={handleYoutubeUpload}
                 />
-
-                <div className="youtube-upload-button-container">
-                    <button className="youtube-Upload" onClick={() => handleUpload('YOUTUBE')}>
-                        Youtube Upload
-                    </button>
-                </div>
 
             </div>
 
