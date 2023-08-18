@@ -7,6 +7,7 @@ import ConvertPage from "./pages/Convert/ConvertPage"
 
 import { useSelector } from "react-redux"
 import Loading from "./components/loading/loading"
+import WSPage from "./pages/WSPage"
 const App = () => {
     const loading = useSelector(state => state.midi.loading)
 
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/midi/:id" element={<MidiPlayPage />} />
             <Route path="/graphic/:id" element={<NoteGraphicPage />} />
             <Route path="/convert" element={<ConvertPage />} />
+            <Route path="/websocket" element={<WSPage />} />
             <Route path="*" element={<h1>찾을 수 없는 페이지입니다.</h1>} />
         </Routes>
         <Loading loading={loading} />
