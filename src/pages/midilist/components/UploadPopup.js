@@ -8,6 +8,9 @@ import { fetchMidiList } from '../../../store/slices/midi/midiAction';
 
 import * as mm from '@magenta/music/es6';
 
+import './UploadPopup.css';
+import YoutubeUploadModal from './YoutubeUploadModal';
+
 
 // react-modal에 대한 앱 요소 설정
 Modal.setAppElement('#root'); // 루트 요소의 ID가 'root'라고 가정합니다
@@ -17,7 +20,17 @@ const UploadPopup = ({ onClose }) => {
     const dispatch = useDispatch();
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
-    const [youtube, setYoutube] = useState('');
+    
+    const [isYoutubeModalOpen, setIsYoutubeModalOpen] = useState(false);
+    const [youtubeLink, setYoutubeLink] = useState('');
+
+    const handleYoutubeUpload = link => {
+        console.log('Uploading YouTube link:', link);
+        onClose(); // YouTube modal 닫기
+    };
+
+    const [isDragging, setIsDragging] = useState(false);
+    const [draggedFile, setDraggedFile] = useState(null);
 
     const uploadMIDI = (file, title) => {
         console.log('Uploading MIDI file...');
@@ -85,8 +98,6 @@ const UploadPopup = ({ onClose }) => {
             // const midiData = mm.sequenceProtoToMidi(ns);
             // console.log(midiData);*/
         }
-        else if (fileType === 'YOUTUBE') {
-        }
         else {
             console.log('Invalid file type selected. Not uploading.');
         }
@@ -110,10 +121,35 @@ const UploadPopup = ({ onClose }) => {
         setTitle(titleValue);
     };
 
-    const handleYoutubeChange = event => {
-        const value = event.target.value;
-        setYoutube(value);
+    const handleDragOver = event => {
+        event.preventDefault();
+        event.stopPropagation();
     };
+    
+    const handleDragEnter = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsDragging(true);
+    };
+    
+    const handleDragLeave = event => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsDragging(false);
+    };
+    
+    const handleDrop = event => {
+        event.preventDefault();
+        event.stopPropagation();
+    
+        setIsDragging(false);
+    
+        const droppedFile = event.dataTransfer.files[0];
+        setDraggedFile(droppedFile);
+        setFile(droppedFile);
+    };
+    
+    
 
     return (
         <Modal
@@ -127,13 +163,17 @@ const UploadPopup = ({ onClose }) => {
                     right: 0,
                     bottom: 0,
                     backgroundColor: 'rgba(15, 15, 15, 0.79)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 },
                 content: {
                     position: 'absolute',
-                    top: '60px',
-                    left: '35%',
+                    top: '50%', // modal을 수직으로 중앙 배치
+                    left: '50%', // modal을 수평으로 중앙 배치
+                    transform: 'translate(-50%, -50%)', // Centering trick
                     width: '30%',
-                    height: '80%',
+                    height: '50%',
                     border: '1px solid #ccc',
                     background: '#fff',
                     overflow: 'auto',
@@ -148,31 +188,60 @@ const UploadPopup = ({ onClose }) => {
             }}
         >
             <h2>업로드 팝업 창</h2>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <input type="file" onChange={handleFileChange} style={{ marginBottom: '10px' }} />
-                <input
-                    type="text"
-                    value={title}
-                    onChange={handleTitleChange}
-                    placeholder="제목을 입력하세요"
-                    style={{ marginBottom: '10px' }}
-                />
-                <button onClick={() => handleUpload('MIDI')} style={{ marginBottom: '10px' }}>
-                    MIDI 업로드
-                </button>
-                <button onClick={() => handleUpload('MP3')}>MP3 업로드</button>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={handleYoutubeChange}
-                    placeholder="유튜브 링크를 입력하세요"
-                    style={{ marginBottom: '10px' }}
-                />
-                <button onClick={() => handleUpload('YOUTUBE')}>유튜브 업로드</button>
-            </div>
-            <button onClick={handleCancel} style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '12px' }}>
+
+            <button className="close-button" onClick={handleCancel} >
                 X
             </button>
+
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                
+                <h3 className="file-Upload">File Upload</h3>
+
+                <input className="enter-title" type="text" value={title} onChange={handleTitleChange} 
+                    placeholder="노래 제목을 입력하세요"
+                />
+
+                <div
+                    className={`drop-zone ${isDragging ? 'drag-over' : ''}`}
+                    onDragOver={handleDragOver}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
+                    {draggedFile ? (
+                        <p>File: {draggedFile.name}</p>
+                    ) : (
+                        <>
+                        <div className="DragAndDrop-container">
+                            <img className='DragAndDrop-img' src="img\파일업로드이미지.png"/>
+                            <p>Drag and drop the file</p>
+                        </div>
+                        </>
+                    )}
+                </div>
+                
+                <div className="upload-button-container">
+                    <button className="MIDI-Upload" onClick={() => handleUpload('MIDI')} >
+                        MIDI Upload
+                    </button>
+                    
+                    <button className="MP3-Upload" onClick={() => handleUpload('MP3')}>
+                        MP3 Upload
+                    </button>
+                </div>
+
+                <button className="goto-youtube-Upload-button" onClick={() => setIsYoutubeModalOpen(true)}>
+                    Go to upload a YouTube link →
+                </button>
+                
+                <YoutubeUploadModal
+                    isOpen={isYoutubeModalOpen}
+                    onClose={() => setIsYoutubeModalOpen(false)}
+                    handleYoutubeUpload={handleYoutubeUpload}
+                />
+
+            </div>
+
         </Modal>
     );
 };
