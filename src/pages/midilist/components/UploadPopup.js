@@ -56,7 +56,7 @@ const UploadPopup = ({ onClose }) => {
     const handleUpload = fileType => {
         if (fileType === 'MIDI') {
             console.log(file)
-            // uploadMIDI(file, title)
+            uploadMIDI(file, title)
         }
         else if (fileType === 'MP3') {
             const model = new mm.OnsetsAndFrames('https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni');

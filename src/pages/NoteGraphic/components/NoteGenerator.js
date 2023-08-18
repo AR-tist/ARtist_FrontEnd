@@ -4,12 +4,12 @@ export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
         this.noteArray = [];
-        this.speed = timeDivision / 157;
+        this.speed = parseFloat(timeDivision) / 157.0;
         this.timerCount = 0;
 
         notes.forEach(n=>{
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx));
+                start_idx, last_idx, timeDivision));
         });
         console.log(this.noteArray);
 
@@ -40,7 +40,7 @@ export class NoteGenerator {
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision) {
 
         this.startAt = startAt;
         this.endAt = endAt;
@@ -50,7 +50,7 @@ export class NoteRectangle {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        const length = (endAt - startAt) * 0.08;  // 사각형의 길이
+        const length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
