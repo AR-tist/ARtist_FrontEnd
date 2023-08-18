@@ -39,7 +39,7 @@ export class Keyboard {
             release: 1,
             baseUrl: "https://tonejs.github.io/audio/salamander/",
             onload: () => {
-                console.log("loaded");
+                // console.log("loaded");
                 this.tone.triggerAttackRelease(["C5"], 0.05);
             }
         }).toDestination();
@@ -50,12 +50,14 @@ export class Keyboard {
         this.start_idx = start_idx;
         this.num = last_idx;
         if (this.num > 10) this.num = 10;
-        if (this.num + this.start_idx > 10) this.num = this.num - this.start_idx;
+        if (this.num + this.start_idx > 10) {
+            this.num = this.num - this.start_idx;
+        }
         let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 }
 
         for (let j = 0; j < this.num; j++) {
             for (let i = 0; i < 7; i++) {
-                console.log(i * s_w)
+                // console.log(i * s_w)
                 this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 4, b_color: 0x000000 }))
             }
             for (let i = 0; i < 6; i++) {
@@ -143,7 +145,7 @@ export class Keyboard {
         }
         else {
             if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7 - 2) return
-            console.log(this.b_notes[idx + (this.octave) * 5])
+            // console.log(this.b_notes[idx + (this.octave) * 5])
             this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
             this.tone.triggerRelease([inxtoNoteB[idx]]);

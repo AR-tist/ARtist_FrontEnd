@@ -43,10 +43,10 @@ const StageScene = () => {
 
 
     // note 불러오기
-    this.noteGraphic = new NoteGenerator(this, width, height, notes, 5, 10);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 6, midiFile.timeDivision);
 
     // 키보드 불러오기
-    let piano = new Keyboard(this, width, height, 5, 10);
+    let piano = new Keyboard(this, width, height, 2, 6);
     piano.setInput(document);
 
   }

@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
 export class NoteGenerator {
-    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4) {
+    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
         this.noteArray = [];
-        this.speed = 3;
+        this.speed = timeDivision / 157;
         this.timerCount = 0;
 
         notes.forEach(n=>{
@@ -45,9 +45,12 @@ export class NoteRectangle {
         this.startAt = startAt;
         this.endAt = endAt;
 
-        const num = last_idx - start_idx;
+        const num = last_idx;
+        if (num + start_idx > 10) {
+            num = num - start_idx;
+        }
         let s_w = width / num / 7;  // 사각형의 폭
-        const length = (endAt - startAt) * 0.2;  // 사각형의 길이
+        const length = (endAt - startAt) * 0.08;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
@@ -80,17 +83,17 @@ export class NoteRectangle {
         //     .setDepth(1)
         //     .setOrigin(0,0);
 
-        const line = 3;
+        const line = 2;
 
         this.graphic = scene.add.graphics().setDepth(1);
         this.graphic.lineStyle(line, 0x4488aa, 1.0);
         this.graphic.fillStyle(0xFFFFFF, 1.0);
-        this.graphic.fillRect(pos, -length, s_w, length);
+        this.graphic.fillRect(pos, -length-1, s_w, length);
         this.graphic.strokeRect(
             pos + line,
-            -length + line, 
+            -length-1, 
             s_w - line*2, 
-            length - line*2
+            length - line
             );
 
     }
