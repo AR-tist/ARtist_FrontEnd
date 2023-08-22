@@ -26,62 +26,122 @@ const MidiListPage = () => {
 
   return (
     <>
-      <Header></Header>
+      <div id="app" class style={{ overflow: "hidden", paddingBottom: "80px" }}>
+        <Header></Header>
+        <div
+          id="wrap"
+          style={{
+            width: "100%",
+            minWidth: "955px",
+            maxWidth: "1600px",
+            height: "100%",
+            margin: "0 auto",
+          }}
+        >
+          <section
+            id="main"
+            role="main"
+            class="section_home w955"
+            style={{ width: "955px", paddingRight: "80px" }}
+          >
+            <div
+              class="section_inner"
+              style={{
+                paddingTop: "10px",
+                minWidth: "800px",
+                maxWidth: "1600px",
+                paddingTop: "50px",
+                margin: "0 auto",
+              }}
+            >
+              <div>
+                <section
+                  data-v-35151064
+                  class="curation-content"
+                  is-swiper="true"
+                  wrapper-class
+                  style={{ marginTop: "60px" }}
+                >
+                  <div
+                    data-v-35151064
+                    class="curation-content__header"
+                    style={{
+                      display: "flex",
+                      WebkitBoxPack: "justify",
+                      MsFlexPack: "justify",
+                      justifyContent: "space-between",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <div
+                      data-v-35151064
+                      class="curation-content__title"
+                      style={{}}
+                    >
+                      <h3 data-v-35151064> My Tracks </h3>
+                      <button
+                        className="upload-button"
+                        onClick={handleUploadClick}
+                      >
+                        <img
+                          className="upload-img"
+                          src="img\업로드버튼.png"
+                          alt="업로드"
+                        />
+                      </button>
+                    </div>
+                    <div
+                      data-v-06565e30
+                      data-v-35151064
+                      class="paging-slide__navigator"
+                      style={{
+                        position: "relative",
+                        display: "flex",
+                        gap: "12px",
+                        WebkitBoxAlign: "center",
+                        MsFlexAlign: "center",
+                        alignItems: "center",
+                        WebkitBoxPack: "end",
+                        MsFlexPack: "end",
+                        justifyContent: "flex-end",
+                        margin: "0 5px",
+                      }}
+                    >
+                      <div className="selected-song-information">
+                        <img
+                          className="selected-song-img"
+                          src="img\하입보이앨범커버.jpg"
+                          alt="업로드"
+                        />
+                      </div>
 
-      <div className="body">
-        <button className="home-button">
-          <img className="home-img" src="img\artist_logo흰색.png" alt="홈" />
-        </button>
-        <button className="mypage-button">
-          <img
-            className="mypage-img"
-            src="img\마이페이지흰색.png"
-            alt="마이페이지"
-          />
-        </button>
-        <button className="menu-button">
-          <img className="menu-img" src="img\메뉴흰색.png" alt="메뉴" />
-        </button>
+                      <div className="track">
+                        <div className="top-bar">
+                          <h5 className="n"> 번호</h5>
+                          <h5 className="s"> 곡 </h5>
+                          <h5 className="p"> 재생 다운로드 삭제</h5>
+                        </div>
 
-        <div className="Mytrack">
-          <h2>My Tracks</h2>
-
-          <button className="upload-button" onClick={handleUploadClick}>
-            <img
-              className="upload-img"
-              src="img\업로드버튼흰색.png"
-              alt="업로드"
-            />
-          </button>
-        </div>
-
-        <div className="track-group">
-          <div className="selected-song-information">
-            <img
-              className="selected-song-img"
-              src="img\세븐앨범커버.jpg"
-              alt="업로드"
-            />
-          </div>
-
-          <div className="track">
-            <div className="top-bar">
-              <h5 className="n"> 번호</h5>
-              <h5 className="s"> 곡 </h5>
-              <h5 className="p"> 재생 다운로드 삭제</h5>
-            </div>
-
-            {midiList.map((midi, index) => (
-              <div className="song-container" key={index}>
-                <Song title={midi.title} downloadUrl={midi.downloadUrl} />
+                        {midiList.map((midi, index) => (
+                          <div className="song-container" key={index}>
+                            <Song
+                              title={midi.title}
+                              downloadUrl={midi.downloadUrl}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {isPopupVisible && (
+                      <UploadPopup onClose={handleClosePopup} />
+                    )}
+                  </div>
+                </section>
               </div>
-            ))}
-          </div>
+            </div>
+          </section>
         </div>
-
-        {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
       </div>
-
       <Footer></Footer>
     </>
   );

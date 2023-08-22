@@ -1,54 +1,36 @@
 body {
-  background-color: #616380;
+  width: 100%;
+  font-family: Pretendard Variable, Pretendard, -apple-system,
+    BlinkMacSystemFont, Roboto, Segoe UI, Helvetica, sans-serif;
+  font-size: 100%;
+  font-weight: 400;
+  color: #333;
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  text-size-adjust: none;
 }
-
-.home-button {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-.home-img {
-  width: 30px;
-  height: 30px;
-}
-.mypage-button {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-  margin-left: 1800px;
-}
-.mypage-img {
-  width: 28px;
-  height: 28px;
-}
-.menu-button {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-.menu-img {
-  width: 25px;
-  height: 25px;
-}
-
 
 h2 {
-  color: white;
+  color: rgb(0, 0, 0);
   margin-left: 10px;
 }
 
 .n {
-  color: #ccc;
+  color: rgb(0, 0, 0);
   margin-left: 10px;
   word-spacing: 10px;
 }
 .s {
-  color: #ccc;
-  margin-left: 80px;
+  color: rgb(0, 0, 0);
+  margin-left: 70px;
   word-spacing: 10px;
 }
 .p {
-  color: #ccc;
+  color: rgb(0, 0, 0);
   margin-left: 1100px;
   margin-right: 24px;
   word-spacing: 15px;
@@ -58,7 +40,7 @@ h2 {
   display: flex;
   justify-content: space-between;
 
-  border-bottom: 3px solid #ccc;
+  border-bottom: 3px solid rgb(0, 0, 0);
   margin-top: 50px;
   margin-left: 50px;
   margin-right: 50px;
@@ -86,24 +68,26 @@ h2 {
 
 .top-bar {
   display: flex;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-top: 1px solid rgb(0, 0, 0);
+  border-bottom: 1px solid rgb(0, 0, 0);
   margin-top: 50px;
   margin-left: 50px;
   margin-right: 50px;
 }
 
-.song-container { /*곡 묶여있는 div*/
+.song-container {
+  /*곡 묶여있는 div*/
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgb(0, 0, 0);
   padding: 10px;
   margin-left: 50px;
   margin-right: 50px;
 }
 
-.button-group { /* 재생, 다운로드, 삭제 버튼 묶여있는 div*/
+.button-group {
+  /* 재생, 다운로드, 삭제 버튼 묶여있는 div*/
   display: flex;
   gap: 25px;
   margin-right: 15px;
@@ -118,4 +102,3 @@ h2 {
   width: 20px;
   height: 20px;
 }
-
