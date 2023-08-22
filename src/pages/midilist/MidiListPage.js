@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Song from './components/Song';
+import Header from './components/Header';
 import UploadPopup from './components/UploadPopup';
 import './MidiListPage.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +25,8 @@ const MidiListPage = () => {
 
     return (
         <>
+        <Header></Header>
+
             <div className="body">
 
                 <button className="home-button">
