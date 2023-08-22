@@ -36,12 +36,24 @@ const Footer = () => {
               style={{ fontWeight: 700, width: "191px" }}
             >
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   고객센터
                 </a>
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   공지사항
                 </a>
               </li>
@@ -54,7 +66,13 @@ const Footer = () => {
                 AR-tist 서비스
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   서비스 소개
                 </a>
               </li>
@@ -68,7 +86,13 @@ const Footer = () => {
                 기업 정보
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   회사 소개
                 </a>
               </li>
@@ -81,17 +105,35 @@ const Footer = () => {
                 문의
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   마케팅 광고 제휴 문의
                 </a>
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   서비스 이용 문의
                 </a>
               </li>
               <li>
-                <a href="" class>
+                <a
+                  href=""
+                  class
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   음원 유통 문의
                 </a>
               </li>
@@ -100,17 +142,38 @@ const Footer = () => {
           <div class="policy_area">
             <ul>
               <li>
-                <a href="" class target="_blank">
+                <a
+                  href=""
+                  class
+                  target="_blank"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   이용약관
                 </a>
               </li>
               <li>
-                <a href="" class target="_blank">
+                <a
+                  href=""
+                  class
+                  target="_blank"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   개인정보 처리방침
                 </a>
               </li>
               <li>
-                <a href="" class target="_blank">
+                <a
+                  href=""
+                  class
+                  target="_blank"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
                   사업자정보 확인
                 </a>
               </li>
