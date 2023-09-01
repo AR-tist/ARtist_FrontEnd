@@ -1,6 +1,12 @@
+import React, { useState } from "react";
 import "./Header.css";
 
 const Header = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
     <>
       <header
@@ -147,24 +153,82 @@ const Header = () => {
               className="header__link"
               style={{ marginLeft: "25px", fontSize: "13px" }}
             >
-              <a
-                data-v-d712cb68
-                to="/menu"
-                className
+              <button
+                onClick={toggleSidebar}
                 style={{
                   color: "#8c8c8c",
                   textDecoration: "none",
                   WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
                   cursor: "pointer",
+                  border: "none",
+                  backgroundColor: "transparent",
                 }}
               >
-                {" "}
-                메뉴{" "}
-              </a>
+                메뉴
+              </button>
             </div>
           </div>
         </div>
       </header>
+
+      {/* 사이드바 */}
+      {isSidebarOpen && (
+        <div
+          className="sidebar"
+          style={{
+            position: "fixed",
+            justifyContent: "center",
+            top: 0,
+            right: 0,
+            width: "240px",
+            height: "100%",
+            backgroundColor: "#f0f0f0",
+            boxShadow: "-10px 0 10px rgba(0, 0, 0, 0.2)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            {/* '방 만들기' 버튼 */}
+            <button
+              className="sidebar-button"
+              style={{
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                cursor: "pointer",
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+                marginBottom: "10px",
+              }}
+            >
+              방 만들기
+            </button>
+
+            {/* '파일 변환하기' 버튼 */}
+            <button
+              className="sidebar-button"
+              style={{
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                cursor: "pointer",
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+              }}
+            >
+              파일 변환하기
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
