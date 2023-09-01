@@ -31,7 +31,7 @@ h2 {
 }
 .p {
   color: rgb(0, 0, 0);
-  margin-left: 1100px;
+  margin-left: 800px;
   margin-right: 24px;
   word-spacing: 15px;
 }
@@ -60,19 +60,7 @@ h2 {
 .selected-song-img {
   width: 250px;
   height: 250px;
-}
-
-.track {
-  margin-left: 10px;
-}
-
-.top-bar {
-  display: flex;
-  border-top: 1px solid rgb(0, 0, 0);
-  border-bottom: 1px solid rgb(0, 0, 0);
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 450px;
 }
 
 .song-container {
@@ -97,8 +85,4 @@ h2 {
   background-color: transparent;
   border: none;
   box-shadow: none;
-}
-.upload-img {
-  width: 20px;
-  height: 20px;
 }

@@ -67,28 +67,38 @@ const MidiListPage = () => {
                     class="curation-content__header"
                     style={{
                       display: "flex",
+                      flexDirection: "column", // 아이템들을 세로로 정렬
+                      justifyContent: "center", // 아이템들을 수직 방향으로 가운데 정렬
+                      alignItems: "center",
                       WebkitBoxPack: "justify",
                       MsFlexPack: "justify",
                       justifyContent: "space-between",
+                      marginLeft: "20px",
                       marginBottom: "20px",
                     }}
                   >
-                    <div
-                      data-v-35151064
-                      class="curation-content__title"
-                      style={{}}
-                    >
-                      <h3 data-v-35151064> My Tracks </h3>
-                      <button
-                        className="upload-button"
-                        onClick={handleUploadClick}
+                    <div data-v-35151064 class="curation-content__title">
+                      <div
+                        class="upload"
+                        style={{ display: "flex", marginLeft: "800px" }}
                       >
-                        <img
-                          className="upload-img"
-                          src="img\업로드버튼.png"
-                          alt="업로드"
-                        />
-                      </button>
+                        <h3 data-v-35151064> My Tracks </h3>
+                        <button
+                          className="upload-button"
+                          onClick={handleUploadClick}
+                        >
+                          <img
+                            className="upload-img"
+                            src="img\업로드버튼.png"
+                            alt="업로드"
+                            style={{
+                              marginLeft: "20px",
+                              width: "20px",
+                              height: "20px",
+                            }}
+                          />
+                        </button>
+                      </div>
                     </div>
                     <div
                       data-v-06565e30
@@ -104,7 +114,6 @@ const MidiListPage = () => {
                         WebkitBoxPack: "end",
                         MsFlexPack: "end",
                         justifyContent: "flex-end",
-                        margin: "0 5px",
                       }}
                     >
                       <div className="selected-song-information">
@@ -116,7 +125,18 @@ const MidiListPage = () => {
                       </div>
 
                       <div className="track">
-                        <div className="top-bar">
+                        <div
+                          className="top-bar"
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            borderTop: "1px solid rgb(0, 0, 0)",
+                            borderBottom: "1px solid rgb(0, 0, 0)",
+                            marginTop: "50px",
+                            marginLeft: "50px",
+                            marginRight: "50px",
+                          }}
+                        >
                           <h5 className="n"> 번호</h5>
                           <h5 className="s"> 곡 </h5>
                           <h5 className="p"> 재생 다운로드 삭제</h5>

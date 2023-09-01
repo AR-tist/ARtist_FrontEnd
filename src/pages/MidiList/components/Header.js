@@ -149,7 +149,7 @@ const Header = () => {
             >
               <a
                 data-v-d712cb68
-                href=""
+                to="/menu"
                 className
                 style={{
                   color: "#8c8c8c",
