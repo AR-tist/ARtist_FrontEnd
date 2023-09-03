@@ -12,6 +12,14 @@ body {
   -moz-text-size-adjust: none;
   -ms-text-size-adjust: none;
   text-size-adjust: none;
+
+  overflow-y: scroll; /* 수직 스크롤바만 표시하려면 overflow-y를 사용합니다. */
+  height: 100vh; /* 화면 전체 높이로 설정합니다. */
+}
+
+#root {
+  overflow-y: auto; /* 내용이 뷰포트를 벗어날 때만 스크롤바 표시 */
+  max-height: 80vh; /* 뷰포트 높이의 일부만 표시하려면 max-height 사용 */
 }
 
 h2 {
