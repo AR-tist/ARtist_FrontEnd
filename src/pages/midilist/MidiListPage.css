@@ -13,8 +13,8 @@ body {
   -ms-text-size-adjust: none;
   text-size-adjust: none;
 
-  overflow-y: scroll; /* 수직 스크롤바만 표시하려면 overflow-y를 사용합니다. */
-  height: 100vh; /* 화면 전체 높이로 설정합니다. */
+  overflow-y: scroll; /* 수직 스크롤바 */
+  height: 100vh; /* 화면 전체 높이로 설정 */
 }
 
 #root {
@@ -93,4 +93,13 @@ h2 {
   background-color: transparent;
   border: none;
   box-shadow: none;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+
+  flex-direction: row;
+  align-items: center;
 }

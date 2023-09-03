@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import "./Header.css";
 
-const Header = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+const Header = ({ toggleSidebar }) => {
   return (
     <>
       <header
@@ -170,151 +166,11 @@ const Header = () => {
           </div>
         </div>
       </header>
-
-      {/* 사이드바 */}
-      {isSidebarOpen && (
-        <div
-          className="sidebar"
-          style={{
-            position: "fixed",
-            justifyContent: "center",
-            top: 0,
-            right: 0,
-            width: "240px",
-            height: "100%",
-            backgroundColor: "#f0f0f0",
-            boxShadow: "-5px 0 5px rgba(0, 0, 0, 0.2)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <div
-            styles="flex-direction: row;"
-            data-view-component="true"
-            class="Overlay-header"
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <div
-              class="Overlay-headerContentWrap"
-              style={{ alignItems: "flex-start", display: "flex" }}
-            >
-              <div
-                class="Overlay-titleWrap"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  flexGrow: "1",
-                  width: "100%",
-                  overflowX: "hidden",
-                }}
-              >
-                <div
-                  data-view-component="true"
-                  class="d-flex"
-                  style={{ display: "flex" }}
-                >
-                  <div
-                    data-view-component="true"
-                    class="AppHeader-logo position-relative"
-                    style={{}}
-                  >
-                    {/*프로필 이미지*/}
-                  </div>
-                  <div
-                    data-view-component="true"
-                    class="overflow-hidden d-flex width-full"
-                    style={{}}
-                  >
-                    <div
-                      data-view-component="true"
-                      class="user-name"
-                      style={{}}
-                    >
-                      {/*유저 이름*/}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            data-view-component="true"
-            class="Overlay-body d-flex flex-column height-full px-2"
-            style={{}}
-          >
-            <nav
-              aria-label="User navigation"
-              data-view-component="true"
-              class="ActionList"
-              style={{}}
-            >
-              <nav-list data-catalyst>
-                <ul
-                  data-view-component="true"
-                  class="ActionListWrap"
-                  style={{}}
-                >
-                  <li>
-                    {/* '방 만들기' 버튼 */}
-                    <button
-                      className="sidebar-button"
-                      style={{
-                        backgroundColor: "#fff",
-                        border: "1px solid #ddd",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        display: "block",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        boxSahdow: "none",
-                        fontSize: "15px",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      방 만들기
-                    </button>
-                  </li>
-                  <li
-                    role="presentation"
-                    aria-hidden="true"
-                    data-view-component="true"
-                    class="ActionList-sectionDivider"
-                  ></li>
-                  <li>
-                    {/* '파일 변환하기' 버튼 */}
-                    <button
-                      className="sidebar-button"
-                      style={{
-                        backgroundColor: "#fff",
-                        border: "1px solid #ddd",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        display: "block",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        boxSahdow: "none",
-                        fontSize: "15px",
-                      }}
-                    >
-                      파일 변환하기
-                    </button>
-                  </li>
-                  <li
-                    role="presentation"
-                    aria-hidden="true"
-                    data-view-component="true"
-                    class="ActionList-sectionDivider"
-                  ></li>
-                </ul>
-              </nav-list>
-            </nav>
-          </div>
-        </div>
-      )}
     </>
   );
+};
+Header.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Header;
