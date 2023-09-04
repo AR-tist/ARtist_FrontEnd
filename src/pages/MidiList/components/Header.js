@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./Header.css";
+import Mypage from "./Mypage";
 
 const Header = ({ toggleSidebar }) => {
+  const [isMypageVisible, setIsMypageVisible] = useState(false);
+
+  const toggleMypage = () => {
+    setIsMypageVisible(!isMypageVisible);
+  };
+
   return (
     <>
       <header
@@ -129,20 +136,19 @@ const Header = ({ toggleSidebar }) => {
               className="header__link"
               style={{ marginLeft: "0", fontSize: "13px" }}
             >
-              <a
-                data-v-d712cb68
-                href=""
-                className
+              <button
+                onClick={toggleMypage}
                 style={{
                   color: "#8c8c8c",
                   textDecoration: "none",
                   WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
                   cursor: "pointer",
+                  border: "none",
+                  backgroundColor: "transparent",
                 }}
               >
-                {" "}
-                마이페이지{" "}
-              </a>
+                마이페이지
+              </button>
             </div>
             <div
               data-v-d712cb68
@@ -165,6 +171,7 @@ const Header = ({ toggleSidebar }) => {
             </div>
           </div>
         </div>
+        {isMypageVisible && <Mypage />}
       </header>
     </>
   );
