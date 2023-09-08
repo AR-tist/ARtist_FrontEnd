@@ -116,6 +116,10 @@ const Header = ({ toggleSidebar }) => {
                 autoCorrect="off"
                 autoCapitalize="off"
                 className="iptxt"
+                style={{
+                  border: "none",
+                  outline: "none",
+                }}
               />
             </fieldset>
           </div>
