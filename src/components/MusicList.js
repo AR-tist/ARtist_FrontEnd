@@ -95,7 +95,8 @@ const Row = (props) => {
             </button>
         </td>
         <td style={{ minWidth: "50px", position: "relative", height: "84px", textAlign: "center", borderBottom: "1px solid #f6f6f6" }}>
-            <button style={{ cursor: "pointer", backgroundColor: "transparent", color: "transparent", whiteSpace: "nowrap", verticalAlign: "middle" }} onClick={() => {
+            <button style={{ cursor: "pointer", backgroundColor: "transparent", color: "transparent", whiteSpace: "nowrap", verticalAlign: "middle" }} onClick={(event) => {
+                event.stopPropagation();
                 props.index === props.moreIndex ? props.setMoreIndex(-1) :
                     props.setMoreIndex(props.index);
             }}>
@@ -134,7 +135,7 @@ const MusicList = ({ midiList }) => {
     return (
         <div style={{
             padding: "0", margin: "0", border: "0"
-        }}>
+        }} onClick={() => { setMoreIndex(-1) }}>
             < table style={{
                 width: "auto", minWidth: "100%", maxWidth: "none", tableLayout: "fixed"
             }}>
