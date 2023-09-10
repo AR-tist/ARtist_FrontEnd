@@ -40,7 +40,7 @@ const MidiListPage = () => {
           class
           style={{ overflow: "hidden", paddingBottom: "80px" }}
         >
-          <Header user="푸른고양이" />
+          <Header user="푸른고양이82" />
 
           <div
             id="wrap"
