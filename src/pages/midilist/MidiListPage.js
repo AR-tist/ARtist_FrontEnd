@@ -4,9 +4,11 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Menu from "./Menu";
 import UploadPopup from "./components/UploadPopup";
-import "./MidiListPage.css";
+// import "./MidiListPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMidiList } from "../../store/slices/midi/midiAction";
+import Layout from "../../components/Layout";
+import MusicList from "../../components/MusicList";
 
 const MidiListPage = () => {
   const dispatch = useDispatch();
@@ -34,7 +36,11 @@ const MidiListPage = () => {
 
   return (
     <>
-      <div id="root">
+      <Header user="푸른고양이82" />
+      <Layout>
+        <MusicList midiList={midiList} />
+      </Layout>
+      {/* <div id="root">
         <div
           id="app"
           class
@@ -177,8 +183,8 @@ const MidiListPage = () => {
           </div>
         </div>
         <Footer></Footer>
-      </div>
-
+      </div> */}
+      <Footer />
       <Menu isSidebarOpen={isSidebarOpen} />
     </>
   );

@@ -1,4 +1,4 @@
-import './NoteGraphicPage.css';
+// import './NoteGraphicPage.css';
 import React from 'react';
 
 import StageScene from './components/StageScene';
@@ -6,7 +6,11 @@ import StageScene from './components/StageScene';
 
 const NoteGraphicPage = () => {
     return (
-        <StageScene></StageScene>
+        <StageScene style={{
+            overflow: "hidden",
+            boxSizing: "border-box",
+            margin: "0"
+        }}></StageScene>
     );
 
 }

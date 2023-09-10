@@ -10,9 +10,11 @@ const Header = (props) => {
           transform: "none",
           position: "fixed",
           top: "0",
-          bottom: "81px",
+          bottom: "0px",
           borderRight: "1px solid #f5f5f5",
-          marginLeft: "60px",
+          zIndex: "999",
+          backgroundColor: "#fff",
+          paddingLeft: "60px"
         }}
       >
         <h1 class="logo_wrap">
@@ -38,7 +40,6 @@ const Header = (props) => {
         <div
           class="menu_wrap"
           style={{
-            position: "absolute",
             top: "73px",
             right: "0",
             bottom: "0",
@@ -103,7 +104,7 @@ const Header = (props) => {
                   fontWeight: "700",
                   lineHeight: "20px",
                   letterSpacing: "-0.3px",
-                  color: "#fff",
+                  color: "#000",
                 }}
               ></input>
               <span

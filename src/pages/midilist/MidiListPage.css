@@ -13,13 +13,16 @@ body {
   -ms-text-size-adjust: none;
   text-size-adjust: none;
 
-  overflow-y: scroll; /* 수직 스크롤바 */
-  height: 100vh; /* 화면 전체 높이로 설정 */
+  overflow-y: scroll;
+  /* 수직 스크롤바 */
+  height: 100vh;
+  /* 화면 전체 높이로 설정 */
 }
 
 #root {
-  overflow-y: auto; /* 내용이 뷰포트를 벗어날 때만 스크롤바 표시 */
-  max-height: 80vh; /* 뷰포트 높이의 일부만 표시하려면 max-height 사용 */
+  /* overflow-y: auto; */
+  /* 내용이 뷰포트를 벗어날 때만 스크롤바 표시 */
+  /*max-height: 80vh; 뷰포트 높이의 일부만 표시하려면 max-height 사용 */
 }
 
 h2 {
@@ -32,11 +35,13 @@ h2 {
   margin-left: 10px;
   word-spacing: 10px;
 }
+
 .s {
   color: rgb(0, 0, 0);
   margin-left: 70px;
   word-spacing: 10px;
 }
+
 .p {
   color: rgb(0, 0, 0);
   margin-left: 800px;
@@ -65,6 +70,7 @@ h2 {
   margin-left: 110px;
   margin-right: 50px;
 }
+
 .selected-song-img {
   width: 250px;
   height: 250px;
