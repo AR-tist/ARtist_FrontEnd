@@ -40,7 +40,8 @@ const MidiListPage = () => {
           class
           style={{ overflow: "hidden", paddingBottom: "80px" }}
         >
-          <Header></Header>
+          <Header user="푸른고양이" />
+
           <div
             id="wrap"
             style={{
@@ -177,8 +178,6 @@ const MidiListPage = () => {
         </div>
         <Footer></Footer>
       </div>
-
-      <Header toggleSidebar={toggleSidebar} />
 
       <Menu isSidebarOpen={isSidebarOpen} />
     </>

@@ -1,187 +1,186 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import "./Header.css";
-import Mypage from "./Mypage";
-
-const Header = ({ toggleSidebar }) => {
-  const [isMypageVisible, setIsMypageVisible] = useState(false);
-
-  const toggleMypage = () => {
-    setIsMypageVisible(!isMypageVisible);
-  };
-
+const Header = (props) => {
   return (
     <>
       <header
-        data-v-d712cb68
         id="header"
-        role="banner"
+        class="header"
         style={{
+          width: "225px",
+          left: "0",
+          transform: "none",
           position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 100,
-          width: "100%",
-          height: "95px",
-          backgroundColor: "#fff",
+          top: "0",
+          bottom: "81px",
+          borderRight: "1px solid #f5f5f5",
+          marginLeft: "60px",
         }}
       >
+        <h1 class="logo_wrap">
+          <button
+            className="logo-button"
+            style={{
+              backgroundPosition: "-255px -321px",
+              width: "114px",
+              height: "20px",
+              display: "block",
+              paddingTop: "20px",
+              margin: "27px 10px 26px 20px",
+              backgroundColor: "transparent",
+              border: "none",
+              boxSahdow: "none",
+              fontSize: "35px",
+              fontWeight: "700",
+            }}
+          >
+            ARtist
+          </button>
+        </h1>
         <div
-          data-v-d712cb68
-          className="header_inner"
+          class="menu_wrap"
           style={{
-            WebkitBoxSizing: "border-box",
-            boxSizing: "border-box",
-            WebkitBoxPack: "justify",
-            MsFlexPack: "justify",
-            justifyContent: "space-between",
-            height: "96px",
-            padding: "10px 80px 0",
-            display: "flex",
-            WebkitBoxAlign: "center",
-            MsFlexAlign: "center",
-            alignItems: "center",
-            position: "relative",
-            minWidth: "955px",
-            maxWidth: "1600px",
-            margin: "0 auto",
+            position: "absolute",
+            top: "73px",
+            right: "0",
+            bottom: "0",
+            left: "0",
+            padding: "30px 16px 0 24px",
+            overflowY: "auto",
           }}
         >
           <div
-            data-v-d712cb68
-            className="header--left"
+            class="profile_area"
             style={{
-              display: "flex",
-              WebkitBoxAlign: "center",
-              MsFlexAlign: "center",
-              alignItems: "center",
-              minWidth: "534px",
+              width: "177px",
+              border: "1px solid hsla(0, 0%, 100%, 0.1)",
+              borderWidth: "1px 0",
             }}
           >
-            <div data-v-d712cb68 className="flo_bi">
-              <button
-                className="home-button"
+            <h2
+              style={{
+                fontSize: "18px",
+                marginLeft: "0",
+                fontWeight: "400",
+              }}
+            >
+              {props.user}
+            </h2>
+          </div>
+          <div
+            class="search_area"
+            style={{
+              width: "177px",
+              position: "relative",
+              marginTop: "20px",
+              borderRadius: "4px",
+            }}
+          >
+            <span
+              class="input_area"
+              style={{ position: "relative", display: "block" }}
+            >
+              <input
+                type="search"
+                role="combobox"
+                id="search_keyword"
+                aria-expanded="false"
+                title="검색창"
+                placeholder="음악 검색하기"
+                autocomplete="off"
+                class="input_search"
                 style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  boxShadow: "none",
+                  display: "block",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  wordBreak: "break-all",
+                  padding: "10px 36px 10px 44px",
+                  width: "100%",
+                  height: "35px",
+                  border: "0",
+                  backgroundColor: "#ededed",
+                  borderRadius: "10px",
+                  fontSize: "15px",
+                  fontWeight: "700",
+                  lineHeight: "20px",
+                  letterSpacing: "-0.3px",
+                  color: "#fff",
+                }}
+              ></input>
+              <span
+                class="icon_search"
+                style={{
+                  backgroundPosition: "-228px -606px",
+                  width: "15px",
+                  height: "15px",
+                  position: "absolute",
+                  top: "10px",
+                  left: "13px",
                 }}
               >
                 <img
-                  className="home-img"
-                  src="img\artist_logo회색.png"
-                  alt="홈"
-                  style={{ width: "30px", height: "30px" }}
+                  className="search-img"
+                  src="img\검색회색.png"
+                  alt="검색"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    position: "absolute",
+                    top: "50%",
+                    WebkitTransform: "translateY(-50%)",
+                    transform: "translateY(-50%)",
+                  }}
                 />
-              </button>
-            </div>
-            <fieldset
-              data-v-d712cb68
-              className="flo_search"
+              </span>
+            </span>
+          </div>
+          <div class="menu_area">
+            <button
+              className="nickname-change-button"
               style={{
-                position: "relative",
-                WebkitBoxSizing: "border-box",
-                boxSizing: "border-box",
-                width: "350px",
-                height: "32px",
-                padding: "0 30px 0 42px",
-                verticalAlign: "middle",
-                border: "1px solid #d2d2d2",
-                borderRadius: "17px",
-                marginLeft: "500px",
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+                fontWeight: "300",
+                marginTop: "20px",
               }}
             >
-              <img
-                className="search-img"
-                src="img\검색회색.png"
-                alt="검색"
-                style={{
-                  backgroundPosition: "-242px -632px",
-                  width: "20px",
-                  height: "20px",
-                  position: "absolute",
-                  top: "50%",
-                  left: "10px",
-                  content: "",
-                  WebkitTransform: "translateY(-50%)",
-                  transform: "translateY(-50%)",
-                }}
-              />
-              <input
-                id="searchKeywordInput"
-                type="text"
-                placeholder="검색어를 입력하세요."
-                autoComplete="new-password"
-                spellCheck="false"
-                autoCorrect="off"
-                autoCapitalize="off"
-                className="iptxt"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
-              />
-            </fieldset>
-          </div>
-          <div
-            data-v-d712cb68
-            role="navigation"
-            className="snb_w header--right"
-            style={{
-              minWidth: "240px",
-              marginLeft: "24px",
-              display: "flex",
-              WebkitBoxAlign: "center",
-              alignItems: "center",
-            }}
-          >
-            <div
-              data-v-d712cb68
-              className="header__link"
-              style={{ marginLeft: "0", fontSize: "13px" }}
+              닉네임 변경
+            </button>
+            <button
+              className="upload-button"
+              style={{
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+                fontWeight: "300",
+                marginTop: "20px",
+              }}
             >
-              <button
-                onClick={toggleMypage}
-                style={{
-                  color: "#8c8c8c",
-                  textDecoration: "none",
-                  WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
-                  cursor: "pointer",
-                  border: "none",
-                  backgroundColor: "transparent",
-                }}
-              >
-                마이페이지
-              </button>
-            </div>
-            <div
-              data-v-d712cb68
-              className="header__link"
-              style={{ marginLeft: "25px", fontSize: "13px" }}
+              업로드 하기
+            </button>
+            <button
+              className="entire-song-button"
+              style={{
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+                fontWeight: "300",
+                marginTop: "20px",
+              }}
             >
-              <button
-                onClick={toggleSidebar}
-                style={{
-                  color: "#8c8c8c",
-                  textDecoration: "none",
-                  WebkitTapHighlightColor: "rgba(0, 0, 0, 0)",
-                  cursor: "pointer",
-                  border: "none",
-                  backgroundColor: "transparent",
-                }}
-              >
-                메뉴
-              </button>
-            </div>
+              전체 업로드 곡 보기 {">"}
+            </button>
           </div>
         </div>
-        {isMypageVisible && <Mypage />}
       </header>
     </>
   );
-};
-Header.propTypes = {
-  toggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Header;
