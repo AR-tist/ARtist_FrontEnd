@@ -9,9 +9,11 @@
 }
 
 .file-Upload {
-    color: #c5c5c5;
-    text-align: center;
+    color: #000000;
+    text-align: left;
     margin-top: 1px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .enter-title {
@@ -23,13 +25,14 @@
     background-color: #f9f9f9;
     color: #9295BF;
     border-radius: 10px;
-    width: 100%;
+    width: 90%;
     height: 170px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.3s;
+    
 }
 
 .drag-over {
@@ -43,7 +46,7 @@
 }
 
 .DragAndDrop-container p{
-    color: #C2C6FF;
+    color: #000000;
     font-size: 12px;
 }
 
@@ -51,6 +54,17 @@
     width: 70px;
     height: 70px;
     margin-top: 10px;
+}
+.text-input-container{
+    margin-top: 20px;
+}
+.text-input{
+    width: 100%;
+    border: none;
+    font-size: 20px;
+}
+.text-input:focus{
+    outline:none;
 }
 
 .upload-button-container {

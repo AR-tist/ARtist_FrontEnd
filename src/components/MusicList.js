@@ -12,9 +12,25 @@ import axios from "axios";
 import { fileToMidi } from '../utils/Utils';
 import { useState } from "react";
 
+//-------------------
+import UploadPopup from "../pages/MidiList/components/UploadPopup";
+//-------------------
+
+
 const Row = (props) => {
     const dispatch = useDispatch();
 
+    //------------------------------------------------------
+    const [isPopupVisible, setPopupVisible] = useState(false);
+    const handleUploadClick = () => {
+        setPopupVisible(true); // 팝업 창 열기
+      };
+    
+      const handleClosePopup = () => {
+        setPopupVisible(false); // 팝업 창 닫기
+      };
+    //-------------------------------------------------------
+      
     const navigate = useNavigate();
     const midiLoad = async (dest) => {
         const fullDownloadUrl = `${axiosInstance.getUri()}${props.downloadUrl}`;
@@ -110,10 +126,13 @@ const Row = (props) => {
                 />
             </button>
             {props.moreIndex === props.index && <div style={{ position: "absolute", top: "66px", right: "0", zIndex: "11", width: "200px", padding: "10px 0", background: "#fff", borderRadius: "5px", boxShadow: "0 4px 20px 0 rgba(0,0,0,.1)" }}>
-                <button style={moreButtonStyle} onClick={midiPlay}>MIDI 재생</button>
+                <button style={moreButtonStyle} onClick={handleUploadClick}>MIDI 재생</button>
                 <button style={moreButtonStyle} onClick={handleDownload}>다운로드</button>
                 <button style={moreButtonStyle} onClick={handleDelete}>삭제</button>
             </div>}
+            {isPopupVisible && (
+                <UploadPopup onClose={handleClosePopup} />
+            )}
         </td>
     </tr>
 }
