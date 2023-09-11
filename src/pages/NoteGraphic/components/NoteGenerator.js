@@ -7,7 +7,7 @@ export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
         this.noteArray = [];
-        this.speed = parseFloat(timeDivision) / 157.0;
+        this.speed = parseFloat(timeDivision) / 157.0 *2;
         this.timerCount = 0;
 
         // collider용 라인 생성
@@ -86,7 +86,7 @@ export class NoteRectangle {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        const length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0;  // 사각형의 길이
+        const length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 *2;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
