@@ -145,8 +145,8 @@ const UploadPopup = ({ onClose }) => {
           top: "50%", // modal을 수직으로 중앙 배치
           left: "50%", // modal을 수평으로 중앙 배치
           transform: "translate(-50%, -50%)", // Centering trick
-          width: "15%",
-          height: "40%",
+          width: "20%",
+          height: "50%",
           border: "1px solid #ccc",
           background: "#fff",
           overflow: "auto",

@@ -1,4 +1,16 @@
+import UploadPopup from "./UploadPopup.js"
+import { useState } from "react";
+
 const Header = (props) => {
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const handleUploadClick = () => {
+      setPopupVisible(true); // 팝업 창 열기
+    };
+  
+    const handleClosePopup = () => {
+      setPopupVisible(false); // 팝업 창 닫기
+    };
+
   return (
     <>
       <header
@@ -159,10 +171,13 @@ const Header = (props) => {
                 fontSize: "15px",
                 fontWeight: "300",
                 marginTop: "20px",
-              }}
+              }} onClick={handleUploadClick}
             >
               업로드 하기
             </button>
+            {isPopupVisible && (
+                <UploadPopup onClose={handleClosePopup} />
+            )}
             <button
               className="entire-song-button"
               style={{
