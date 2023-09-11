@@ -10,6 +10,7 @@ const Footer = () => {
         style={{
           background: "#fff",
           paddingTop: "32px",
+          paddingBottom: "50px",
         }}
       >
         <div
