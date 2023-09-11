@@ -16,7 +16,7 @@ import { useState } from "react";
 
 const Row = (props) => {
     const dispatch = useDispatch();
-      
+
     const navigate = useNavigate();
     const midiLoad = async (dest) => {
         const fullDownloadUrl = `${axiosInstance.getUri()}${props.downloadUrl}`;
@@ -116,7 +116,7 @@ const Row = (props) => {
                 <button style={moreButtonStyle} onClick={handleDownload}>다운로드</button>
                 <button style={moreButtonStyle} onClick={handleDelete}>삭제</button>
             </div>}
-            
+
         </td>
     </tr>
 }
@@ -165,7 +165,7 @@ const MusicList = ({ midiList }) => {
                 <tbody>
                     {midiList.map((midi, index) => (
                         <Row key={index} index={index} rank={index} title={midi.title}
-                            downloadUrl={midi.downloadUrl} deleteUrl={midi.downloadUrl} moreIndex={moreIndex} setMoreIndex={setMoreIndex} />
+                            downloadUrl={midi.downloadUrl} deleteUrl={midi.downloadUrl} moreIndex={moreIndex} setMoreIndex={setMoreIndex} imgurl={undefined} />
                     ))}
                 </tbody>
             </table >
