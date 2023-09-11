@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
+// import { LightEffector } from "./LightEffector";
 import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -43,10 +44,12 @@ const StageScene = () => {
 
 
     // note 불러오기
-    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 6, midiFile.timeDivision);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
+    // // 이펙터 불러오기 ('scene.~'로 불러와지지 않아서 실패)
+    // this.lightEffector = new LightEffector(this);
 
     // 키보드 불러오기
-    let piano = new Keyboard(this, width, height, 2, 6);
+    let piano = new Keyboard(this, width, height, 2, 7);
     piano.setInput(document);
 
   }

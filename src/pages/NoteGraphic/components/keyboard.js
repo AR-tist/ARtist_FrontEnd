@@ -3,6 +3,7 @@ import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
 import { getKey } from '../../../utils/Utils';;
 export class Keyboard {
     constructor(scene, width, height, start_idx = 1, last_idx = 4) {
+        console.log('hi')
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -124,13 +125,14 @@ export class Keyboard {
     pushNote(idx, mode = 0) {
 
         if (mode === 0) {
-            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7) return
+            console.log('%d %d %d', this.octave, this.start_idx, idx)
+            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7) return
             this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xaaaaaa);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         }
         else {
-            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7 - 2) return
+            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num)*7 - 2) return
             this.b_notes[idx + (this.octave) * 5].setFillStyle(0x333333);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
@@ -138,13 +140,13 @@ export class Keyboard {
     }
     releaseNote(idx, mode = 0) {
         if (mode === 0) {
-            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7) return
+            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7) return
             this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
             this.tone.triggerRelease([inxtoNoteW[idx]]);
         }
         else {
-            if (idx + (this.octave + this.start_idx) * 7 >= 10 * 7 - 2) return
+            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7 - 2) return
             // console.log(this.b_notes[idx + (this.octave) * 5])
             this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;

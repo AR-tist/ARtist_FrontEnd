@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { now } from 'tone';
+import ex from './images/ex.png';
+// import { LightEffector } from "./LightEffector";
 
 export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
@@ -7,9 +10,22 @@ export class NoteGenerator {
         this.speed = parseFloat(timeDivision) / 157.0;
         this.timerCount = 0;
 
+        // collider용 라인 생성
+        this.nowPressLine = scene.add.rectangle(
+            0, // x 
+            height * 0.8, // y
+            width, // width
+            1,    // height
+            0xFF6347    // color
+            )
+            .setDepth(1)
+            .setOrigin(0,0);
+        scene.physics.add.existing(this.nowPressLine);
+
+        // 미디 사각형 생성
         notes.forEach(n=>{
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx, timeDivision));
+                start_idx, last_idx, timeDivision, this.nowPressLine, this.effector));
         });
         console.log(this.noteArray);
 
@@ -19,6 +35,13 @@ export class NoteGenerator {
             callbackScope: this, // callback 범위
             loop: true, // 반복 여부
         });
+
+        // 이펙터 불러오기
+        // this.lightEffector = new LightEffector(this);
+        
+        // 이펙터 생성
+        this.effector = scene.add.particles(ex);
+
     }
 
     playTimer() {
@@ -27,7 +50,7 @@ export class NoteGenerator {
         // console.log(this.timerCount);
     }
 
-    goDown() {
+    goDown() {  // physics 붙일 수 있게 돼서 setVelocityY로 대체 가능
 
         this.noteArray.forEach(n=>{
             if (n.startAt <= this.timerCount) {
@@ -37,13 +60,26 @@ export class NoteGenerator {
         });
     }
 
+    // setEffector(x, y) {
+    //     this.lightEffector.shine(x, y);
+    // }
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, effector) {
 
         this.startAt = startAt;
         this.endAt = endAt;
+        // console.log(startAt, endAt);
+        /* 노트 편집 */
+        // 1. 너무 긴 사각형 줄이기
+        // const max = timeDivision * 0.5;    // 온음표 시간까지 자르면 좋겠는데...
+        // if (this.endAt - this.startAt > max) {
+        //     this.endAt = max
+        // }
+        // 2. 다음 음 시작 전에 자르기
+        // -> 계속 눌러야 하는 거랑 끊어야 하는 거를 구분하기 - 실패함
+        // -> 왼손 오른손 명확히 구분할 방법도...
 
         const num = last_idx;
         if (num + start_idx > 10) {
@@ -73,6 +109,7 @@ export class NoteRectangle {
             }
         }
 
+        // (사각형 버전. graphic으로 변경됨)
         // this.rect = scene.add.rectangle(
         //     pos, // x 
         //     -length, // y
@@ -96,15 +133,51 @@ export class NoteRectangle {
             length - line
             );
 
+        // 충돌 감지 추가
+        scene.physics.add.existing(this.graphic);
+        scene.physics.add.overlap(this.graphic, nowPressLine, this.checkCollision);
+
+        // this.effector = effector;
+        // this.effectX = pos;
+        // this.effectY = height * 0.8 - 10;
+        // this.effectW = s_w;
+        // this.effectH = 10;
+        // this.scene = scene;
     }
-    // getRect() {
-    //     return this.rect;
+
+    // 충돌(overlap) 감지 함수
+    checkCollision(graphic, nowPressLine) {
+        // graphic.destroy();   // test(작동은 함)
+        // this.effectTest.setFillStyle(0xEE82EE);  // x
+        // this.effectTest.setDepth(4); // x
+
+        // 아래 다 실패
+        // this.scene.setEffector(graphic.x, graphic.y);
+        // this.scene.lightEffector.shine(100, 100);
+
+            // const effect = this.effector.createEmitter({
+            //     frame:5,
+            //     blendMode:Phaser.BlendModes.SCREEN,
+            //     x:100, y:100,
+            //     frequency:0,
+            //     alpha:{start:1, end:0, ease:'Cubic.easeIn'},
+            //     scale:{start:0.1, end:0.75, ease:'Cubic.easeOut'}
+            // });
+            // effect.shine();
+        }
     // }
 
-//      this.scene.physics.add.overlap(rect, piano, this.checkCollision);  // 충돌 판정
-    // 충돌 감지 함수
-//     checkCollision(rect, piano) {
-//         rect.gameObject.destroy();
-//     }
+    // 이펙트 생성 함수 (실패)
+    // addEffectRect() {
+    //     this.effectTest = this.scene.add.rectangle(
+    //         this.effectX, // x 
+    //         this.effectY, // y
+    //         this.effectW, // width
+    //         this.effectH,    // height
+    //         0xffffff    // color
+    //         )
+    //         .setDepth(1)
+    //         .setOrigin(0,0);
+    // }
 
 }
