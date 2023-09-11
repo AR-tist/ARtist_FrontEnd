@@ -12,7 +12,7 @@ const Header = (props) => {
           top: "0",
           bottom: "0px",
           borderRight: "1px solid #f5f5f5",
-          zIndex: "999",
+          zIndex: "30",
           backgroundColor: "#fff",
           paddingLeft: "60px"
         }}

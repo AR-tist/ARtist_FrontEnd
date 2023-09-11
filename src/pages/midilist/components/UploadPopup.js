@@ -134,6 +134,7 @@ const UploadPopup = ({ onClose }) => {
           left: 0,
           right: 0,
           bottom: 0,
+          zIndex: 99,
           backgroundColor: "rgba(15, 15, 15, 0.79)",
           display: "flex",
           justifyContent: "center",
@@ -162,21 +163,21 @@ const UploadPopup = ({ onClose }) => {
       <button className="close-button" onClick={handleCancel}>
         X
       </button>
-      <div className = {'popup-zone'} style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className={'popup-zone'} style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <h3 className="file-Upload">새로운 곡 업로드 하기</h3>
-      
-        <div style={{display: "flex", flexDirection: "row"}}>
-        
+
+        <div style={{ display: "flex", flexDirection: "row" }}>
+
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <text>앨범 이미지</text>
-          
-            <div              
+
+            <div
               className={`drop-zone ${isDragging ? "drag-over" : ""}`}
               onDragOver={handleDragOver}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              
+
             >
               {draggedFile ? (
                 <p>File: {draggedFile.name}</p>
@@ -196,9 +197,9 @@ const UploadPopup = ({ onClose }) => {
 
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <text>음원 파일</text>
-          
+
             <div
-              
+
               className={`drop-zone ${isDragging ? "drag-over" : ""}`}
               onDragOver={handleDragOver}
               onDragEnter={handleDragEnter}
@@ -220,31 +221,31 @@ const UploadPopup = ({ onClose }) => {
               )}
             </div>
           </div>
-        </div>  
-        <div style={{borderBottom: '2px solid black'}} className="text-input-container">
-          <text>업로드 곡 제목</text>
-          <input class="text-input" autoComplete="off"/>
         </div>
-        <div style={{borderBottom: '2px solid black'}} className="text-input-container">
+        <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
+          <text>업로드 곡 제목</text>
+          <input class="text-input" autoComplete="off" />
+        </div>
+        <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
           <text >비밀번호</text>
-          <input class="text-input" autoComplete="off" type="password" maxLength='5'/>
+          <input class="text-input" autoComplete="off" type="password" maxLength='5' />
         </div>
 
         <div className="upload-button-container">
-            <button className="MIDI-Upload" onClick={() => handleUpload("MIDI")}>
-              MIDI Upload
-            </button>
+          <button className="MIDI-Upload" onClick={() => handleUpload("MIDI")}>
+            MIDI Upload
+          </button>
 
-            <button className="MP3-Upload" onClick={() => handleUpload("MP3")}>
-              MP3 Upload
-            </button>
+          <button className="MP3-Upload" onClick={() => handleUpload("MP3")}>
+            MP3 Upload
+          </button>
         </div>
-        
+
         <button
-            className="goto-youtube-Upload-button"
-            onClick={() => setIsYoutubeModalOpen(true)}
-          >
-            Go to upload a YouTube link →
+          className="goto-youtube-Upload-button"
+          onClick={() => setIsYoutubeModalOpen(true)}
+        >
+          Go to upload a YouTube link →
         </button>
 
         <YoutubeUploadModal
@@ -252,7 +253,7 @@ const UploadPopup = ({ onClose }) => {
           onClose={() => setIsYoutubeModalOpen(false)}
           handleYoutubeUpload={handleYoutubeUpload}
         />
-      
+
       </div>
     </Modal>
   );
