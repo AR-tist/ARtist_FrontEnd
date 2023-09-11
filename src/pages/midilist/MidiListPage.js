@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMidiList } from "../../store/slices/midi/midiAction";
 import Layout from "../../components/Layout";
 import MusicList from "../../components/MusicList";
+import EditorPick from "../../components/EditorPick";
 
 const MidiListPage = () => {
   const dispatch = useDispatch();
@@ -34,10 +35,22 @@ const MidiListPage = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+
+  const editorpicks = [
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20221222/64c75b6c7c204806a43dba60588edca6.png/dims/resize/175/quality/90', title: '가을에 듣기 좋은 발라드 Top 40' },
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20230904/8bb630f1161346399c3a50abc39d78a2.jpg/dims/resize/175/quality/90', title: '인스타에서 듣고 바로 반해버린 팝💘'},
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20221222/64c75b6c7c204806a43dba60588edca6.png/dims/resize/175/quality/90', title: '가을에 듣기 좋은 발라드 Top 40' },
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20230904/8bb630f1161346399c3a50abc39d78a2.jpg/dims/resize/175/quality/90', title: '인스타에서 듣고 바로 반해버린 팝💘'},
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20221222/64c75b6c7c204806a43dba60588edca6.png/dims/resize/175/quality/90', title: '가을에 듣기 좋은 발라드 Top 40' },
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20230904/8bb630f1161346399c3a50abc39d78a2.jpg/dims/resize/175/quality/90', title: '인스타에서 듣고 바로 반해버린 팝💘'},
+    { imageUrl: 'https://cdn.music-flo.com/poc/p/image/channel/rep/20221222/64c75b6c7c204806a43dba60588edca6.png/dims/resize/175/quality/90', title: '가을에 듣기 좋은 발라드 Top 40' },
+  ];
+
   return (
     <>
       <Header user="푸른고양이82" />
       <Layout>
+          <EditorPick items={editorpicks} />
         <MusicList midiList={midiList} />
       </Layout>
       {/* <div id="root">
