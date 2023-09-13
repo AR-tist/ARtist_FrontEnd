@@ -98,7 +98,7 @@ const Header = (props) => {
                 aria-expanded="false"
                 title="검색창"
                 placeholder="음악 검색하기"
-                autocomplete="off"
+                autoComplete="off"
                 class="input_search"
                 style={{
                   display: "block",

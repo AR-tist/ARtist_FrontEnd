@@ -1,13 +1,9 @@
 // import React, { useState } from "react";
 // import Modal from "react-modal";
-
 // import axiosInstance from "./../../../utils/axios";
-
 // import { useDispatch } from "react-redux";
 // import { fetchMidiList } from "../../../store/slices/midi/midiAction";
-
 // import * as mm from "@magenta/music/es6";
-
 // import "./UploadPopup.css";
 // import YoutubeUploadModal from "./YoutubeUploadModal";
 
@@ -17,6 +13,7 @@
 // const UploadPopup = ({ onClose }) => {
 //   const dispatch = useDispatch();
 //   const [file, setFile] = useState(null);
+//   const [image, setImage] = useState(null); // 이미지 상태 변수 추가
 //   const [title, setTitle] = useState("");
 
 //   const [isYoutubeModalOpen, setIsYoutubeModalOpen] = useState(false);
@@ -27,8 +24,55 @@
 //     onClose(); // YouTube modal 닫기
 //   };
 
-//   const [isDragging, setIsDragging] = useState(false);
-//   const [draggedFile, setDraggedFile] = useState(null);
+//   const [isDraggingImage, setIsDraggingImage] = useState(false);
+//   const [isDraggingFile, setIsDraggingFile] = useState(false);
+//   const [fileType, setFileType] = useState(""); // 이미지 또는 파일인지를 구분하기 위한 상태 변수
+
+//   const handleDragOver = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//   };
+
+//   const handleDragEnterImage = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//     setIsDraggingImage(true);
+//     setIsDraggingFile(false);
+//   };
+
+//   const handleDragEnterFile = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//     setIsDraggingFile(true);
+//     setIsDraggingImage(false);
+//   };
+
+//   const handleDragLeave = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//     setIsDraggingImage(false);
+//     setIsDraggingFile(false);
+//   };
+
+//   const handleDrop = (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+
+//     setIsDraggingImage(false);
+//     setIsDraggingFile(false);
+
+//     const droppedFile = event.dataTransfer.files[0];
+
+//     // 파일 확장자를 확인하여 이미지 또는 파일을 구분합니다.
+//     const fileName = droppedFile.name.toLowerCase();
+//     if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
+//       setFileType("image");
+//       setImage(droppedFile); // 이미지를 선택한 경우 이미지 상태 변수에 저장
+//     } else if (fileName.endsWith(".midi") || fileName.endsWith(".mp3")) {
+//       setFileType("file");
+//       setFile(droppedFile); // 파일을 선택한 경우 파일 상태 변수에 저장
+//     }
+//   };
 
 //   const uploadMIDI = (file, title) => {
 //     console.log("Uploading MIDI file...");
@@ -53,10 +97,10 @@
 //   };
 
 //   const handleUpload = (fileType) => {
-//     if (fileType === "MIDI") {
-//       console.log(file);
-//       // uploadMIDI(file, title)
-//     } else if (fileType === "MP3") {
+//     if (fileType === "MIDI" && file) {
+//       console.log("Uploading MIDI file:", file);
+//       uploadMIDI(file, title);
+//     } else if (fileType === "MP3" && file) {
 //       const model = new mm.OnsetsAndFrames(
 //         "https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni"
 //       );
@@ -73,30 +117,8 @@
 //           uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), title);
 //         });
 //       });
-
-//       /* worker 사용 
-//             // 나중에 Worker 여러 번되면 useMemo로 최적화
-//             // const worker = new Worker(new URL('./Mp3ToMidi.js', import.meta.url));
-//             // worker.postMessage(file);
-//             // worker.onmessage = (e) => {
-//             //     console.log('호출 페이지 - ', e.data);
-//             // };
-//             console.log(file);
-//             const objectURL = URL.createObjectURL(file);
-//             // let reader = new FileReader();
-//             // reader.readAsDataURL(file);
-//             // reader.onload = () => {
-//             //     console.log(reader.result);
-//             //     console.log(reader.result.replace('/', '%2F'))
-//             window.open(`http://localhost:3000/convert?url=${encodeURIComponent(objectURL)}`, '_blank');
-//             // }
-//             // const model = new mm.OnsetsAndFrames('https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni');
-//             // await model.initialize()
-//             // const ns = await model.transcribeFromAudioFile(file);
-//             // const midiData = mm.sequenceProtoToMidi(ns);
-//             // console.log(midiData);*/
 //     } else {
-//       console.log("Invalid file type selected. Not uploading.");
+//       console.log("Invalid file type selected or no file chosen. Not uploading.");
 //     }
 
 //     onClose(); // 팝업 창 닫기
@@ -106,42 +128,9 @@
 //     onClose(); // 팝업 창 닫기
 //   };
 
-//   const handleFileChange = (event) => {
-//     const selectedFile = event.target.files[0];
-//     setFile(selectedFile);
-//   };
-
 //   const handleTitleChange = (event) => {
 //     const titleValue = event.target.value;
 //     setTitle(titleValue);
-//   };
-
-//   const handleDragOver = (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-//   };
-
-//   const handleDragEnter = (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-//     setIsDragging(true);
-//   };
-
-//   const handleDragLeave = (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-//     setIsDragging(false);
-//   };
-
-//   const handleDrop = (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-
-//     setIsDragging(false);
-
-//     const droppedFile = event.dataTransfer.files[0];
-//     setDraggedFile(droppedFile);
-//     setFile(droppedFile);
 //   };
 
 //   return (
@@ -155,6 +144,7 @@
 //           left: 0,
 //           right: 0,
 //           bottom: 0,
+//           zIndex: 99,
 //           backgroundColor: "rgba(15, 15, 15, 0.79)",
 //           display: "flex",
 //           justifyContent: "center",
@@ -165,7 +155,7 @@
 //           top: "50%", // modal을 수직으로 중앙 배치
 //           left: "50%", // modal을 수평으로 중앙 배치
 //           transform: "translate(-50%, -50%)", // Centering trick
-//           width: "30%",
+//           width: "20%",
 //           height: "50%",
 //           border: "1px solid #ccc",
 //           background: "#fff",
@@ -183,38 +173,80 @@
 //       <button className="close-button" onClick={handleCancel}>
 //         X
 //       </button>
+//       <div className={'popup-zone'} style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+//         <h3 className="file-Upload">새로운 곡 업로드 하기</h3>
 
-//       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-//         <h3 className="file-Upload">File Upload</h3>
+//         <div style={{ display: "flex", flexDirection: "row" }}>
 
-//         <input
-//           className="enter-title"
-//           type="text"
-//           value={title}
-//           onChange={handleTitleChange}
-//           placeholder="노래 제목을 입력하세요"
-//         />
-
-//         <div
-//           className={`drop-zone ${isDragging ? "drag-over" : ""}`}
-//           onDragOver={handleDragOver}
-//           onDragEnter={handleDragEnter}
-//           onDragLeave={handleDragLeave}
-//           onDrop={handleDrop}
-//         >
-//           {draggedFile ? (
-//             <p>File: {draggedFile.name}</p>
-//           ) : (
-//             <>
-//               <div className="DragAndDrop-container">
+//           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+//             <text>앨범 이미지</text>
+//             <div
+//               className={`drop-zone ${isDraggingImage ? "drag-over" : ""}`}
+//               onDragOver={handleDragOver}
+//               onDragEnter={handleDragEnterImage}
+//               onDragLeave={handleDragLeave}
+//               onDrop={handleDrop}
+//             >
+//               {image ? (
 //                 <img
 //                   className="DragAndDrop-img"
-//                   src="img\파일업로드이미지.png"
+//                   src={URL.createObjectURL(image)}
 //                 />
-//                 <p>Drag and drop the file</p>
-//               </div>
-//             </>
-//           )}
+//               ) : (
+//                 <>
+//                   <div className="DragAndDrop-container">
+//                     {fileType === "image" ? (
+//                       <img
+//                         className="DragAndDrop-img"
+//                         src="img\파일업로드이미지.png"
+//                       />
+//                     ) : (
+//                       <>
+//                         <img
+//                           className="DragAndDrop-img"
+//                           src="img\파일업로드이미지.png"
+//                         />
+//                         <p>{fileType === "file" ? "MP3 또는 MIDI 파일" : "이미지(아이콘)"}</p>
+//                       </>
+//                     )}
+//                   </div>
+//                 </>
+//               )}
+//             </div>
+//           </div>
+
+//           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+//             <text>음원 파일</text>
+//             <div
+//               className={`drop-zone ${isDraggingFile ? "drag-over" : ""}`}
+//               onDragOver={handleDragOver}
+//               onDragEnter={handleDragEnterFile}
+//               onDragLeave={handleDragLeave}
+//               onDrop={handleDrop}
+//             >
+//               {file ? (
+//                 <p>File: {file.name}</p>
+//               ) : (
+//                 <>
+//                   <div className="DragAndDrop-container">
+//                     <img
+//                       className="DragAndDrop-img"
+//                       src="img\파일업로드이미지.png"
+//                     />
+//                     <p>MP3 또는 MIDI 파일</p>
+//                   </div>
+//                 </>
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//         <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
+//           <text>업로드 곡 제목</text>
+//           <input class="text-input" autoComplete="off" onChange={handleTitleChange} />
+//         </div>
+//         <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
+//           <text >비밀번호</text>
+//           <input class="text-input" autoComplete="off" type="password" maxLength='5' />
 //         </div>
 
 //         <div className="upload-button-container">
@@ -239,6 +271,7 @@
 //           onClose={() => setIsYoutubeModalOpen(false)}
 //           handleYoutubeUpload={handleYoutubeUpload}
 //         />
+
 //       </div>
 //     </Modal>
 //   );
