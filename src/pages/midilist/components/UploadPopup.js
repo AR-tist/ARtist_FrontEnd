@@ -20,6 +20,12 @@ const UploadPopup = ({ onClose }) => {
   const [isYoutubeModalOpen, setIsYoutubeModalOpen] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
 
+  const youtubeModalOpen = () => {
+    console.log("Uploading YouTube link:", link);
+    setIsYoutubeModalOpen(true)
+    handleCancel();
+  };
+  
   const handleYoutubeUpload = (link) => {
     console.log("Uploading YouTube link:", link);
     onClose(); // YouTube modal 닫기
@@ -238,7 +244,7 @@ const UploadPopup = ({ onClose }) => {
 
         <div style={{ display: "flex", flexDirection: "row" }}>
 
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column" , marginRight : "10px" }}>
             <input
               type="file"
               id="imageInput"
@@ -284,7 +290,7 @@ const UploadPopup = ({ onClose }) => {
           </div>
 
           {/* 음원파일 부분 클릭 & 드래그 */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column"}}>
             <text>음원 파일</text>
             <input
               type="file"
@@ -329,13 +335,13 @@ const UploadPopup = ({ onClose }) => {
 
         <div className="upload-button-container">
           <button className="MIDI-Upload" onClick={() => handleUpload()}>
-            MIDI Upload
+            Upload
           </button>
         </div>
 
         <button
           className="goto-youtube-Upload-button"
-          onClick={() => setIsYoutubeModalOpen(true)}
+          onClick={youtubeModalOpen}
         >
           Go to upload a YouTube link →
         </button>
