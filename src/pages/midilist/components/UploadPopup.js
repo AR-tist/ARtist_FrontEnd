@@ -75,12 +75,55 @@ const UploadPopup = ({ onClose }) => {
     }
   };
 
+  const handleClickFile = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleClickImage = () => {
+    document.getElementById("imageInput").click();
+  };
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+    setFileType("image");
+  };
+
   const uploadMIDI = (file, title) => {
     console.log("Uploading MIDI file...");
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
+
+    axiosInstance
+      .post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("Upload successful:", response.data);
+        dispatch(fetchMidiList());
+      })
+      .catch((error) => {
+        console.error("Upload failed:", error);
+      });
+  };
+
+  //DB 수정하면 
+  const uploadMIDIandImage = (image, file, title, password) => {
+    console.log("Uploading MIDI file...");
+
+    const formData = new FormData();
+
+    formData.append("image", image);
+    formData.append("file", file);
+    formData.append("title", title);
+    formData.append("password", password);
 
     axiosInstance
       .post("/upload", formData, {
@@ -115,11 +158,11 @@ const UploadPopup = ({ onClose }) => {
             model.transcribeFromAudioFile(file).then((ns) => {
               const midiData = mm.sequenceProtoToMidi(ns);
               const blob = new Blob([midiData], { type: "audio/mid" });
-    
+
               let fileName = title;
               fileName = fileName.replace(".", "_");
               fileName += ".mid";
-    
+
               console.log(new File([blob], fileName, { type: "audio/mid" }));
               uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), title);
             });
@@ -135,33 +178,6 @@ const UploadPopup = ({ onClose }) => {
     onClose(); // Close pop-up window
   };
 
-  // const handleUpload = () => {
-  //   if (fileType === "MIDI" && file) {
-  //     console.log("Uploading MIDI file:", file);
-  //     uploadMIDI(file, title);
-  //   } else if (fileType === "MP3" && file) {
-  //     const model = new mm.OnsetsAndFrames(
-  //       "https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni"
-  //     );
-  //     model.initialize().then(() => {
-  //       model.transcribeFromAudioFile(file).then((ns) => {
-  //         const midiData = mm.sequenceProtoToMidi(ns);
-  //         const blob = new Blob([midiData], { type: "audio/mid" });
-
-  //         let fileName = title;
-  //         fileName = fileName.replace(".", "_");
-  //         fileName += ".mid";
-
-  //         console.log(new File([blob], fileName, { type: "audio/mid" }));
-  //         uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), title);
-  //       });
-  //     });
-  //   } else {
-  //     console.log("Invalid file type selected or no file chosen. Not uploading.");
-  //   }
-
-  //   onClose(); // 팝업 창 닫기
-  // };
 
   const handleCancel = () => {
     onClose(); // 팝업 창 닫기
@@ -199,8 +215,8 @@ const UploadPopup = ({ onClose }) => {
           top: "50%", // modal을 수직으로 중앙 배치
           left: "50%", // modal을 수평으로 중앙 배치
           transform: "translate(-50%, -50%)", // Centering trick
-          width: "20%",
-          height: "50%",
+          width: "450px",
+          height: "550px",
           border: "1px solid #ccc",
           background: "#fff",
           overflow: "auto",
@@ -223,6 +239,13 @@ const UploadPopup = ({ onClose }) => {
         <div style={{ display: "flex", flexDirection: "row" }}>
 
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+            <input
+              type="file"
+              id="imageInput"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+              accept="image/*"
+            />
             <text>앨범 이미지</text>
             <div
               className={`drop-zone ${isDraggingImage ? "drag-over" : ""}`}
@@ -230,6 +253,7 @@ const UploadPopup = ({ onClose }) => {
               onDragEnter={handleDragEnterImage}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
+              onClick={handleClickImage}
             >
               {image ? (
                 <img
@@ -259,14 +283,23 @@ const UploadPopup = ({ onClose }) => {
             </div>
           </div>
 
+          {/* 음원파일 부분 클릭 & 드래그 */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <text>음원 파일</text>
+            <input
+              type="file"
+              id="fileInput"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              accept=".mp3, .midi"
+            />
             <div
               className={`drop-zone ${isDraggingFile ? "drag-over" : ""}`}
               onDragOver={handleDragOver}
               onDragEnter={handleDragEnterFile}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
+              onClick={handleClickFile}
             >
               {file ? (
                 <p>File: {file.name}</p>
@@ -275,7 +308,8 @@ const UploadPopup = ({ onClose }) => {
                   <div className="DragAndDrop-container">
                     <img
                       className="DragAndDrop-img"
-                      src="img\파일업로드이미지.png"
+                      src="img/파일업로드이미지.png"
+                      alt="Upload Icon"
                     />
                     <p>MP3 또는 MIDI 파일</p>
                   </div>
