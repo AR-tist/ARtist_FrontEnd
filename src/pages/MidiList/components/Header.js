@@ -4,12 +4,12 @@ import { useState } from "react";
 const Header = (props) => {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleUploadClick = () => {
-      setPopupVisible(true); // 팝업 창 열기
-    };
-  
-    const handleClosePopup = () => {
-      setPopupVisible(false); // 팝업 창 닫기
-    };
+    setPopupVisible(true); // 팝업 창 열기
+  };
+
+  const handleClosePopup = () => {
+    setPopupVisible(false); // 팝업 창 닫기
+  };
 
   return (
     <>
@@ -157,6 +157,7 @@ const Header = (props) => {
                 fontSize: "15px",
                 fontWeight: "300",
                 marginTop: "20px",
+                cursor: "pointer",
               }}
             >
               닉네임 변경
@@ -171,12 +172,13 @@ const Header = (props) => {
                 fontSize: "15px",
                 fontWeight: "300",
                 marginTop: "20px",
+                cursor: "pointer",
               }} onClick={handleUploadClick}
             >
               업로드 하기
             </button>
             {isPopupVisible && (
-                <UploadPopup onClose={handleClosePopup} />
+              <UploadPopup onClose={handleClosePopup} />
             )}
             <button
               className="entire-song-button"
@@ -188,6 +190,7 @@ const Header = (props) => {
                 fontSize: "15px",
                 fontWeight: "300",
                 marginTop: "20px",
+                cursor: "pointer",
               }}
             >
               전체 업로드 곡 보기 {">"}

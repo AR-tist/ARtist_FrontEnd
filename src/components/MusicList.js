@@ -26,6 +26,7 @@ import img10 from "./img/곡_기본_이미지_10.png";
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
 const Row = (props) => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -166,7 +167,7 @@ const Row = (props) => {
                   color: "#969696",
                 }}
               >
-                Love Lee
+                {props.subtitle ? props.subtitle : "Songs"}
               </p>
             </div>
           </div>
@@ -192,7 +193,7 @@ const Row = (props) => {
             color: "#333",
           }}
         >
-          AKMU (악뮤)
+          {props.poster ? props.poster : "나그네"}
         </span>
       </td>
       <td
@@ -207,7 +208,7 @@ const Row = (props) => {
           borderBottom: "1px solid #f6f6f6",
         }}
       >
-        1
+        {props.views ? props.views : "0"}
       </td>
       <td
         style={{
@@ -221,7 +222,7 @@ const Row = (props) => {
           borderBottom: "1px solid #f6f6f6",
         }}
       >
-        1
+        {props.like ? props.like : "0"}
       </td>
       <td
         style={{
@@ -316,6 +317,7 @@ const Row = (props) => {
 };
 
 const MusicList = ({ midiList }) => {
+  console.log(midiList);
   const [moreIndex, setMoreIndex] = useState(-1);
   const th = {
     whiteSpace: "nowrap",
@@ -399,6 +401,11 @@ const MusicList = ({ midiList }) => {
               moreIndex={moreIndex}
               setMoreIndex={setMoreIndex}
               imgurl={undefined}
+              subtitle={midi.subtitle}
+              poster={midi.poster}
+              like={midi.like}
+              views={midi.views}
+              music_lenght={midi.music_lenght}
             />
           ))}
         </tbody>

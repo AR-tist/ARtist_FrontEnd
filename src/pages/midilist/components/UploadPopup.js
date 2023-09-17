@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import axiosInstance from "./../../../utils/axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchMidiList } from "../../../store/slices/midi/midiAction";
 import * as mm from "@magenta/music/es6";
 import "./UploadPopup.css";
@@ -12,20 +12,23 @@ Modal.setAppElement("#root"); // 루트 요소의 ID가 'root'라고 가정합�
 
 const UploadPopup = ({ onClose }) => {
   const dispatch = useDispatch();
+  const name = useSelector((state) => state.user.name);
+
   const [file, setFile] = useState(null); // 음악 파일
   const [image, setImage] = useState(null); // 이미지 상태 변수 추가
   const [title, setTitle] = useState(""); //노래 제목
-  const [password, setPassword] = useState(""); //노래 제목
+  const [subtitle, setSubtitle] = useState(""); //노래 가수
+  const [password, setPassword] = useState(""); //노래 비밀번호
 
   const [isYoutubeModalOpen, setIsYoutubeModalOpen] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
 
-  const youtubeModalOpen = () => {
+  const youtubeModalOpen = (link) => {
     console.log("Uploading YouTube link:", link);
     setIsYoutubeModalOpen(true)
     handleCancel();
   };
-  
+
   const handleYoutubeUpload = (link) => {
     console.log("Uploading YouTube link:", link);
     onClose(); // YouTube modal 닫기
@@ -98,12 +101,16 @@ const UploadPopup = ({ onClose }) => {
     setFileType("image");
   };
 
-  const uploadMIDI = (file, title) => {
+  const uploadMIDI = (file, img, title, subtitle, poster, password) => {
     console.log("Uploading MIDI file...");
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
+    formData.append("subtitle", subtitle);
+    formData.append("poster", poster);
+    formData.append("password", password);
+
 
     axiosInstance
       .post("/upload", formData, {
@@ -149,13 +156,13 @@ const UploadPopup = ({ onClose }) => {
   const handleUpload = () => {
     if (file && title) {
       const fileName = file.name.toLowerCase();
-      if (fileName.endsWith(".midi") || fileName.endsWith(".mp3")) {
+      if (fileName.endsWith(".midi") || fileName.endsWith(".mp3") || fileName.endsWith(".mid")) {
         // Check the file extension to determine the type
-        const fileType = fileName.endsWith(".midi") ? "MIDI" : "MP3";
+        const fileType = fileName.endsWith(".midi") || fileName.endsWith('.mid') ? "MIDI" : "MP3";
 
         if (fileType === "MIDI") {
           console.log("Uploading MIDI file:", file);
-          uploadMIDI(file, title);
+          uploadMIDI(file, undefined, title, subtitle, name, password);
         } else if (fileType === "MP3") {
           const model = new mm.OnsetsAndFrames(
             "https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni"
@@ -170,7 +177,7 @@ const UploadPopup = ({ onClose }) => {
               fileName += ".mid";
 
               console.log(new File([blob], fileName, { type: "audio/mid" }));
-              uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), title);
+              uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), undefined, title, subtitle, name, password);
             });
           });
         }
@@ -193,6 +200,13 @@ const UploadPopup = ({ onClose }) => {
     const titleValue = event.target.value;
     setTitle(titleValue);
   };
+
+
+  const handleSubTitleChange = (event) => {
+    const subtitleValue = event.target.value;
+    setSubtitle(subtitleValue);
+  };
+
 
   const handlePasswordChange = (event) => {
     const passwordValue = event.target.value;
@@ -244,7 +258,7 @@ const UploadPopup = ({ onClose }) => {
 
         <div style={{ display: "flex", flexDirection: "row" }}>
 
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" , marginRight : "10px" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", marginRight: "10px" }}>
             <input
               type="file"
               id="imageInput"
@@ -290,14 +304,14 @@ const UploadPopup = ({ onClose }) => {
           </div>
 
           {/* 음원파일 부분 클릭 & 드래그 */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column"}}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <text>음원 파일</text>
             <input
               type="file"
               id="fileInput"
               style={{ display: "none" }}
               onChange={handleFileChange}
-              accept=".mp3, .midi"
+              accept=".mp3, .midi, .mid"
             />
             <div
               className={`drop-zone ${isDraggingFile ? "drag-over" : ""}`}
@@ -325,8 +339,12 @@ const UploadPopup = ({ onClose }) => {
           </div>
         </div>
         <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
-          <text>업로드 곡 제목</text>
+          <text>곡 제목</text>
           <input class="text-input" autoComplete="off" onChange={handleTitleChange} />
+        </div>
+        <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
+          <text>가수</text>
+          <input class="text-input" autoComplete="off" onChange={handleSubTitleChange} />
         </div>
         <div style={{ borderBottom: '2px solid black' }} className="text-input-container">
           <text >비밀번호</text>
@@ -334,7 +352,7 @@ const UploadPopup = ({ onClose }) => {
         </div>
 
         <div className="upload-button-container">
-          <button className="MIDI-Upload" onClick={() => handleUpload()}>
+          <button style={{ cursor: 'pointer' }} className="MIDI-Upload" onClick={() => handleUpload()}>
             Upload
           </button>
         </div>
