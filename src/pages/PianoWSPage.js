@@ -18,7 +18,7 @@ function App() {
   };
 
   const setupPianoWebSocket = () => {
-    const newPianoSocket = new WebSocket('ws://172.16.230.14:4439');
+    const newPianoSocket = new WebSocket('ws://192.168.183.85:4439');
 
     newPianoSocket.onopen = () => {
       console.log('Piano WebSocket connection established.');
@@ -29,7 +29,9 @@ function App() {
     newPianoSocket.onmessage = (event) => {
       const receivedMessage = event.data;
       console.log('Received Piano message:', receivedMessage);
-      setReceivedPianoMessages(prevMessages => [...prevMessages, receivedMessage]);
+      
+      // 새로운 메시지를 배열의 맨 앞에 추가
+      setReceivedPianoMessages((prevMessages) => [receivedMessage, ...prevMessages]);
     };
 
     newPianoSocket.onclose = () => {
