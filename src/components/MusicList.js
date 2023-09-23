@@ -26,7 +26,6 @@ import img10 from "./img/곡_기본_이미지_10.png";
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
 const Row = (props) => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -319,6 +318,13 @@ const Row = (props) => {
 const MusicList = ({ midiList }) => {
   console.log(midiList);
   const [moreIndex, setMoreIndex] = useState(-1);
+  const [displayCount, setDisplayCount] = useState(10); // 표시할 초기 항목 수
+  const loadCount = 10; // 더보기 클릭 시 로드할 항목 수
+
+  const loadMoreItems = () => {
+    setDisplayCount(displayCount + loadCount);
+  };
+
   const th = {
     whiteSpace: "nowrap",
     height: "39px",
@@ -330,6 +336,7 @@ const MusicList = ({ midiList }) => {
     padding: "0",
     margin: "0",
   };
+
   return (
     <div
       style={{
@@ -390,7 +397,7 @@ const MusicList = ({ midiList }) => {
           </tr>
         </thead>
         <tbody>
-          {midiList.map((midi, index) => (
+          {midiList.slice(0, displayCount).map((midi, index) => (
             <Row
               key={index}
               index={index}
@@ -409,6 +416,21 @@ const MusicList = ({ midiList }) => {
             />
           ))}
         </tbody>
+        {displayCount < midiList.length && (
+          <tfoot>
+            <tr>
+              <td colSpan="7" style={{ textAlign: "center" }}>
+                <div onClick={loadMoreItems} style={{ cursor: "pointer" }}>
+                  <img
+                    src="./img/펼치기2.png"
+                    alt="Load More"
+                    style={{ width: "35px", height: "35px", marginTop: "5px" }}
+                  />
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        )}
       </table>
     </div>
   );
