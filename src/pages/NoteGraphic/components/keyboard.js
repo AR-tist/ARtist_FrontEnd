@@ -1,9 +1,9 @@
 import * as Tone from 'tone';
 import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
-import { getKey } from '../../../utils/Utils';;
+
 export class Keyboard {
+
     constructor(scene, width, height, start_idx = 1, last_idx = 4) {
-        console.log('hi')
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -36,17 +36,16 @@ export class Keyboard {
                 "F#7": "Fs7.mp3",
                 A7: "A7.mp3",
                 C8: "C8.mp3"
-            },
+             },
             release: 1,
             baseUrl: "https://tonejs.github.io/audio/salamander/",
             onload: () => {
-                // console.log("loaded");
                 this.tone.triggerAttackRelease(["C5"], 0.05);
             }
         }).toDestination();
 
         this.w_notes = [];
-        this.b_notes = []
+        this.b_notes = [];
         this.octave = 0;
         this.start_idx = start_idx;
         this.num = last_idx;
@@ -54,72 +53,85 @@ export class Keyboard {
         if (this.num + this.start_idx > 10) {
             this.num = this.num - this.start_idx;
         }
-        let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 }
+
+        let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 };
 
         for (let j = 0; j < this.num; j++) {
             for (let i = 0; i < 7; i++) {
-                // console.log(i * s_w)
-                this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 4, b_color: 0x000000 }))
+                this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 4, b_color: 0x000000 }));
             }
             for (let i = 0; i < 6; i++) {
                 if (i === 2) continue;
-                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000)
-                    .setDepth(2));
-
+                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000).setDepth(2));
             }
         }
+        this.boundKeydown = this.onKeydown.bind(this);
+        this.boundKeyup = this.onKeyup.bind(this);
     }
 
     setInput(document) {
-        document.addEventListener('keydown', (event) => {
-            if (event.repeat) return;
-            if (this.tone.loaded !== true) return;
-            const key = getKey(event.key);
-            if (key === 'a') this.pushNote(0);
-            else if (key === 's') this.pushNote(1);
-            else if (key === 'd') this.pushNote(2);
-            else if (key === 'f') this.pushNote(3);
-            else if (key === 'g') this.pushNote(4);
-            else if (key === 'h') this.pushNote(5);
-            else if (key === 'j') this.pushNote(6);
-            else if (key === 'k') this.pushNote(7);
-            else if (key === 'l') this.pushNote(8);
-            else if (key === ';') this.pushNote(9);
-            else if (key === "'") this.pushNote(10);
-            else if (key === "w") this.pushNote(0, 1);
-            else if (key === "e") this.pushNote(1, 1);
-            else if (key === "t") this.pushNote(2, 1);
-            else if (key === "y") this.pushNote(3, 1);
-            else if (key === "u") this.pushNote(4, 1);
-            else if (key === "o") this.pushNote(5, 1);
-            else if (key === "p") this.pushNote(6, 1);
-            else if (key === 'x' && this.octave < this.num - 1) this.octave += 1;
-            else if (key === 'z' && this.octave > 0) this.octave -= 1;
-        });
-        document.addEventListener('keyup', (event) => {
-            if (event.repeat) return;
-            if (this.tone.loaded !== true) return;
-            const key = getKey(event.key);
+        // 기존 이벤트 리스너를 제거
+        document.removeEventListener('keydown', this.boundKeydown);
+        document.removeEventListener('keyup', this.boundKeyup);
 
-            if (key === 'a') this.releaseNote(0);
-            else if (key === 's') this.releaseNote(1);
-            else if (key === 'd') this.releaseNote(2);
-            else if (key === 'f') this.releaseNote(3);
-            else if (key === 'g') this.releaseNote(4);
-            else if (key === 'h') this.releaseNote(5);
-            else if (key === 'j') this.releaseNote(6);
-            else if (key === 'k') this.releaseNote(7);
-            else if (key === 'l') this.releaseNote(8);
-            else if (key === ';') this.releaseNote(9);
-            else if (key === "'") this.releaseNote(10);
-            else if (key === "w") this.releaseNote(0, 1);
-            else if (key === "e") this.releaseNote(1, 1);
-            else if (key === "t") this.releaseNote(2, 1);
-            else if (key === "y") this.releaseNote(3, 1);
-            else if (key === "u") this.releaseNote(4, 1);
-            else if (key === "o") this.releaseNote(5, 1);
-            else if (key === "p") this.releaseNote(6, 1);
-        });
+        document.addEventListener('keydown', this.boundKeydown);
+        document.addEventListener('keyup', this.boundKeyup);
+
+        // document.addEventListener('keydown', (event) => {
+        //     if (event.repeat) return;
+        //     if (this.tone.loaded !== true) return;
+        //     this.handleKey(event.key, 'down');
+        // });
+        // document.addEventListener('keyup', (event) => {
+        //     if (event.repeat) return;
+        //     if (this.tone.loaded !== true) return;
+        //     this.handleKey(event.key, 'up');
+        // });
+    }
+
+    onKeydown(event) {
+        if (event.repeat) return;
+        if (this.tone.loaded !== true) return;
+        this.handleKey(event.key, 'down');
+    }
+
+    onKeyup(event) {
+        if (event.repeat) return;
+        if (this.tone.loaded !== true) return;
+        this.handleKey(event.key, 'up');
+    }
+
+    handleKey(key, action) {
+        let noteIdx;
+        let mode = 0;
+
+        switch (key) {
+            case 'a': noteIdx = 0; break;
+            case 's': noteIdx = 1; break;
+            case 'd': noteIdx = 2; break;
+            case 'f': noteIdx = 3; break;
+            case 'g': noteIdx = 4; break;
+            case 'h': noteIdx = 5; break;
+            case 'j': noteIdx = 6; break;
+            case 'k': noteIdx = 7; break;
+            case 'l': noteIdx = 8; break;
+            case ';': noteIdx = 9; break;
+            case "'": noteIdx = 10; break;
+            case 'w': noteIdx = 0; mode = 1; break;
+            case 'e': noteIdx = 1; mode = 1; break;
+            case 't': noteIdx = 2; mode = 1; break;
+            case 'y': noteIdx = 3; mode = 1; break;
+            case 'u': noteIdx = 4; mode = 1; break;
+            case 'o': noteIdx = 5; mode = 1; break;
+            case 'p': noteIdx = 6; mode = 1; break;
+            default: return;
+        }
+
+        if (action === 'down') {
+            this.pushNote(noteIdx, mode);
+        } else if (action === 'up') {
+            this.releaseNote(noteIdx, mode);
+        }
     }
 
     pushNote(idx, mode = 0) {
@@ -153,6 +165,33 @@ export class Keyboard {
             this.tone.triggerRelease([inxtoNoteB[idx]]);
         }
     }
+
+    destroy() {
+        // Tone.Sampler 인스턴스 해제
+        this.tone.dispose();
+
+        // 이벤트 리스너 제거
+        if (this.boundKeydown) {
+            document.removeEventListener('keydown', this.boundKeydown);
+        }
+
+        if (this.boundKeyup) {
+            document.removeEventListener('keyup', this.boundKeyup);
+        }
+
+        // Phaser 객체들도 제거 
+        for (const note of this.w_notes) {
+            note.getRect().destroy();
+        }
+
+        for (const note of this.b_notes) {
+            note.destroy();
+        }
+
+        this.w_notes = [];
+        this.b_notes = [];
+    }
+
 }
 
 export class NoteP {
@@ -171,3 +210,5 @@ export class NoteP {
         return this.rect;
     }
 }
+
+

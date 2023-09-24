@@ -6,14 +6,14 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
 
-
 const StageScene = () => {
   const game = useRef(null);
   const midiFile = useSelector(state => state.midi.midi);
   console.log(midiFile);
-  function preload() {
-  }
-  function create() {   // 생성
+
+  function preload() {}
+
+  function create() {
     const { x, y, width, height } = this.cameras.main;
     this.cameras.main.setBackgroundColor('#f5f5f5')
 
@@ -27,8 +27,7 @@ const StageScene = () => {
         if (pre_notes[e.data[0]] === undefined)
           pre_notes[e.data[0]] = []
         pre_notes[e.data[0]].push({ "note": e.data[0], "startAt": time });
-      }
-      else {
+      } else {
         pre_notes[e.data[0]][pre_notes[e.data[0]].length - 1]["endAt"] = time;
       }
       time += e.deltaTime * midiFile.timeDivision / 105.2;
@@ -42,19 +41,12 @@ const StageScene = () => {
     }
     console.log(notes);
 
-
-    // note 불러오기
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
-    // // 이펙터 불러오기 ('scene.~'로 불러와지지 않아서 실패)
-    // this.lightEffector = new LightEffector(this);
-
-    // 키보드 불러오기
-    let piano = new Keyboard(this, width, height, 2, 7);
-    piano.setInput(document);
-
+    this.piano = new Keyboard(this, width, height, 2, 7);
+    this.piano.setInput(document);
   }
-  function update(time, delta) {   // 화면 갱신
 
+  function update(time, delta) {
     this.noteGraphic.goDown();
   }
 
@@ -62,20 +54,20 @@ const StageScene = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const config = {
-      type: Phaser.AUTO,   // WebGL or Canvas 맞춤 선택
+      type: Phaser.AUTO,
       width: width,
       height: height,
       physics: {
-        default: 'arcade',   // arcade 엔진
+        default: 'arcade',
         arcade: {
-          debug: false,   // 디버깅 사용
+          debug: false,
         }
       },
-      scale: { // 배율설정
-        mode: Phaser.Scale.FIT,  // 자동맞춤
-        autoCenter: Phaser.Scale.CENTER_BOTH,    // 중앙
-        width: width,    // 비율설정용 폭
-        height: height,  // 비율설정용 높이
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: width,
+        height: height,
       },
       scene: {
         preload,
@@ -88,10 +80,18 @@ const StageScene = () => {
     game.current = _game;
 
     return () => {
-      _game.destroy(true);    // 나갈 때 destroy
+      if (_game.scene && _game.scene.keys && _game.scene.keys.default && _game.scene.keys.default.piano) {
+        _game.scene.keys.default.piano.destroy();
+      }
+
+      _game.destroy(true);
       game.current = undefined;
+
+      
     };
   }, []);
+
+  return null;
 }
 
 export default StageScene;
