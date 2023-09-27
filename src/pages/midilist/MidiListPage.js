@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Song from "./components/Song";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Menu from "./Menu";
-import UploadPopup from "./components/UploadPopup";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Menu from "./components/Menu";
+import UploadPopup from "../../components/UploadPopup";
 // import "./MidiListPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMidiList } from "../../store/slices/midi/midiAction";

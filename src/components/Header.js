@@ -34,11 +34,11 @@ const Header = (props) => {
             className="logo-button"
             style={{
               backgroundPosition: "-255px -321px",
-              width: "114px",
-              height: "20px",
+              // width: "114px",
+              // height: "20px",
               display: "block",
-              paddingTop: "20px",
-              margin: "27px 10px 26px 20px",
+              // paddingTop: "20px",
+              margin: "37px 10px 5px 20px",
               backgroundColor: "transparent",
               border: "none",
               boxSahdow: "none",
