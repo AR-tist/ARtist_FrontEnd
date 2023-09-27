@@ -1,7 +1,9 @@
 import UploadPopup from "./UploadPopup.js"
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Header = (props) => {
+  const navigate = useNavigate();
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleUploadClick = () => {
     setPopupVisible(true); // 팝업 창 열기
@@ -44,7 +46,9 @@ const Header = (props) => {
               boxSahdow: "none",
               fontSize: "35px",
               fontWeight: "700",
+              cursor: "pointer",
             }}
+            onClick={() => { navigate('/') }}
           >
             ARtist
           </button>

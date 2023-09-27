@@ -36,7 +36,7 @@ export class Keyboard {
                 "F#7": "Fs7.mp3",
                 A7: "A7.mp3",
                 C8: "C8.mp3"
-             },
+            },
             release: 1,
             baseUrl: "https://tonejs.github.io/audio/salamander/",
             onload: () => {
@@ -58,7 +58,7 @@ export class Keyboard {
 
         for (let j = 0; j < this.num; j++) {
             for (let i = 0; i < 7; i++) {
-                this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 4, b_color: 0x000000 }));
+                this.w_notes.push(new NoteP(scene, j * 7 * s_w + i * s_w + s_w / 2, height - s_h / 2, s_w, s_h, 0xffffff, { b_width: 2, b_color: 0x000000 }));
             }
             for (let i = 0; i < 6; i++) {
                 if (i === 2) continue;
@@ -98,13 +98,24 @@ export class Keyboard {
     onKeyup(event) {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
+        if (event.key === 'x' & this.octave < this.num - 1) {
+            for (let idx = 0; idx < 7; idx++)
+                this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+            this.octave += 1
+            return
+        }
+        if (event.key === 'z' && this.octave > 0) {
+            for (let idx = 0; idx < 7; idx++)
+                this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+            this.octave -= 1
+            return
+        }
         this.handleKey(event.key, 'up');
     }
 
     handleKey(key, action) {
         let noteIdx;
         let mode = 0;
-
         switch (key) {
             case 'a': noteIdx = 0; break;
             case 's': noteIdx = 1; break;
@@ -144,7 +155,7 @@ export class Keyboard {
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         }
         else {
-            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num)*7 - 2) return
+            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7 - 2) return
             this.b_notes[idx + (this.octave) * 5].setFillStyle(0x333333);
             idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
