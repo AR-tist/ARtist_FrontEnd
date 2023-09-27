@@ -277,8 +277,8 @@ const Row = (props) => {
           }}
         >
           <img
-            src="img\재생버튼.png"
-            alt="업로드"
+            src="img\기능더보기.png"
+            alt="더보기"
             style={{
               width: "20px",
               height: "20px",
