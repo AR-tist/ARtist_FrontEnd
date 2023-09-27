@@ -15,7 +15,7 @@ const StageScene = () => {
 
   function create() {
     const { x, y, width, height } = this.cameras.main;
-    this.cameras.main.setBackgroundColor('#f5f5f5')
+    this.cameras.main.setBackgroundColor('#27283B')
 
     const track = midiFile.track[extarctEvent(midiFile.track)].event;
 

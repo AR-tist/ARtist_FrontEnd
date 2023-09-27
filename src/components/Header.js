@@ -1,6 +1,7 @@
 import UploadPopup from "./UploadPopup.js"
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import cookie from 'react-cookies';
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -12,6 +13,25 @@ const Header = (props) => {
   const handleClosePopup = () => {
     setPopupVisible(false); // 팝업 창 닫기
   };
+
+  const setCookie = () => {
+    let tempNickname =  document.getElementById('nickname_input').value;
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 7)  // 7일 후 만료
+    cookie.save('nickname', tempNickname, {
+      path : '/',
+      expires,
+      // secure : true,
+      // httpOnly : true
+    });
+
+    document.getElementById('nickname_input').placeholder = tempNickname;
+    alert("Your nickname \"" + tempNickname + "\" is saved as a cookie.");
+  }
+
+  function loadCookie() {
+    return (cookie.load('nickname')) ? cookie.load('nickname') : "TypeYourNickname"
+  }
 
   return (
     <>
@@ -72,15 +92,20 @@ const Header = (props) => {
               borderWidth: "1px 0",
             }}
           >
-            <h2
-              style={{
-                fontSize: "18px",
-                marginLeft: "0",
-                fontWeight: "400",
-              }}
-            >
-              {props.user}
-            </h2>
+            <input
+              id="nickname_input"
+              type="text"
+              placeholder={loadCookie()}
+              maxlength="15"
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  fontSize: "18px",
+                  width: "172px",
+                  marginLeft: "0",
+                  fontWeight: "400"
+                }}
+            />
           </div>
           <div
             class="search_area"
@@ -162,7 +187,7 @@ const Header = (props) => {
                 fontWeight: "300",
                 marginTop: "20px",
                 cursor: "pointer",
-              }}
+              }} onClick={setCookie}
             >
               닉네임 변경
             </button>
