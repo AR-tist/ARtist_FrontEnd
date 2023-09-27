@@ -16,6 +16,9 @@ const Header = (props) => {
 
   const setCookie = () => {
     let tempNickname =  document.getElementById('nickname_input').value;
+    if (tempNickname == "") {
+      tempNickname = document.getElementById('nickname_input').placeholder;
+    }
     const expires = new Date()
     expires.setDate(expires.getDate() + 7)  // 7일 후 만료
     cookie.save('nickname', tempNickname, {
