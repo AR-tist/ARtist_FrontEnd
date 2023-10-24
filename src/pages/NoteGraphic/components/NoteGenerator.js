@@ -7,13 +7,13 @@ export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
         this.noteArray = [];
-        this.speed = parseFloat(timeDivision) / 200.0 *2;
+        this.speed = parseFloat(timeDivision) / 157.0 *2;
         this.timerCount = 0;
 
-        // collider용 라인 생성
+        // press collider용 라인 생성
         this.nowPressLine = scene.add.rectangle(
             0, // x 
-            height * 0.8, // y
+            height * 0.88, // y
             width, // width
             1,    // height
             0xFF6347    // color
@@ -22,10 +22,22 @@ export class NoteGenerator {
             .setOrigin(0,0);
         scene.physics.add.existing(this.nowPressLine);
 
+        // destroy collider용 라인 생성
+        this.destroyLine = scene.add.rectangle(
+            0, // x 
+            height * 0.88 + timeDivision * 1.8, // y
+            width, // width
+            1,    // height
+            0xFF6347    // color
+            )
+            .setDepth(1)
+            .setOrigin(0,0);
+        scene.physics.add.existing(this.destroyLine);
+
         // 미디 사각형 생성
         notes.forEach(n=>{
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx, timeDivision, this.nowPressLine, this.effector));
+                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine));
         });
         console.log(this.noteArray);
 
@@ -36,12 +48,6 @@ export class NoteGenerator {
             loop: true, // 반복 여부
         });
 
-        // 이펙터 불러오기
-        // this.lightEffector = new LightEffector(this);
-        
-        // 이펙터 생성
-        this.effector = scene.add.particles(ex);
-
     }
 
     playTimer() {
@@ -50,48 +56,44 @@ export class NoteGenerator {
         // console.log(this.timerCount);
     }
 
-    goDown() {  // physics 붙일 수 있게 돼서 setVelocityY로 대체 가능
+    goDown() {  // physics 붙일 수 있게 돼서 setVelocityY로 대체 가능 -> ㄴㄴ
 
         this.noteArray.forEach(n=>{
             if (n.startAt <= this.timerCount) {
                 n.graphic.y += this.speed;
+                n.basic.y += this.speed;
+                n.pressed.y += this.speed;
             }
             // console.log(n.startAt);
         });
     }
-
-    // setEffector(x, y) {
-    //     this.lightEffector.shine(x, y);
-    // }
+    
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, effector) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine) {
 
         this.startAt = startAt;
         this.endAt = endAt;
         // console.log(startAt, endAt);
-        /* 노트 편집 */
-        // 1. 너무 긴 사각형 줄이기
-        // const max = timeDivision * 0.5;    // 온음표 시간까지 자르면 좋겠는데...
-        // if (this.endAt - this.startAt > max) {
-        //     this.endAt = max
-        // }
-        // 2. 다음 음 시작 전에 자르기
-        // -> 계속 눌러야 하는 거랑 끊어야 하는 거를 구분하기 - 실패함
-        // -> 왼손 오른손 명확히 구분할 방법도...
 
         const num = last_idx;
         if (num + start_idx > 10) {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        const length = (endAt - startAt) * parseFloat(timeDivision) / 3200.0 *2;  // 사각형의 길이
+        let length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 *2;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
         let depth = 0;    // 하얀 건반: 0, 검은 건반: 1 (검은 건반이 위로 가도록)
         
+        // 너무 긴 사각형 줄이기
+        const max = timeDivision * 1.8;
+        if (length > max) {
+            length = max;
+        }
+
         if (blackNote.includes(pos))    // 샵이라면
         {
             pos = (octave * 7 * s_w) + ((Math.floor(pos/2)+1) * s_w) - s_w / 4;
@@ -109,26 +111,28 @@ export class NoteRectangle {
             }
         }
 
-        // (사각형 버전. graphic으로 변경됨)
-        // this.rect = scene.add.rectangle(
-        //     pos, // x 
-        //     -length, // y
-        //     s_w, // width
-        //     length,    // height
-        //     0x4488aa    // color
-        //     )
-        //     .setDepth(1)
-        //     .setOrigin(0,0);
+        const line = 2; // 테두리 두께
 
-        const line = 2;
+        /* pressed: nowPressLine을 지나면 이것만 보임(보라색 그라데이션) */
+        this.pressed = scene.add.graphics().setDepth(depth);
+        this.pressed.lineGradientStyle(line, 0x8470FF, 0x8470FF, 0x8A2BE2, 0x8A2BE2,
+            0.1, 0.1, 0.7, 0.7);
+        this.pressed.fillGradientStyle(0x8470FF, 0x8470FF, 0x8A2BE2, 0x8A2BE2,
+            0.1, 0.1, 0.7, 0.7);
+        this.pressed.fillRect(pos, -length-line, s_w, length);
+        this.pressed.strokeRect(
+            pos + 1,
+            -length-1, 
+            s_w - line, 
+            length - line
+            );
 
+        /* graphic: note별 길이에 맞는 사각형(흰색 그라데이션) */
         this.graphic = scene.add.graphics().setDepth(depth);
-        // this.graphic.lineStyle(line, 0x616380, 1.0);
         this.graphic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-            0.0, 0.0, 1.0, 1.0);
-        // this.graphic.fillStyle(0xFFFFFF, 1.0);
+            0.05, 0.05, 0.7, 0.7);
         this.graphic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-            0.0, 0.0, 1.0, 1.0);
+            0.05, 0.05, 0.7, 0.7);
         this.graphic.fillRect(pos, -length-line, s_w, length);
         this.graphic.strokeRect(
             pos + 1,
@@ -137,51 +141,39 @@ export class NoteRectangle {
             length - line
             );
 
+        /* basic: 기본 크기 사각형(흰색) */
+        const basicLength = 12;
+        this.basic = scene.add.graphics().setDepth(depth);
+        this.basic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0x8470FF, 0x8470FF,
+            0.5, 0.5, 1.0, 1.0);
+        this.basic.fillStyle(0xFFFFFF, 1.0);
+        this.basic.fillRect(pos, -basicLength-line, s_w, basicLength);
+        this.basic.strokeRect(
+            pos + 1,
+            -basicLength-2, 
+            s_w - line, 
+            basicLength - line + 1
+            );
+
+
         // 충돌 감지 추가
         scene.physics.add.existing(this.graphic);
-        scene.physics.add.overlap(this.graphic, nowPressLine, this.checkCollision);
+        scene.physics.add.existing(this.basic);
+        scene.physics.add.existing(this.pressed);
+        scene.physics.add.overlap(this.graphic, nowPressLine, this.checkPressed);
+        // scene.physics.add.overlap(this.basic, destroyLine, this.checkOutOfScreen);
+        // scene.physics.add.overlap(this.pressed, destroyLine, this.checkOutOfScreen);
 
-        // this.effector = effector;
-        // this.effectX = pos;
-        // this.effectY = height * 0.8 - 10;
-        // this.effectW = s_w;
-        // this.effectH = 10;
-        // this.scene = scene;
+        // this.graphic.setVelocityY(10);   // ㄴㄴ
     }
 
-    // 충돌(overlap) 감지 함수
-    checkCollision(graphic, nowPressLine) {
-        // graphic.destroy();   // test(작동은 함)
-        // this.effectTest.setFillStyle(0xEE82EE);  // x
-        // this.effectTest.setDepth(4); // x
-
-        // 아래 다 실패
-        // this.scene.setEffector(graphic.x, graphic.y);
-        // this.scene.lightEffector.shine(100, 100);
-
-            // const effect = this.effector.createEmitter({
-            //     frame:5,
-            //     blendMode:Phaser.BlendModes.SCREEN,
-            //     x:100, y:100,
-            //     frequency:0,
-            //     alpha:{start:1, end:0, ease:'Cubic.easeIn'},
-            //     scale:{start:0.1, end:0.75, ease:'Cubic.easeOut'}
-            // });
-            // effect.shine();
-        }
-    // }
-
-    // 이펙트 생성 함수 (실패)
-    // addEffectRect() {
-    //     this.effectTest = this.scene.add.rectangle(
-    //         this.effectX, // x 
-    //         this.effectY, // y
-    //         this.effectW, // width
-    //         this.effectH,    // height
-    //         0xffffff    // color
-    //         )
-    //         .setDepth(1)
-    //         .setOrigin(0,0);
-    // }
-
+    /* 충돌(overlap) 감지 함수들 */
+    // 눌릴 때 (흰색 그라데이션만 사라짐)
+    checkPressed(a, nowPressLine) {
+        a.destroy();
+    }
+    // 사라질 때
+    checkOutOfScreen(a, destroyLine) {
+        a.destroy();
+    }
 }
