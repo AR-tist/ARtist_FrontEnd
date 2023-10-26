@@ -1,7 +1,7 @@
-import UploadPopup from "./UploadPopup.js"
+import UploadPopup from "./UploadPopup.js";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import cookie from 'react-cookies';
+import { useNavigate } from "react-router-dom";
+import cookie from "react-cookies";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -15,26 +15,32 @@ const Header = (props) => {
   };
 
   const setCookie = () => {
-    let tempNickname =  document.getElementById('nickname_input').value;
+    let tempNickname = document.getElementById("nickname_input").value;
     if (tempNickname == "") {
-      tempNickname = document.getElementById('nickname_input').placeholder;
+      tempNickname = document.getElementById("nickname_input").placeholder;
     }
-    const expires = new Date()
-    expires.setDate(expires.getDate() + 7)  // 7일 후 만료
-    cookie.save('nickname', tempNickname, {
-      path : '/',
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7); // 7일 후 만료
+    cookie.save("nickname", tempNickname, {
+      path: "/",
       expires,
       // secure : true,
       // httpOnly : true
     });
 
-    document.getElementById('nickname_input').placeholder = tempNickname;
-    alert("Your nickname \"" + tempNickname + "\" is saved as a cookie.");
-  }
+    document.getElementById("nickname_input").placeholder = tempNickname;
+    alert('Your nickname "' + tempNickname + '" is saved as a cookie.');
+  };
 
   function loadCookie() {
-    return (cookie.load('nickname')) ? cookie.load('nickname') : "TypeYourNickname"
+    return cookie.load("nickname")
+      ? cookie.load("nickname")
+      : "TypeYourNickname";
   }
+
+  const navigateToWholeSong = () => {
+    navigate("/whole-song"); // 전체 곡 페이지로 전환
+  };
 
   return (
     <>
@@ -51,7 +57,7 @@ const Header = (props) => {
           borderRight: "1px solid #f5f5f5",
           zIndex: "30",
           backgroundColor: "#fff",
-          paddingLeft: "60px"
+          paddingLeft: "60px",
         }}
       >
         <h1 class="logo_wrap">
@@ -71,7 +77,9 @@ const Header = (props) => {
               fontWeight: "700",
               cursor: "pointer",
             }}
-            onClick={() => { navigate('/') }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             ARtist
           </button>
@@ -100,14 +108,14 @@ const Header = (props) => {
               type="text"
               placeholder={loadCookie()}
               maxlength="15"
-                style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  fontSize: "18px",
-                  width: "172px",
-                  marginLeft: "0",
-                  fontWeight: "400"
-                }}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "18px",
+                width: "172px",
+                marginLeft: "0",
+                fontWeight: "400",
+              }}
             />
           </div>
           <div
@@ -190,7 +198,8 @@ const Header = (props) => {
                 fontWeight: "300",
                 marginTop: "20px",
                 cursor: "pointer",
-              }} onClick={setCookie}
+              }}
+              onClick={setCookie}
             >
               닉네임 변경
             </button>
@@ -205,13 +214,12 @@ const Header = (props) => {
                 fontWeight: "300",
                 marginTop: "20px",
                 cursor: "pointer",
-              }} onClick={handleUploadClick}
+              }}
+              onClick={handleUploadClick}
             >
               업로드 하기
             </button>
-            {isPopupVisible && (
-              <UploadPopup onClose={handleClosePopup} />
-            )}
+            {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
             <button
               className="entire-song-button"
               style={{
@@ -224,6 +232,7 @@ const Header = (props) => {
                 marginTop: "20px",
                 cursor: "pointer",
               }}
+              onClick={navigateToWholeSong}
             >
               전체 업로드 곡 보기 {">"}
             </button>
