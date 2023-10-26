@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import UploadPopup from "./UploadPopup.js";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 
@@ -40,6 +40,17 @@ const Header = (props) => {
 
   const navigateToWholeSong = () => {
     navigate("/whole-song"); // 전체 곡 페이지로 전환
+  };
+
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [isAutoKeywordVisible, setAutoKeywordVisible] = useState(false);
+
+  const handleInputChange = (e) => {
+    const keyword = e.target.value;
+    setSearchKeyword(keyword);
+
+    // 입력값이 있을 때만 auto_keyword_area를 보이도록 설정
+    setAutoKeywordVisible(keyword.length > 0);
   };
 
   return (
@@ -158,6 +169,7 @@ const Header = (props) => {
                   letterSpacing: "-0.3px",
                   color: "#000",
                 }}
+                onChange={handleInputChange} // 입력값이 변경될 때마다 호출됨
               ></input>
               <span
                 class="icon_search"
@@ -185,7 +197,51 @@ const Header = (props) => {
                 />
               </span>
             </span>
+
+            {isAutoKeywordVisible && (
+              <div
+                class="auto_keyword_area"
+                style={{
+                  zIndex: "20",
+                  left: "85px",
+                  position: "fixed",
+                  width: "400px",
+                  padding: "9px 0 8px",
+                  marginTop: "1px",
+                  borderRadius: "4px",
+                  backgroundColor: "#ededed",
+                }}
+              >
+                <ui
+                  role="listbox"
+                  class="keyword_list"
+                  style={{
+                    display: "block",
+                    marginBlockStart: "1em",
+                    marginBlockEnd: "1em",
+                    paddingInlineStart: "40px",
+                  }}
+                >
+                  <li
+                    role="presentation"
+                    class="keyword_list_item"
+                    style={{ listStyle: "none" }}
+                  >
+                    <a
+                      role="option"
+                      aria-selected="false"
+                      class="auto_keyword"
+                      style={{}}
+                    >
+                      {" "}
+                      검색어{" "}
+                    </a>
+                  </li>
+                </ui>
+              </div>
+            )}
           </div>
+
           <div class="menu_area">
             <button
               className="nickname-change-button"
