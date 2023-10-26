@@ -1,7 +1,7 @@
 const Participants = () => {
   return (
     <>
-      <div style={{ marginLeft: "350px", marginTop: "50px" }}>
+      <div style={{ marginTop: "50px" }}>
         <div
           style={{
             width: "400px",
@@ -25,8 +25,8 @@ const Participants = () => {
               }}
             />
             <div>
-              <h3>푸른고양이82</h3>
-              <p style={{ color: "#BBBBBB" }}>키보드</p>
+              <h3 style={{ marginTop: "10px" }}>푸른고양이82</h3>
+              <p style={{ marginTop: "20px", color: "#BBBBBB" }}>키보드</p>
             </div>
 
             <button
@@ -47,7 +47,7 @@ const Participants = () => {
         </div>
       </div>
 
-      <div style={{ marginLeft: "350px", marginTop: "50px" }}>
+      <div style={{ marginTop: "50px" }}>
         <div
           style={{
             width: "400px",
@@ -71,8 +71,8 @@ const Participants = () => {
               }}
             />
             <div>
-              <h3>푸른길거리</h3>
-              <p style={{ color: "#BBBBBB" }}>AR Piano</p>
+              <h3 style={{ marginTop: "10px" }}>푸른길거리</h3>
+              <p style={{ marginTop: "20px", color: "#BBBBBB" }}>AR Piano</p>
             </div>
 
             <button
