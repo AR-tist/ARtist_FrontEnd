@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import axiosInstance from "./../../../utils/axios";
+import axiosInstance from "../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMidiList } from "../../../store/slices/midi/midiAction";
+import { fetchMidiList } from "../store/slices/midi/midiAction";
 import * as mm from "@magenta/music/es6";
 import "./UploadPopup.css";
-import YoutubeUploadModal from "./YoutubeUploadModal";
+import YoutubeUploadModal from "../pages/MidiList/components/YoutubeUploadModal";
 
 // react-modal에 대한 앱 요소 설정
 Modal.setAppElement("#root"); // 루트 요소의 ID가 'root'라고 가정합니다

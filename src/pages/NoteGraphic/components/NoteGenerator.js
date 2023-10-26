@@ -7,7 +7,7 @@ export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
         this.noteArray = [];
-        this.speed = parseFloat(timeDivision) / 157.0 *2;
+        this.speed = parseFloat(timeDivision) / 200.0 *2;
         this.timerCount = 0;
 
         // collider용 라인 생성
@@ -86,17 +86,17 @@ export class NoteRectangle {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        const length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 *2;  // 사각형의 길이
+        const length = (endAt - startAt) * parseFloat(timeDivision) / 3200.0 *2;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
-        // console.log(octave);
-        // console.log(pos);
-
+        let depth = 0;    // 하얀 건반: 0, 검은 건반: 1 (검은 건반이 위로 가도록)
+        
         if (blackNote.includes(pos))    // 샵이라면
         {
             pos = (octave * 7 * s_w) + ((Math.floor(pos/2)+1) * s_w) - s_w / 4;
             s_w /= 2;
+            depth = 1;  // 검은 건반이 위로
         }
         else
         {
@@ -122,14 +122,18 @@ export class NoteRectangle {
 
         const line = 2;
 
-        this.graphic = scene.add.graphics().setDepth(1);
-        this.graphic.lineStyle(line, 0x4488aa, 1.0);
-        this.graphic.fillStyle(0xFFFFFF, 1.0);
-        this.graphic.fillRect(pos, -length-1, s_w, length);
+        this.graphic = scene.add.graphics().setDepth(depth);
+        // this.graphic.lineStyle(line, 0x616380, 1.0);
+        this.graphic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+            0.0, 0.0, 1.0, 1.0);
+        // this.graphic.fillStyle(0xFFFFFF, 1.0);
+        this.graphic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+            0.0, 0.0, 1.0, 1.0);
+        this.graphic.fillRect(pos, -length-line, s_w, length);
         this.graphic.strokeRect(
-            pos + line,
+            pos + 1,
             -length-1, 
-            s_w - line*2, 
+            s_w - line, 
             length - line
             );
 

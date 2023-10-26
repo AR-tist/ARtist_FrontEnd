@@ -1,8 +1,8 @@
-import { Actions } from './midiSlice';
+import { Actions } from './userSlice';
 
 
 export const setName = (name) => {
     return (dispatch) => {
-        dispatch(Actions.setmidi({ name: name }));
+        dispatch(Actions.setname({ name: name }));
     }
 }
