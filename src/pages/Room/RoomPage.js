@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Participants from "./components/Participants";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
@@ -6,6 +6,13 @@ import { useSelector } from "react-redux";
 
 const Room = () => {
   const nickname = useSelector((state) => state.user.name);
+
+  const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
+
+  const handleLikeClick = () => {
+    setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
+  };
+
   return (
     <>
       <Header user={nickname} />
@@ -62,15 +69,31 @@ const Room = () => {
                   >
                     사건의 지평선
                   </h2>
-                  <img
-                    src="./img/좋아요버튼.png"
-                    alt="좋아요 버튼"
+
+                  <button
+                    className="like-button"
                     style={{
-                      marginLeft: "10px",
-                      width: "35px",
-                      height: "35px",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      boxShadow: "none",
                     }}
-                  />
+                    onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
+                  >
+                    <img
+                      className="like-img"
+                      src={
+                        liked
+                          ? "./img/좋아요누른버튼.png"
+                          : "./img/좋아요버튼.png"
+                      }
+                      alt="좋아요 버튼"
+                      style={{
+                        marginLeft: "10px",
+                        width: "35px",
+                        height: "35px",
+                      }}
+                    />
+                  </button>
                 </div>
                 <p
                   style={{
