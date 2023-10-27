@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Participants from "./components/Participants";
-import Header from '../../components/Header';
-import Layout from '../../components/Layout';
+import Header from "../../components/Header";
+import Layout from "../../components/Layout";
 import { useSelector } from "react-redux";
 
 const Room = () => {
   const nickname = useSelector((state) => state.user.name);
+
+  const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
+
+  const handleLikeClick = () => {
+    setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
+  };
+
   return (
     <>
       <Header user={nickname} />
       <Layout>
-        <div id="app" className="container" style={{ marginLeft: "350px" }}>
+        <div id="app" className="container" style={{}}>
           <div
             style={{
               display: "flex",
@@ -28,7 +35,7 @@ const Room = () => {
                 border: "none",
                 borderRadius: "5px",
                 marginTop: "25px",
-                marginLeft: "960px",
+                marginLeft: "1010px",
               }}
             >
               PLAY
@@ -51,20 +58,55 @@ const Room = () => {
               }}
             />
             <div className="song_information" style={{}}>
-              <div style={{}}>
-                <h2
+              <div>
+                <div style={{ display: "flex" }}>
+                  <h2
+                    style={{
+                      marginTop: "1px",
+                      marginBottom: "1px",
+                      fontSize: "28px",
+                    }}
+                  >
+                    사건의 지평선
+                  </h2>
+
+                  <button
+                    className="like-button"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      boxShadow: "none",
+                    }}
+                    onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
+                  >
+                    <img
+                      className="like-img"
+                      src={
+                        liked
+                          ? "./img/좋아요누른버튼.png"
+                          : "./img/좋아요버튼.png"
+                      }
+                      alt="좋아요 버튼"
+                      style={{
+                        marginLeft: "10px",
+                        width: "35px",
+                        height: "35px",
+                      }}
+                    />
+                  </button>
+                </div>
+                <p
                   style={{
-                    marginTop: "1px",
-                    marginBottom: "1px",
-                    fontSize: "28px",
+                    marginTop: "10px",
+                    fontSize: "15px",
+                    color: "#505050",
                   }}
                 >
-                  사건의 지평선
-                </h2>
-                <p style={{ fontSize: "15px", color: "#505050" }}>우는애벌레32</p>
+                  우는애벌레32
+                </p>
               </div>
 
-              <div style={{ marginTop: "85px" }}>
+              <div style={{ marginTop: "115px" }}>
                 <p
                   style={{
                     fontSize: "15px",
@@ -99,6 +141,7 @@ const Room = () => {
               </button>
               <button
                 style={{
+                  marginLeft: "20px",
                   backgroundColor: "transparent",
                   border: "none",
                   color: "#AEAEAE",

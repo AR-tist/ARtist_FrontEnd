@@ -78,6 +78,10 @@ const Row = (props) => {
       });
   };
 
+  const navigateToRoom = () => {
+    navigate("/room"); // 방 페이지로 전환
+  };
+
   const moreButtonStyle = {
     cursor: "pointer",
     backgroundColor: "transparent",
@@ -307,6 +311,9 @@ const Row = (props) => {
             </button>
             <button style={moreButtonStyle} onClick={handleDelete}>
               삭제
+            </button>
+            <button style={moreButtonStyle} onClick={navigateToRoom}>
+              방 만들기
             </button>
           </div>
         )}

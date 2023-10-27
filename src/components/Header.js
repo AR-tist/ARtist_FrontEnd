@@ -1,7 +1,7 @@
-import UploadPopup from "./UploadPopup.js"
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import cookie from 'react-cookies';
+import React, { useState } from "react";
+import UploadPopup from "./UploadPopup.js";
+import { useNavigate } from "react-router-dom";
+import cookie from "react-cookies";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -15,26 +15,43 @@ const Header = (props) => {
   };
 
   const setCookie = () => {
-    let tempNickname =  document.getElementById('nickname_input').value;
+    let tempNickname = document.getElementById("nickname_input").value;
     if (tempNickname == "") {
-      tempNickname = document.getElementById('nickname_input').placeholder;
+      tempNickname = document.getElementById("nickname_input").placeholder;
     }
-    const expires = new Date()
-    expires.setDate(expires.getDate() + 7)  // 7일 후 만료
-    cookie.save('nickname', tempNickname, {
-      path : '/',
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7); // 7일 후 만료
+    cookie.save("nickname", tempNickname, {
+      path: "/",
       expires,
       // secure : true,
       // httpOnly : true
     });
 
-    document.getElementById('nickname_input').placeholder = tempNickname;
-    alert("Your nickname \"" + tempNickname + "\" is saved as a cookie.");
-  }
+    document.getElementById("nickname_input").placeholder = tempNickname;
+    alert('Your nickname "' + tempNickname + '" is saved as a cookie.');
+  };
 
   function loadCookie() {
-    return (cookie.load('nickname')) ? cookie.load('nickname') : "TypeYourNickname"
+    return cookie.load("nickname")
+      ? cookie.load("nickname")
+      : "TypeYourNickname";
   }
+
+  const navigateToWholeSong = () => {
+    navigate("/whole-song"); // 전체 곡 페이지로 전환
+  };
+
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [isAutoKeywordVisible, setAutoKeywordVisible] = useState(false);
+
+  const handleInputChange = (e) => {
+    const keyword = e.target.value;
+    setSearchKeyword(keyword);
+
+    // 입력값이 있을 때만 auto_keyword_area를 보이도록 설정
+    setAutoKeywordVisible(keyword.length > 0);
+  };
 
   return (
     <>
@@ -51,7 +68,7 @@ const Header = (props) => {
           borderRight: "1px solid #f5f5f5",
           zIndex: "30",
           backgroundColor: "#fff",
-          paddingLeft: "60px"
+          paddingLeft: "60px",
         }}
       >
         <h1 class="logo_wrap">
@@ -71,7 +88,9 @@ const Header = (props) => {
               fontWeight: "700",
               cursor: "pointer",
             }}
-            onClick={() => { navigate('/') }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             ARtist
           </button>
@@ -100,14 +119,14 @@ const Header = (props) => {
               type="text"
               placeholder={loadCookie()}
               maxlength="15"
-                style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  fontSize: "18px",
-                  width: "172px",
-                  marginLeft: "0",
-                  fontWeight: "400"
-                }}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "18px",
+                width: "172px",
+                marginLeft: "0",
+                fontWeight: "400",
+              }}
             />
           </div>
           <div
@@ -150,6 +169,7 @@ const Header = (props) => {
                   letterSpacing: "-0.3px",
                   color: "#000",
                 }}
+                onChange={handleInputChange} // 입력값이 변경될 때마다 호출됨
               ></input>
               <span
                 class="icon_search"
@@ -177,7 +197,51 @@ const Header = (props) => {
                 />
               </span>
             </span>
+
+            {isAutoKeywordVisible && (
+              <div
+                class="auto_keyword_area"
+                style={{
+                  zIndex: "20",
+                  left: "85px",
+                  position: "fixed",
+                  width: "400px",
+                  padding: "9px 0 8px",
+                  marginTop: "1px",
+                  borderRadius: "4px",
+                  backgroundColor: "#ededed",
+                }}
+              >
+                <ui
+                  role="listbox"
+                  class="keyword_list"
+                  style={{
+                    display: "block",
+                    marginBlockStart: "1em",
+                    marginBlockEnd: "1em",
+                    paddingInlineStart: "40px",
+                  }}
+                >
+                  <li
+                    role="presentation"
+                    class="keyword_list_item"
+                    style={{ listStyle: "none" }}
+                  >
+                    <a
+                      role="option"
+                      aria-selected="false"
+                      class="auto_keyword"
+                      style={{}}
+                    >
+                      {" "}
+                      검색어{" "}
+                    </a>
+                  </li>
+                </ui>
+              </div>
+            )}
           </div>
+
           <div class="menu_area">
             <button
               className="nickname-change-button"
@@ -190,7 +254,8 @@ const Header = (props) => {
                 fontWeight: "300",
                 marginTop: "20px",
                 cursor: "pointer",
-              }} onClick={setCookie}
+              }}
+              onClick={setCookie}
             >
               닉네임 변경
             </button>
@@ -205,13 +270,12 @@ const Header = (props) => {
                 fontWeight: "300",
                 marginTop: "20px",
                 cursor: "pointer",
-              }} onClick={handleUploadClick}
+              }}
+              onClick={handleUploadClick}
             >
               업로드 하기
             </button>
-            {isPopupVisible && (
-              <UploadPopup onClose={handleClosePopup} />
-            )}
+            {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
             <button
               className="entire-song-button"
               style={{
@@ -224,6 +288,7 @@ const Header = (props) => {
                 marginTop: "20px",
                 cursor: "pointer",
               }}
+              onClick={navigateToWholeSong}
             >
               전체 업로드 곡 보기 {">"}
             </button>
