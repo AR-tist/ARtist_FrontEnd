@@ -404,7 +404,7 @@ const MusicList = ({ midiList }) => {
               rank={index}
               title={midi.title}
               downloadUrl={midi.downloadUrl}
-              deleteUrl={midi.downloadUrl}
+              deleteUrl={midi.deleteUrl}
               moreIndex={moreIndex}
               setMoreIndex={setMoreIndex}
               imgurl={undefined}
