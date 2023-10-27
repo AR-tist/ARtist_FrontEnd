@@ -35,7 +35,7 @@ const Room = () => {
                 border: "none",
                 borderRadius: "5px",
                 marginTop: "25px",
-                marginLeft: "1010px",
+                marginLeft: "960px",
               }}
             >
               PLAY
@@ -69,31 +69,6 @@ const Room = () => {
                   >
                     사건의 지평선
                   </h2>
-
-                  <button
-                    className="like-button"
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      boxShadow: "none",
-                    }}
-                    onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
-                  >
-                    <img
-                      className="like-img"
-                      src={
-                        liked
-                          ? "./img/좋아요누른버튼.png"
-                          : "./img/좋아요버튼.png"
-                      }
-                      alt="좋아요 버튼"
-                      style={{
-                        marginLeft: "10px",
-                        width: "35px",
-                        height: "35px",
-                      }}
-                    />
-                  </button>
                 </div>
                 <p
                   style={{
@@ -104,9 +79,33 @@ const Room = () => {
                 >
                   우는애벌레32
                 </p>
+                <button
+                  className="like-button"
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    boxShadow: "none",
+                  }}
+                  onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
+                >
+                  <img
+                    className="like-img"
+                    src={
+                      liked
+                        ? "./img/좋아요누른버튼.png"
+                        : "./img/좋아요버튼.png"
+                    }
+                    alt="좋아요 버튼"
+                    style={{
+                      marginTop: "10px",
+                      width: "20px",
+                      height: "20px",
+                    }}
+                  />
+                </button>
               </div>
 
-              <div style={{ marginTop: "115px" }}>
+              <div style={{ marginTop: "80px" }}>
                 <p
                   style={{
                     fontSize: "15px",
