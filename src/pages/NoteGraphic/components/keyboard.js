@@ -1,6 +1,8 @@
 import * as Tone from 'tone';
 import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
 
+Tone.context.lookAhead = 0;
+
 export class Keyboard {
 
     constructor(scene, width, height, start_idx = 1, last_idx = 4) {
