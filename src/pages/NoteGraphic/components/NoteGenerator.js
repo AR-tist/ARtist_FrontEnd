@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 import { now } from 'tone';
 import ex from './images/ex.png';
-// import { LightEffector } from "./LightEffector";
 
 export class NoteGenerator {
     constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
 
+        this.scene = scene;
         this.noteArray = [];
         this.speed = parseFloat(timeDivision) / 157.0 *2;
         this.timerCount = 0;
@@ -40,26 +40,12 @@ export class NoteGenerator {
                 start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine));
         });
         console.log(this.noteArray);
-
-        scene.time.addEvent({
-            delay: 10, // 시간 단위 ms
-            callback: () => this.playTimer(), // delay 주기마다 수행할 로직
-            callbackScope: this, // callback 범위
-            loop: true, // 반복 여부
-        });
-
-    }
-
-    playTimer() {
-        
-        this.timerCount += 10;
-        // console.log(this.timerCount);
     }
 
     goDown() {
 
         this.noteArray.forEach(n=>{
-            if (n.startAt <= this.timerCount) {
+            if (n.startAt <= this.scene.timerCount) {
                 n.graphic.y += this.speed;
                 n.basic.y += this.speed;
                 n.pressed.y += this.speed;
@@ -67,7 +53,7 @@ export class NoteGenerator {
             // console.log(n.startAt);
         });
     }
-    
+
 }
 
 export class NoteRectangle {
