@@ -65,12 +65,12 @@ const StageScene = () => {
       if (clickCount % 2) {
         this.temp = this.timerCount;
         this.isPaused = true;
-        // this.rec = this.add.rectangle(0, 0, width, height, 0x000000, 0.5).setDepth(4);
+        this.rec = this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
         this.timerCount = this.temp;
         this.isPaused = false;
-        // this.rec.destroy();
+        this.rec.destroy();
       }
     }, this)
   }
@@ -81,14 +81,6 @@ const StageScene = () => {
       this.noteGraphic.goDown();
     }
   }
-
-  // function playTimer() {
-  //   // if (this.isPaused) {}
-  //   // else {
-  //     this.timerCount += 10;
-  //   // }
-  //   // console.log(this.timerCount);
-  // }
 
   useEffect(() => {
     const width = window.innerWidth * window.devicePixelRatio; 
