@@ -21,6 +21,7 @@ const Room = () => {
           <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
               marginTop: "30px",
               marginBottom: "45px",
             }}
@@ -34,8 +35,6 @@ const Room = () => {
                 backgroundColor: "#39d446",
                 border: "none",
                 borderRadius: "5px",
-                marginTop: "25px",
-                marginLeft: "960px",
                 cursor: "pointer",
               }}
             >
