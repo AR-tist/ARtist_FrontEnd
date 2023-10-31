@@ -36,6 +36,7 @@ const Room = () => {
                 borderRadius: "5px",
                 marginTop: "25px",
                 marginLeft: "960px",
+                cursor: "pointer",
               }}
             >
               PLAY
@@ -100,6 +101,7 @@ const Room = () => {
                       marginTop: "10px",
                       width: "20px",
                       height: "20px",
+                      cursor: "pointer",
                     }}
                   />
                 </button>
@@ -134,6 +136,7 @@ const Room = () => {
                   backgroundColor: "transparent",
                   border: "none",
                   color: "#AEAEAE",
+                  cursor: "pointer",
                 }}
               >
                 초대 링크
@@ -144,6 +147,7 @@ const Room = () => {
                   backgroundColor: "transparent",
                   border: "none",
                   color: "#AEAEAE",
+                  cursor: "pointer",
                 }}
               >
                 곡 변경하기
