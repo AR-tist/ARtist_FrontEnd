@@ -56,7 +56,7 @@ export class NoteGenerator {
         // console.log(this.timerCount);
     }
 
-    goDown() {  // physics 붙일 수 있게 돼서 setVelocityY로 대체 가능 -> ㄴㄴ
+    goDown() {
 
         this.noteArray.forEach(n=>{
             if (n.startAt <= this.timerCount) {
@@ -161,10 +161,8 @@ export class NoteRectangle {
         scene.physics.add.existing(this.basic);
         scene.physics.add.existing(this.pressed);
         scene.physics.add.overlap(this.graphic, nowPressLine, this.checkPressed);
-        // scene.physics.add.overlap(this.basic, destroyLine, this.checkOutOfScreen);
-        // scene.physics.add.overlap(this.pressed, destroyLine, this.checkOutOfScreen);
-
-        // this.graphic.setVelocityY(10);   // ㄴㄴ
+        scene.physics.add.overlap(this.basic, destroyLine, this.checkOutOfScreen);
+        scene.physics.add.overlap(this.pressed, destroyLine, this.checkOutOfScreen);
     }
 
     /* 충돌(overlap) 감지 함수들 */

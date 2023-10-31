@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
-// import { LightEffector } from "./LightEffector";
 import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
+// import './style.css';
 
 const StageScene = () => {
   const game = useRef(null);
@@ -51,8 +51,8 @@ const StageScene = () => {
   }
 
   useEffect(() => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth * window.devicePixelRatio; 
+    const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
       width: width,
@@ -64,7 +64,7 @@ const StageScene = () => {
         }
       },
       scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.ENVELOP,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: width,
         height: height,
