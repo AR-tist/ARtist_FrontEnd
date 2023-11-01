@@ -45,21 +45,23 @@ const Room = () => {
           <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            <img
-              src="./img/하입보이앨범커버.jpg"
-              alt="앨범 커버"
-              style={{
-                float: "left",
-                marginRight: "20px",
-                width: "200px",
-                height: "200px",
-              }}
-            />
-            <div className="song_information" style={{}}>
-              <div>
-                <div style={{ display: "flex" }}>
+            <div style={{}}>
+              <img
+                src="./img/하입보이앨범커버.jpg"
+                alt="앨범 커버"
+                style={{
+                  float: "left",
+                  marginRight: "20px",
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
+
+              <div style={{ display: "flex" }}>
+                <div style={{}}>
                   <h2
                     style={{
                       marginTop: "1px",
@@ -69,41 +71,42 @@ const Room = () => {
                   >
                     사건의 지평선
                   </h2>
-                </div>
-                <p
-                  style={{
-                    marginTop: "10px",
-                    fontSize: "15px",
-                    color: "#505050",
-                  }}
-                >
-                  우는애벌레32
-                </p>
-                <button
-                  className="like-button"
-                  style={{
-                    backgroundColor: "transparent",
-                    border: "none",
-                    boxShadow: "none",
-                  }}
-                  onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
-                >
-                  <img
-                    className="like-img"
-                    src={
-                      liked
-                        ? "./img/좋아요누른버튼.png"
-                        : "./img/좋아요버튼.png"
-                    }
-                    alt="좋아요 버튼"
+
+                  <p
                     style={{
                       marginTop: "10px",
-                      width: "20px",
-                      height: "20px",
-                      cursor: "pointer",
+                      fontSize: "15px",
+                      color: "#505050",
                     }}
-                  />
-                </button>
+                  >
+                    우는애벌레32
+                  </p>
+                  <button
+                    className="like-button"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      boxShadow: "none",
+                    }}
+                    onClick={handleLikeClick} // 클릭 이벤트에 핸들러 함수를 연결
+                  >
+                    <img
+                      className="like-img"
+                      src={
+                        liked
+                          ? "./img/좋아요누른버튼.png"
+                          : "./img/좋아요버튼.png"
+                      }
+                      alt="좋아요 버튼"
+                      style={{
+                        marginTop: "10px",
+                        width: "20px",
+                        height: "20px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </button>
+                </div>
               </div>
 
               <div style={{ marginTop: "80px" }}>
@@ -129,7 +132,7 @@ const Room = () => {
               </div>
             </div>
 
-            <div style={{ marginLeft: "700px" }}>
+            <div style={{}}>
               <button
                 style={{
                   backgroundColor: "transparent",
