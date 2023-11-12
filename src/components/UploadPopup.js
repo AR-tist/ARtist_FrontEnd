@@ -113,7 +113,7 @@ const UploadPopup = ({ onClose }) => {
 
 
     axiosInstance
-      .post("/upload", formData, {
+      .post("/midi/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -139,7 +139,7 @@ const UploadPopup = ({ onClose }) => {
     formData.append("password", password);
 
     axiosInstance
-      .post("/upload", formData, {
+      .post("/midi/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
