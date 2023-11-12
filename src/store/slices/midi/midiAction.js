@@ -5,7 +5,7 @@ import axiosInstance from '../../../utils/axios';
 export const fetchMidiList = () => {
     return (dispatch) => {
         axiosInstance
-            .get('/list')
+            .get('/midi/list')
             .then(response => {
                 dispatch(Actions.setmidilist({ midilist: response.data }));
             })
