@@ -277,6 +277,22 @@ const Header = (props) => {
             </button>
             {isPopupVisible && <UploadPopup onClose={handleClosePopup} />}
             <button
+              className="change-equipment-button"
+              style={{
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                fontSize: "15px",
+                fontWeight: "300",
+                marginTop: "20px",
+                cursor: "pointer",
+              }}
+              // onClick={handleUploadClick}
+            >
+              장비 변경
+            </button>
+            <button
               className="entire-song-button"
               style={{
                 display: "block",
