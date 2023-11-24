@@ -3,8 +3,8 @@ import Music from "./Music";
 
 class Room {
     constructor(room_id, host_id) {
-        this.room_id = room_id || null;
-        this.host_id = host_id || null;
+        this.room_id = room_id;
+        this.host_id = host_id;
         this.music_instance = new Music();
         this.invite_url = null;
         this.guests = {};

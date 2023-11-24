@@ -79,7 +79,7 @@ const Row = (props) => {
   };
 
   const navigateToRoom = () => {
-    navigate("/room"); // 방 페이지로 전환
+    navigate("/room"); // 방 페이지로 전환 방만들기
   };
 
   const moreButtonStyle = {
