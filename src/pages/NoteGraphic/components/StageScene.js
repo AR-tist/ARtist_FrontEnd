@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
-// import { LightEffector } from "./LightEffector";
 import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -44,15 +43,48 @@ const StageScene = () => {
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
     this.piano = new Keyboard(this, width, height, 2, 7);
     this.piano.setInput(document);
+
+    this.timerCount = 0;
+    this.isPaused = false;
+    // timer
+    this.time.addEvent({
+      delay: 10, // 시간 단위 ms
+      callback: () => this.timerCount += 10, // delay 주기마다 수행할 로직
+      callbackScope: this, // callback 범위
+      loop: true, // 반복 여부
+  });
+
+    // pause 버튼
+    const pauseButton = this.add.text(window.innerWidth* window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
+    pauseButton.setInteractive();
+
+    this.temp = 0;
+    let clickCount = 0; //temp
+    pauseButton.on('pointerup', function () {
+      clickCount += 1;
+      if (clickCount % 2) {
+        this.temp = this.timerCount;
+        this.isPaused = true;
+        this.rec = this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.5).setDepth(4);
+      }
+      else {
+        this.timerCount = this.temp;
+        this.isPaused = false;
+        this.rec.destroy();
+      }
+    }, this)
   }
 
   function update(time, delta) {
-    this.noteGraphic.goDown();
+    if (this.isPaused) {}
+    else {
+      this.noteGraphic.goDown();
+    }
   }
 
   useEffect(() => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth * window.devicePixelRatio; 
+    const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
       width: width,
@@ -64,7 +96,7 @@ const StageScene = () => {
         }
       },
       scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.ENVELOP,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: width,
         height: height,
