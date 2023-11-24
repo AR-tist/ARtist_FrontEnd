@@ -14,6 +14,10 @@ const Header = (props) => {
     setPopupVisible(false); // 팝업 창 닫기
   };
 
+  const handleChangeEquipmentClick = () => {
+    navigate("/equipment-change");
+  };
+
   const setCookie = () => {
     let tempNickname = document.getElementById("nickname_input").value;
     if (tempNickname == "") {
@@ -288,7 +292,7 @@ const Header = (props) => {
                 marginTop: "20px",
                 cursor: "pointer",
               }}
-              // onClick={handleUploadClick}
+              onClick={handleChangeEquipmentClick}
             >
               장비 변경
             </button>
