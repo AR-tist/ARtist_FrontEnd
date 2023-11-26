@@ -39,7 +39,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                     }
                     dispatch(setRoom(new Room(data.data)));
                 }
-                else if (data.type === 'join') {
+                else if (data.type === 'join' || data.type === 'disconnect') {
                     dispatch(setRoom(new Room(data.data)));
                 }
             })

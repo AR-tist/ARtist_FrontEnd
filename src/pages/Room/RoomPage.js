@@ -35,6 +35,7 @@ const Room = () => {
     }
 
     return () => {
+      console.log("disconnect");
       dispatch(setLoading(false));
       dispatch({ type: "socket/disconnect" });
     };
