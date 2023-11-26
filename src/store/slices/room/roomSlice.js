@@ -5,6 +5,7 @@ const roomSlice = createSlice({
     name: "room",
     initialState: {
         room: new Room({}),
+        start: false
     },
 
     reducers: {
@@ -20,6 +21,9 @@ const roomSlice = createSlice({
             const room = { ...state.room };
             room.ongoing_code = action.payload.code;
             state.room = { ...room };
+        },
+        setStart(state, action) {
+            state.start = action.payload.start;
         }
     },
 });

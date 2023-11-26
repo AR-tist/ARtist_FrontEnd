@@ -19,3 +19,9 @@ export const setOngoingCode = (code) => {
         dispatch(Actions.setOngoingCode({ code: code }));
     }
 }
+
+export const setStart = (start) => {
+    return (dispatch) => {
+        dispatch(Actions.setStart({ start: start }));
+    }
+}

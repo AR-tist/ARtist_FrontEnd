@@ -1,6 +1,6 @@
 import Room from '../models/Room'
 import { wsbaseURL } from '../utils/axios'
-import { setRoom } from './slices/room/roomAction'
+import { setRoom, setStart } from './slices/room/roomAction'
 import { setOngoingCode } from './slices/room/roomAction'
 
 
@@ -38,6 +38,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                         data.data.ongoing_code = 1;
                     }
                     dispatch(setRoom(new Room(data.data)));
+                    dispatch(setStart(false));
                 }
                 else if (data.type === 'host_out') {
                     dispatch(setRoom(new Room({ error_code: 2 })));
@@ -47,6 +48,9 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                 }
                 else if (data.type === 'areYouReady') {
                     dispatch(setOngoingCode(2));
+                }
+                else if (data.type === 'start') {
+                    dispatch(setStart(true));
                 }
             })
             socket.on('close', () => {
@@ -61,8 +65,8 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
         case 'socket/host_play':
             socket.send(JSON.stringify({ type: 'host_play' }))
             break
-        case 'socket/start':
-            socket.send(JSON.stringify({ type: 'start' }))
+        case 'socket/imready':
+            socket.send(JSON.stringify({ type: 'imready' }))
             break
 
         default:

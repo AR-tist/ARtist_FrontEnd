@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 const StageScene = () => {
   const game = useRef(null);
   const midiFile = useSelector(state => state.midi.midi);
+  const start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   console.log(midiFile);
 
@@ -48,6 +49,9 @@ const StageScene = () => {
 
     this.timerCount = 0;
     this.isPaused = false;
+
+    dispatch({ type: 'socket/imready' });
+
     // timer
     this.time.addEvent({
       delay: 10, // 시간 단위 ms
@@ -61,10 +65,10 @@ const StageScene = () => {
     pauseButton.setInteractive();
 
     this.temp = 0;
-    let clickCount = 0; //temp
+    this.clickCount = 0; //temp
     pauseButton.on('pointerup', function () {
-      clickCount += 1;
-      if (clickCount % 2) {
+      this.clickCount += 1;
+      if (this.clickCount % 2) {
         this.temp = this.timerCount;
         this.isPaused = true;
         this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
@@ -76,15 +80,17 @@ const StageScene = () => {
       }
     }, this)
 
-    dispatch({ type: 'socket/imready' });
+
   }
 
   function update(time, delta) {
-    if (this.isPaused) { }
+    if (this.isPaused && start) {
+    }
     else {
       this.noteGraphic.goDown();
     }
   }
+
 
   useEffect(() => {
     const width = window.innerWidth * window.devicePixelRatio;
