@@ -3,13 +3,14 @@ import {
   setMidi,
   fetchMidiList,
 } from "../store/slices/midi/midiAction";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { json, useNavigate } from "react-router-dom";
 
 import axiosInstance from "../utils/axios"; // Fixed typo in import path
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { fileToMidi } from "../utils/Utils";
+import cookie, { load } from "react-cookies";
 
 // Import the images
 import img1 from "./img/곡_기본_이미지_1.png";
@@ -28,6 +29,10 @@ const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log(props);
+
+  const url = "ws://13.124.50.132:8000/ws/";
+  const socket = new WebSocket(url);
 
   const [randomImageIndex] = useState(
     Math.floor(Math.random() * images.length)
@@ -78,9 +83,54 @@ const Row = (props) => {
       });
   };
 
+  function loadCookie() {
+    return cookie.load("nickname")
+      ? cookie.load("nickname")
+      : "TypeYourNickname";
+  }
+  //console.log(loadCookie());
   const navigateToRoom = () => {
-    navigate("/room"); // 방 페이지로 전환 방만들기
+    //navigate("/room"); // 방 페이지로 전환 방 만들기 -'
+    //return <CreateRoom 
+    // filename={props.filename}
+    // is_host={true}
+    // host_nickname={loadCookie()}
+    // device={0}/>;
+    CreateRoom(props.filename, true, loadCookie(),1234, 0);
   };
+
+  const CreateRoom = (filename, is_host, host_nickname, user_id, device) => {
+    const socket = new WebSocket(url);
+  
+    socket.onopen = () => {
+      console.log('WebSocket connection opened');
+      let message = JSON.stringify({filename: filename, is_host: is_host, nickname: host_nickname, user_id: user_id, device: device});
+      console.log(message);
+      sendMessage(message);
+    };
+  
+    socket.onmessage = (event) => {
+      console.log('Received message:', event.data);
+    };
+  
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    const sendMessage = (message) => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+      } else {
+        console.error('WebSocket is not open. Message not sent.');
+      }
+    };
+  };
+
+  useEffect(() => {
+    return () => {
+      socket.close();
+    };
+  }, [socket]);
 
   const moreButtonStyle = {
     cursor: "pointer",
@@ -408,6 +458,7 @@ const MusicList = ({ midiList }) => {
             <Row
               key={index}
               index={index}
+              filename={midi.filename} //filename 추가
               rank={index}
               title={midi.title}
               downloadUrl={midi.downloadUrl}

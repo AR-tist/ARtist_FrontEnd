@@ -43,7 +43,7 @@ const Header = (props) => {
   }
 
   const navigateToWholeSong = () => {
-    navigate("/whole-song"); // 전체 곡 페이지로 전환
+    navigate("/whole-song"); // 전체 업로드 곡 보기 페이지로 전환
   };
 
   const [searchKeyword, setSearchKeyword] = useState("");
