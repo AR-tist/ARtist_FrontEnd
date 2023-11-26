@@ -4,13 +4,14 @@ import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { setLoading } from "../../store/slices/midi/midiAction";
 
 const Room = () => {
   let { room_id } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user_instance = useSelector((state) => state.user.user_instance);
   const room = useSelector((state) => state.room.room);
 
@@ -21,7 +22,14 @@ const Room = () => {
   };
 
   useEffect(() => {
-    if (room.room_id !== room_id) {
+    if (room.error_code !== 0) {
+      dispatch(setLoading(false));
+      if (room.error_code === 1) alert("방이 없습니다.");
+      else if (room.error_code === 2) alert("방장이 방을 나갔습니다.");
+      navigate("/");
+
+    }
+    else if (room.room_id !== room_id) {
       console.log("room_id", room_id);
       dispatch(setLoading(true));
 

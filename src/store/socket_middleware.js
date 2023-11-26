@@ -39,12 +39,15 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                     }
                     dispatch(setRoom(new Room(data.data)));
                 }
+                else if (data.type === 'host_out') {
+                    dispatch(setRoom(new Room({ error_code: 2 })));
+                }
                 else if (data.type === 'join' || data.type === 'disconnect') {
                     dispatch(setRoom(new Room(data.data)));
                 }
             })
             socket.on('close', () => {
-                dispatch(setRoom(new Room({})));
+                dispatch(setRoom(new Room({ error_code: 1 })));
                 console.log('WebSocket connection closed');
             })
             break
