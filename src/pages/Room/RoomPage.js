@@ -177,9 +177,12 @@ const Room = () => {
                   color: "#AEAEAE",
                   cursor: "pointer",
                 }}
-              >
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("초대 링크가 클립보드에 복사되었습니다.")
+                }}>
                 초대 링크
-              </button>
+              </button >
               <button
                 style={{
                   marginLeft: "20px",
