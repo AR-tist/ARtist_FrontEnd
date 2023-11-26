@@ -112,10 +112,10 @@ export class Keyboard {
             this.octave -= 1
             return
         }
-        this.handleKey(event.key, 'up');
+        this.handleKey(event.key, 'up', this.octave, this.start_idx);
     }
 
-    handleKey(key, action) {
+    handleKey(key, action, octave = 0, start_idx = 1) {
         let noteIdx;
         let mode = 0;
         switch (key) {
@@ -141,40 +141,37 @@ export class Keyboard {
         }
 
         if (action === 'down') {
-            this.pushNote(noteIdx, mode);
+            this.pushNote(noteIdx, mode, octave, start_idx);
         } else if (action === 'up') {
-            this.releaseNote(noteIdx, mode);
+            this.releaseNote(noteIdx, mode, octave, start_idx);
         }
     }
 
-    pushNote(idx, mode = 0) {
-
+    pushNote(idx, mode = 0, octave, start_idx) {
         if (mode === 0) {
-            console.log('%d %d %d', this.octave, this.start_idx, idx)
-            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7) return
-            this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xaaaaaa);
-            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
+            console.log('%d %d %d', octave, start_idx, idx)
+            if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7) return
+            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(0xaaaaaa);
+            idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
-        }
-        else {
-            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7 - 2) return
-            this.b_notes[idx + (this.octave) * 5].setFillStyle(0x333333);
-            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
+        } else {
+            if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7 - 2) return
+            this.b_notes[idx + (octave) * 5].setFillStyle(0x333333);
+            idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }
     }
-    releaseNote(idx, mode = 0) {
+
+    releaseNote(idx, mode = 0, octave, start_idx) {
         if (mode === 0) {
-            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7) return
-            this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
-            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 7;
+            if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7) return
+            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(0xffffff);
+            idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 7;
             this.tone.triggerRelease([inxtoNoteW[idx]]);
-        }
-        else {
-            if (idx + (this.octave + this.start_idx) * 7 >= (this.start_idx + this.num) * 7 - 2) return
-            // console.log(this.b_notes[idx + (this.octave) * 5])
-            this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
-            idx = idx + (this.octave + this.start_idx > 8 ? 8 : this.octave + this.start_idx) * 5;
+        } else {
+            if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7 - 2) return
+            this.b_notes[idx + (octave) * 5].setFillStyle(0x000000);
+            idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerRelease([inxtoNoteB[idx]]);
         }
     }
