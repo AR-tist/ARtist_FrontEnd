@@ -44,6 +44,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                 }
             })
             socket.on('close', () => {
+                dispatch(setRoom(new Room({})));
                 console.log('WebSocket connection closed');
             })
             break

@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import { setLoading } from "../../store/slices/midi/midiAction";
 
 const Room = () => {
-
   let { room_id } = useParams();
 
   const dispatch = useDispatch();
@@ -34,12 +33,14 @@ const Room = () => {
       dispatch(setLoading(false));
     }
 
-    return () => {
-      console.log("disconnect");
-      dispatch(setLoading(false));
-      dispatch({ type: "socket/disconnect" });
-    };
   }, [room]);
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "socket/disconnect" });
+      dispatch(setLoading(false));
+    }
+  }, []);
 
   return (
     <>
