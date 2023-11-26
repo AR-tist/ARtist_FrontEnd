@@ -1,8 +1,8 @@
 import { Actions } from './userSlice';
 
 
-export const setName = (name) => {
+export const setNickname = (nickname) => {
     return (dispatch) => {
-        dispatch(Actions.setname({ name: name }));
+        dispatch(Actions.setnickname({ nickname: nickname }));
     }
 }

@@ -6,11 +6,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 
-import axiosInstance from "../utils/axios"; // Fixed typo in import path
+import axiosInstance, { wsbaseURL } from "../utils/axios"; // Fixed typo in import path
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { fileToMidi } from "../utils/Utils";
 import cookie, { load } from "react-cookies";
+import { useSelector } from "react-redux";
+
 
 // Import the images
 import img1 from "./img/곡_기본_이미지_1.png";
@@ -23,17 +25,16 @@ import img7 from "./img/곡_기본_이미지_7.png";
 import img8 from "./img/곡_기본_이미지_8.jpg";
 import img9 from "./img/곡_기본_이미지_9.png";
 import img10 from "./img/곡_기본_이미지_10.png";
+import { setOngoingFalse } from "../store/slices/room/roomAction";
+
+
 
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
 
 const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(props);
-
-  const url = "ws://13.124.50.132:8000/ws/";
-  const socket = new WebSocket(url);
-
+  const user_instance = useSelector((state) => state.user.user_instance);
   const [randomImageIndex] = useState(
     Math.floor(Math.random() * images.length)
   );
@@ -83,12 +84,6 @@ const Row = (props) => {
       });
   };
 
-  function loadCookie() {
-    return cookie.load("nickname")
-      ? cookie.load("nickname")
-      : "TypeYourNickname";
-  }
-  //console.log(loadCookie());
   const navigateToRoom = () => {
     //navigate("/room"); // 방 페이지로 전환 방 만들기 -'
     //return <CreateRoom 
@@ -96,41 +91,12 @@ const Row = (props) => {
     // is_host={true}
     // host_nickname={loadCookie()}
     // device={0}/>;
-    CreateRoom(props.filename, true, loadCookie(),1234, 0);
+    CreateRoom(props.filename, user_instance.nickname, '1234', 0);
   };
 
-  const CreateRoom = (filename, is_host, host_nickname, user_id, device) => {
-    const socket = new WebSocket(url);
-  
-    socket.onopen = () => {
-      console.log('WebSocket connection opened');
-      let message = JSON.stringify({filename: filename, is_host: is_host, nickname: host_nickname, user_id: user_id, device: device});
-      console.log(message);
-      sendMessage(message);
-    };
-  
-    socket.onmessage = (event) => {
-      console.log('Received message:', event.data);
-    };
-  
-    socket.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-
-    const sendMessage = (message) => {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
-      } else {
-        console.error('WebSocket is not open. Message not sent.');
-      }
-    };
+  const CreateRoom = (filename, nickname, user_id, device) => {
+    dispatch({ type: 'socket/connect', payload: { filename, nickname, user_id, device } });
   };
-
-  useEffect(() => {
-    return () => {
-      socket.close();
-    };
-  }, [socket]);
 
   const moreButtonStyle = {
     cursor: "pointer",
@@ -373,10 +339,21 @@ const Row = (props) => {
 };
 
 const MusicList = ({ midiList }) => {
-  console.log(midiList);
   const [moreIndex, setMoreIndex] = useState(-1);
   const [displayCount, setDisplayCount] = useState(10); // 표시할 초기 항목 수
   const loadCount = 10; // 더보기 클릭 시 로드할 항목 수
+
+  const room = useSelector((state) => state.room.room);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (room.ongoing === true) {
+      dispatch(setOngoingFalse());
+      navigate(`/room/${room.room_id}`);
+    }
+  }, [dispatch, navigate, room]);
+
 
   const loadMoreItems = () => {
     setDisplayCount(displayCount + loadCount);

@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/graphic/:id" element={<NoteGraphicPage />} />
         <Route path="/convert" element={<ConvertPage />} />
         <Route path="/piano-socket" element={<PianoWSPage />} />
-        <Route path="/room" element={<Room />} />
+        <Route path="/room/:room_id" element={<Room />} />
         <Route path="/equipment-change" element={<EquipmentChangePage />} />
         <Route path="/whole-song" element={<WholeSong />} />
         <Route path="*" element={<h1>찾을 수 없는 페이지입니다.</h1>} />

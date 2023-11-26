@@ -1,18 +1,18 @@
 class Music {
     constructor(data) {
-        this.timestamp = data.timestamp;
-        this.filename = data.filename;
-        this.title = data.title;
-        this.imgurl = data.imgurl;
-        this.subtitle = data.subtitle;
-        this.rank = data.rank;
-        this.poster = data.poster;
-        this.like = data.like;
-        this.views = data.views;
-        this.music_length = data.music_length;
-        this.downloadUrl = data.downloadUrl;
-        this.deleteUrl = data.deleteUrl;
-        this.id = data.id;
+        this.timestamp = data.timestamp || 0;
+        this.filename = data.filename || '';
+        this.title = data.title || '';
+        this.imgurl = data.imgurl || '';
+        this.subtitle = data.subtitle || '';
+        this.rank = data.rank || 0;
+        this.poster = data.poster || '';
+        this.like = data.like || 0;
+        this.views = data.views || 0;
+        this.music_length = data.music_length || 0;
+        this.downloadUrl = data.downloadUrl || '';
+        this.deleteUrl = data.deleteUrl || '';
+        this.id = data.id || 0;
     }
 
     getTimestamp() {

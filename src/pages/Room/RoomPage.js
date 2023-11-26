@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import Participants from "./components/Participants";
+import Participant from "./components/Participant";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useParams } from 'react-router-dom';
+import { setLoading } from "../../store/slices/midi/midiAction";
 
 const Room = () => {
-  const nickname = useSelector((state) => state.user.name);
+
+  let { room_id } = useParams();
+
+  const dispatch = useDispatch();
+  const user_instance = useSelector((state) => state.user.user_instance);
+  const room = useSelector((state) => state.room.room);
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
 
@@ -13,9 +21,28 @@ const Room = () => {
     setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
   };
 
+  useEffect(() => {
+    if (room.room_id !== room_id) {
+      console.log("room_id", room_id);
+      dispatch(setLoading(true));
+
+      // CreateRoom(props.filename, true, loadCookie(), 1234, 0);
+      // dispatch({ type: 'socket/connect', payload: { filename, is_host, nickname, user_id, device } });
+      dispatch({ type: "socket/connect", payload: { room_id, nickname: user_instance.nickname, user_id: user_instance.user_id, device: user_instance.device } });
+
+    } else {
+      dispatch(setLoading(false));
+    }
+
+    return () => {
+      dispatch(setLoading(false));
+      dispatch({ type: "socket/disconnect" });
+    };
+  }, [room]);
+
   return (
     <>
-      <Header user={nickname} />
+      <Header />
       <Layout>
         <div id="app" className="container" style={{}}>
           <div
@@ -26,7 +53,7 @@ const Room = () => {
               marginBottom: "45px",
             }}
           >
-            <h1 style={{ fontSize: "25px" }}>푸른고양이82의 방</h1>
+            <h1 style={{ fontSize: "25px" }}>{room.host_nickname}의 방</h1>
             <button
               style={{
                 width: "70px",
@@ -50,7 +77,7 @@ const Room = () => {
           >
             <div style={{}}>
               <img
-                src="./img/하입보이앨범커버.jpg"
+                src="../img/하입보이앨범커버.jpg"
                 alt="앨범 커버"
                 style={{
                   float: "left",
@@ -69,7 +96,7 @@ const Room = () => {
                       fontSize: "28px",
                     }}
                   >
-                    사건의 지평선
+                    {room.music_instance.title}
                   </h2>
 
                   <p
@@ -79,7 +106,7 @@ const Room = () => {
                       color: "#505050",
                     }}
                   >
-                    우는애벌레32
+                    {room.music_instance.poster}
                   </p>
                   <button
                     className="like-button"
@@ -94,8 +121,8 @@ const Room = () => {
                       className="like-img"
                       src={
                         liked
-                          ? "./img/좋아요누른버튼.png"
-                          : "./img/좋아요버튼.png"
+                          ? "../img/좋아요누른버튼.png"
+                          : "../img/좋아요버튼.png"
                       }
                       alt="좋아요 버튼"
                       style={{
@@ -127,7 +154,7 @@ const Room = () => {
                     marginLeft: "5px",
                   }}
                 >
-                  04:12
+                  {room.music_instance.music_length}
                 </p>
               </div>
             </div>
@@ -157,7 +184,12 @@ const Room = () => {
             </div>
           </div>
         </div>
-        <Participants />
+        {Object.entries(room.guests).map(([key, value]) => {
+          return <Participant profileImage="../img/프로필2.jpg"
+            nickname={value.nickname}
+            equipment="AR Piano"
+            statusColor="#FE4949" />;
+        })}
       </Layout>
     </>
   );

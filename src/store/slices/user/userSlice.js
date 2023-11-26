@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Client from "../../../models/Client";
 
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        name: "TypeYourName82",
+        user_instance: new Client({}),
     },
 
     reducers: {
-        setname(state, action) {
-            state.name = action.payload.name;
+        setnickname(state, action) {
+            state.user_instance.nickname = action.payload.nickname;
         },
     },
 });

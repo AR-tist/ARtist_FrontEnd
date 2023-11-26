@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import UploadPopup from "./UploadPopup.js";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-
-const Header = (props) => {
+import { useSelector, useDispatch } from 'react-redux';
+import { setNickname } from "../store/slices/user/userAction";
+const Header = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user_instance = useSelector((state) => state.user.user_instance);
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleUploadClick = () => {
     setPopupVisible(true); // 팝업 창 열기
@@ -31,16 +34,11 @@ const Header = (props) => {
       // secure : true,
       // httpOnly : true
     });
+    dispatch(setNickname(tempNickname));
 
     document.getElementById("nickname_input").placeholder = tempNickname;
     alert('Your nickname "' + tempNickname + '" is saved as a cookie.');
   };
-
-  function loadCookie() {
-    return cookie.load("nickname")
-      ? cookie.load("nickname")
-      : "TypeYourNickname";
-  }
 
   const navigateToWholeSong = () => {
     navigate("/whole-song"); // 전체 업로드 곡 보기 페이지로 전환
@@ -121,7 +119,7 @@ const Header = (props) => {
             <input
               id="nickname_input"
               type="text"
-              placeholder={loadCookie()}
+              placeholder={user_instance.nickname}
               maxlength="15"
               style={{
                 backgroundColor: "transparent",
