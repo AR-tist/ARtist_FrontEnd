@@ -13,3 +13,9 @@ export const setOngoingFalse = () => {
         dispatch(Actions.setOngoingFalse());
     }
 }
+
+export const setOngoingCode = (code) => {
+    return (dispatch) => {
+        dispatch(Actions.setOngoingCode({ code: code }));
+    }
+}

@@ -4,13 +4,15 @@ import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
+import { useDispatch } from 'react-redux';
 
 const StageScene = () => {
   const game = useRef(null);
   const midiFile = useSelector(state => state.midi.midi);
+  const dispatch = useDispatch();
   console.log(midiFile);
 
-  function preload() {}
+  function preload() { }
 
   function create() {
     const { x, y, width, height } = this.cameras.main;
@@ -52,10 +54,10 @@ const StageScene = () => {
       callback: () => this.timerCount += 10, // delay 주기마다 수행할 로직
       callbackScope: this, // callback 범위
       loop: true, // 반복 여부
-  });
+    });
 
     // pause 버튼
-    const pauseButton = this.add.text(window.innerWidth* window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
+    const pauseButton = this.add.text(window.innerWidth * window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
     pauseButton.setInteractive();
 
     this.temp = 0;
@@ -65,7 +67,7 @@ const StageScene = () => {
       if (clickCount % 2) {
         this.temp = this.timerCount;
         this.isPaused = true;
-        this.rec = this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.5).setDepth(4);
+        this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
         this.timerCount = this.temp;
@@ -73,17 +75,19 @@ const StageScene = () => {
         this.rec.destroy();
       }
     }, this)
+
+    dispatch({ type: 'socket/imready' });
   }
 
   function update(time, delta) {
-    if (this.isPaused) {}
+    if (this.isPaused) { }
     else {
       this.noteGraphic.goDown();
     }
   }
 
   useEffect(() => {
-    const width = window.innerWidth * window.devicePixelRatio; 
+    const width = window.innerWidth * window.devicePixelRatio;
     const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
@@ -119,7 +123,7 @@ const StageScene = () => {
       _game.destroy(true);
       game.current = undefined;
 
-      
+
     };
   }, []);
 

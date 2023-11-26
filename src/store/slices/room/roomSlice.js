@@ -13,7 +13,13 @@ const roomSlice = createSlice({
         },
 
         setOngoingFalse(state, action) {
-            state.room.ongoing = false;
+            state.room.ongoing_code = 0;
+            console.log('ongoing false')
+        },
+        setOngoingCode(state, action) {
+            const room = { ...state.room };
+            room.ongoing_code = action.payload.code;
+            state.room = { ...room };
         }
     },
 });

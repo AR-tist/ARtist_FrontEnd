@@ -41,7 +41,9 @@ const Row = (props) => {
   const randomImage = images[randomImageIndex];
 
   const midiLoad = async (dest) => {
-    const fullDownloadUrl = `${axiosInstance.getUri()}${props.downloadUrl}`;
+    const fullDownloadUrl = `${axiosInstance.getUri()}${props.download_url}`;
+
+    console.log("fullDownloadUrl", fullDownloadUrl);
     dispatch(setLoading(true));
     axios({
       method: "get",
@@ -61,7 +63,7 @@ const Row = (props) => {
 
   const handlePlay = () => {
     // Play 로직 작성
-    midiLoad(`/graphic/${1}`);
+    midiLoad(`/graphic`);
   };
 
   const handleDownload = () => {
@@ -75,9 +77,9 @@ const Row = (props) => {
   };
 
   const handleDelete = () => {
-    console.log(`${axiosInstance.getUri()}${props.deleteUrl}`);
+    console.log(`${axiosInstance.getUri()}${props.delete_url}`);
     axiosInstance
-      .delete(`${axiosInstance.getUri()}${props.deleteUrl}`)
+      .delete(`${axiosInstance.getUri()}${props.delete_url}`)
       .then((res) => {
         console.log(res);
         dispatch(fetchMidiList());
@@ -348,7 +350,7 @@ const MusicList = ({ midiList }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    if (room.ongoing === true) {
+    if (room.ongoing_code === 1) {
       dispatch(setOngoingFalse());
       navigate(`/room/${room.room_id}`);
     }
@@ -438,8 +440,8 @@ const MusicList = ({ midiList }) => {
               filename={midi.filename} //filename 추가
               rank={index}
               title={midi.title}
-              downloadUrl={midi.downloadUrl}
-              deleteUrl={midi.deleteUrl}
+              download_url={midi.download_url}
+              delete_url={midi.delete_url}
               moreIndex={moreIndex}
               setMoreIndex={setMoreIndex}
               imgurl={undefined}

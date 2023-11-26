@@ -6,10 +6,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { setLoading } from "../../store/slices/midi/midiAction";
+import axiosInstance from './../../utils/axios';
+import { fileToMidi } from './../../utils/Utils';
+import { setMidi } from './../../store/slices/midi/midiAction';
+import axios from "axios";
+import { setOngoingFalse } from "../../store/slices/room/roomAction";
+
 
 const Room = () => {
   let { room_id } = useParams();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user_instance = useSelector((state) => state.user.user_instance);
@@ -29,6 +34,23 @@ const Room = () => {
       navigate("/");
 
     }
+    else if (room.ongoing_code === 2) {
+      const fullDownloadUrl = `${axiosInstance.getUri()}${room.music_instance.download_url}`;
+
+      console.log("fullDownloadUrl", fullDownloadUrl);
+      dispatch(setLoading(true));
+      axios({
+        method: "get",
+        url: fullDownloadUrl,
+        responseType: "blob",
+      }).then(async (res) => {
+        const midi = await fileToMidi(res.data);
+        dispatch(setMidi(midi));
+        dispatch(setOngoingFalse());
+        dispatch(setLoading(false));
+        navigate("/graphic");
+      });
+    }
     else if (room.room_id !== room_id) {
       console.log("room_id", room_id);
       dispatch(setLoading(true));
@@ -45,8 +67,11 @@ const Room = () => {
 
   useEffect(() => {
     return () => {
-      dispatch({ type: "socket/disconnect" });
-      dispatch(setLoading(false));
+      const path = window.location.href.split("/")
+      if (path[path.length - 1] !== "graphic") {
+        dispatch({ type: "socket/disconnect" });
+        dispatch(setLoading(false));
+      }
     }
   }, []);
 
@@ -73,6 +98,9 @@ const Room = () => {
                 border: "none",
                 borderRadius: "5px",
                 cursor: "pointer",
+              }}
+              onClick={() => {
+                dispatch({ type: "socket/host_play" });
               }}
             >
               PLAY

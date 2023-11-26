@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/" element={<MidiListPage />} />
         <Route path="/play/:id" element={<NotePlayPage />} />
         <Route path="/midi/:id" element={<MidiPlayPage />} />
-        <Route path="/graphic/:id" element={<NoteGraphicPage />} />
+        <Route path="/graphic" element={<NoteGraphicPage />} />
         <Route path="/convert" element={<ConvertPage />} />
         <Route path="/piano-socket" element={<PianoWSPage />} />
         <Route path="/room/:room_id" element={<Room />} />
