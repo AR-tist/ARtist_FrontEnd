@@ -11,8 +11,10 @@ const StageScene = () => {
   const midiFile = useSelector(state => state.midi.midi);
   const start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
+  const piano_instance = useRef(null);
+
+
   console.log(midiFile);
-  let piano_instance = null;
 
   const keydown = useSelector(state => state.room.keydown);
   const keyup = useSelector(state => state.room.keyup);
@@ -50,21 +52,19 @@ const StageScene = () => {
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
 
     // Piano Section
-    this.piano = new Keyboard(this, width, height, 2, 7);
-    this.piano.setInput(document);
-    piano_instance = this.piano;
-
+    piano_instance.current = new Keyboard(this, width, height, 2, 7);
+    piano_instance.current.setInput(document);
     // event listener for keyboard
     const keydown_event = (event) => {
       if (event.repeat) return;
-      if (this.piano.tone.loaded !== true) return;
-      dispatch({ type: 'socket/keyDown', payload: { key: event.key, octave: this.piano.octave, start_idx: this.piano.start_idx } });
+      if (piano_instance.current.tone.loaded !== true) return;
+      dispatch({ type: 'socket/keyDown', payload: { key: event.key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
     }
 
     const keyup_event = (event) => {
       if (event.repeat) return;
-      if (this.piano.tone.loaded !== true) return;
-      dispatch({ type: 'socket/keyUp', payload: { key: event.key, octave: this.piano.octave, start_idx: this.piano.start_idx } });
+      if (piano_instance.current.tone.loaded !== true) return;
+      dispatch({ type: 'socket/keyUp', payload: { key: event.key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
     }
 
     document.removeEventListener('keydown', keydown_event);
@@ -120,15 +120,14 @@ const StageScene = () => {
   }
 
   useEffect(() => {
-    if (piano_instance) {
-      piano_instance.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx);
-    }
+    if (piano_instance.current === null) return;
+    piano_instance.current.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx);
+
   }, [keydown]);
 
   useEffect(() => {
-    if (piano_instance) {
-      piano_instance.handleKey(keyup.key, 'up', keyup.octave, keyup.start_idx);
-    }
+    if (piano_instance.current === null) return;
+    piano_instance.current.handleKey(keyup.key, 'up', keyup.octave, keyup.start_idx);
   }, [keyup]);
 
 
