@@ -7,7 +7,7 @@ export class NoteGenerator {
 
         this.scene = scene;
         this.noteArray = [];
-        this.speed = parseFloat(timeDivision) / 157.0 *2;
+        this.speed = parseFloat(timeDivision) / 157.0 * 2;
         this.timerCount = 0;
 
         // press collider용 라인 생성
@@ -17,9 +17,9 @@ export class NoteGenerator {
             width, // width
             1,    // height
             0xFF6347    // color
-            )
+        )
             .setDepth(1)
-            .setOrigin(0,0);
+            .setOrigin(0, 0);
         scene.physics.add.existing(this.nowPressLine);
 
         // destroy collider용 라인 생성
@@ -29,13 +29,13 @@ export class NoteGenerator {
             width, // width
             1,    // height
             0xFF6347    // color
-            )
+        )
             .setDepth(1)
-            .setOrigin(0,0);
+            .setOrigin(0, 0);
         scene.physics.add.existing(this.destroyLine);
 
         // 미디 사각형 생성
-        notes.forEach(n=>{
+        notes.forEach(n => {
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
                 start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine));
         });
@@ -44,7 +44,7 @@ export class NoteGenerator {
 
     goDown() {
 
-        this.noteArray.forEach(n=>{
+        this.noteArray.forEach(n => {
             if (n.startAt <= this.scene.timerCount) {
                 n.graphic.y += this.speed;
                 n.basic.y += this.speed;
@@ -68,12 +68,12 @@ export class NoteRectangle {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        let length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 *2;  // 사각형의 길이
+        let length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 * 2;  // 사각형의 길이
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
         let depth = 0;    // 하얀 건반: 0, 검은 건반: 1 (검은 건반이 위로 가도록)
-        
+
         // 너무 긴 사각형 줄이기
         const max = timeDivision * 1.8;
         if (length > max) {
@@ -82,18 +82,17 @@ export class NoteRectangle {
 
         if (blackNote.includes(pos))    // 샵이라면
         {
-            pos = (octave * 7 * s_w) + ((Math.floor(pos/2)+1) * s_w) - s_w / 4;
+            pos = (octave * 7 * s_w) + ((Math.floor(pos / 2) + 1) * s_w) - s_w / 4;
             s_w /= 2;
             depth = 1;  // 검은 건반이 위로
         }
-        else
-        {
+        else {
             if (pos === 0) { pos = octave * 7 * s_w; }
             else if (pos < 5) {
-                pos = (octave * 7 * s_w) + ((pos/2) * s_w);
+                pos = (octave * 7 * s_w) + ((pos / 2) * s_w);
             }
-            else { 
-                pos = (octave * 7 * s_w) + ((Math.floor(pos/2)+1) * s_w);
+            else {
+                pos = (octave * 7 * s_w) + ((Math.floor(pos / 2) + 1) * s_w);
             }
         }
 
@@ -105,13 +104,13 @@ export class NoteRectangle {
             0.1, 0.1, 0.7, 0.7);
         this.pressed.fillGradientStyle(0x8470FF, 0x8470FF, 0x8A2BE2, 0x8A2BE2,
             0.1, 0.1, 0.7, 0.7);
-        this.pressed.fillRect(pos, -length-line, s_w, length);
+        this.pressed.fillRect(pos, -length - line, s_w, length);
         this.pressed.strokeRect(
             pos + 1,
-            -length-1, 
-            s_w - line, 
+            -length - 1,
+            s_w - line,
             length - line
-            );
+        );
 
         /* graphic: note별 길이에 맞는 사각형(흰색 그라데이션) */
         this.graphic = scene.add.graphics().setDepth(depth);
@@ -119,13 +118,13 @@ export class NoteRectangle {
             0.05, 0.05, 0.7, 0.7);
         this.graphic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
             0.05, 0.05, 0.7, 0.7);
-        this.graphic.fillRect(pos, -length-line, s_w, length);
+        this.graphic.fillRect(pos, -length - line, s_w, length);
         this.graphic.strokeRect(
             pos + 1,
-            -length-1, 
-            s_w - line, 
+            -length - 1,
+            s_w - line,
             length - line
-            );
+        );
 
         /* basic: 기본 크기 사각형(흰색) */
         const basicLength = 12;
@@ -133,13 +132,13 @@ export class NoteRectangle {
         this.basic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0x8470FF, 0x8470FF,
             0.5, 0.5, 1.0, 1.0);
         this.basic.fillStyle(0xFFFFFF, 1.0);
-        this.basic.fillRect(pos, -basicLength-line, s_w, basicLength);
+        this.basic.fillRect(pos, -basicLength - line, s_w, basicLength);
         this.basic.strokeRect(
             pos + 1,
-            -basicLength-2, 
-            s_w - line, 
+            -basicLength - 2,
+            s_w - line,
             basicLength - line + 1
-            );
+        );
 
 
         // 충돌 감지 추가
