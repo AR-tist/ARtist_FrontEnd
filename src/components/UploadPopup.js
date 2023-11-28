@@ -124,6 +124,7 @@ const UploadPopup = ({ onClose }) => {
       .catch((error) => {
         console.error("Upload failed:", error);
       });
+      dispatch(setLoading(false))
   };
 
   //DB 수정하면 
@@ -153,13 +154,14 @@ const UploadPopup = ({ onClose }) => {
   };
 
   const handleUpload = () => {
+    dispatch(setLoading(true))
     if (file && title) {
       const fileName = file.name.toLowerCase();
       if (fileName.endsWith(".midi") || fileName.endsWith(".mp3") || fileName.endsWith(".mid")) {
         // Check the file extension to determine the type
         const fileType = fileName.endsWith(".midi") || fileName.endsWith('.mid') ? "MIDI" : "MP3";
 
-        dispatch(setLoading(true))
+        
         if (fileType === "MIDI") {
           console.log("Uploading MIDI file:", file);
           uploadMIDI(file, undefined, title, subtitle, name, password);
@@ -181,7 +183,7 @@ const UploadPopup = ({ onClose }) => {
             });
           });
         }
-        dispatch(setLoading(false))
+        
       } else {
         console.log("Invalid file type selected. Not uploading.");
       }
