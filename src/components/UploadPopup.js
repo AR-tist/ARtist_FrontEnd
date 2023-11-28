@@ -12,7 +12,7 @@ Modal.setAppElement("#root"); // 루트 요소의 ID가 'root'라고 가정합�
 
 const UploadPopup = ({ onClose }) => {
   const dispatch = useDispatch();
-  const name = useSelector((state) => state.user.name);
+  const name = useSelector((state) => state.user.nickname);
 
   const [file, setFile] = useState(null); // 음악 파일
   const [image, setImage] = useState(null); // 이미지 상태 변수 추가
