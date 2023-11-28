@@ -83,49 +83,72 @@ export class Keyboard {
     onKeydown(event) {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
-        this.handleKey(event.key, 'down', this.octave, this.start_idx);
+        const key = event.key.charCodeAt(0);
+        this.handleKey(key, 'down', this.octave, this.start_idx);
     }
 
     onKeyup(event) {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
-        if (event.key === 'x' & this.octave < this.num - 1) {
+        const key = event.key.charCodeAt(0);
+        if (key === 120 & this.octave < this.num - 1) {
             for (let idx = 0; idx < 7; idx++)
                 this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
             this.octave += 1
             return
         }
-        if (event.key === 'z' && this.octave > 0) {
+        if (key === 122 && this.octave > 0) {
             for (let idx = 0; idx < 7; idx++)
                 this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
             this.octave -= 1
             return
         }
-        this.handleKey(event.key, 'up', this.octave, this.start_idx);
+        this.handleKey(key, 'up', this.octave, this.start_idx);
     }
 
     handleKey(key, action, octave = 0, start_idx = 1) {
         let noteIdx;
         let mode = 0;
         switch (key) {
-            case 'a': noteIdx = 0; break;
-            case 's': noteIdx = 1; break;
-            case 'd': noteIdx = 2; break;
-            case 'f': noteIdx = 3; break;
-            case 'g': noteIdx = 4; break;
-            case 'h': noteIdx = 5; break;
-            case 'j': noteIdx = 6; break;
-            case 'k': noteIdx = 7; break;
-            case 'l': noteIdx = 8; break;
-            case ';': noteIdx = 9; break;
-            case "'": noteIdx = 10; break;
-            case 'w': noteIdx = 0; mode = 1; break;
-            case 'e': noteIdx = 1; mode = 1; break;
-            case 't': noteIdx = 2; mode = 1; break;
-            case 'y': noteIdx = 3; mode = 1; break;
-            case 'u': noteIdx = 4; mode = 1; break;
-            case 'o': noteIdx = 5; mode = 1; break;
-            case 'p': noteIdx = 6; mode = 1; break;
+            // case 'a': noteIdx = 0; break;
+            // case 's': noteIdx = 1; break;
+            // case 'd': noteIdx = 2; break;
+            // case 'f': noteIdx = 3; break;
+            // case 'g': noteIdx = 4; break;
+            // case 'h': noteIdx = 5; break;
+            // case 'j': noteIdx = 6; break;
+            // case 'k': noteIdx = 7; break;
+            // case 'l': noteIdx = 8; break;
+            // case ';': noteIdx = 9; break;
+            // case "'": noteIdx = 10; break;
+            // case 'w': noteIdx = 0; mode = 1; break;
+            // case 'e': noteIdx = 1; mode = 1; break;
+            // case 't': noteIdx = 2; mode = 1; break;
+            // case 'y': noteIdx = 3; mode = 1; break;
+            // case 'u': noteIdx = 4; mode = 1; break;
+            // case 'o': noteIdx = 5; mode = 1; break;
+            // case 'p': noteIdx = 6; mode = 1; break;
+            // convert char to ASCII code
+            case 97: noteIdx = 0; break;
+            case 115: noteIdx = 1; break;
+            case 100: noteIdx = 2; break;
+            case 102: noteIdx = 3; break;
+            case 103: noteIdx = 4; break;
+            case 104: noteIdx = 5; break;
+            case 106: noteIdx = 6; break;
+            case 107: noteIdx = 7; break;
+            case 108: noteIdx = 8; break;
+            case 59: noteIdx = 9; break;
+            case 39: noteIdx = 10; break;
+            case 119: noteIdx = 0; mode = 1; break;
+            case 101: noteIdx = 1; mode = 1; break;
+            case 116: noteIdx = 2; mode = 1; break;
+            case 121: noteIdx = 3; mode = 1; break;
+            case 117: noteIdx = 4; mode = 1; break;
+            case 111: noteIdx = 5; mode = 1; break;
+            case 112: noteIdx = 6; mode = 1; break;
+
+
             default: return;
         }
 

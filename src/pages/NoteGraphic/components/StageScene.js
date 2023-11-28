@@ -58,13 +58,15 @@ const StageScene = () => {
     const keydown_event = (event) => {
       if (event.repeat) return;
       if (piano_instance.current.tone.loaded !== true) return;
-      dispatch({ type: 'socket/keyDown', payload: { key: event.key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+      const key = event.key.charCodeAt(0);
+      dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
     }
 
     const keyup_event = (event) => {
       if (event.repeat) return;
       if (piano_instance.current.tone.loaded !== true) return;
-      dispatch({ type: 'socket/keyUp', payload: { key: event.key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+      const key = event.key.charCodeAt(0);
+      dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
     }
 
     document.removeEventListener('keydown', keydown_event);
