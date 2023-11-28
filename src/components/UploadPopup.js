@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import axiosInstance from "../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMidiList } from "../store/slices/midi/midiAction";
+import { fetchMidiList, setLoading } from "../store/slices/midi/midiAction";
 import * as mm from "@magenta/music/es6";
 import "./UploadPopup.css";
 import YoutubeUploadModal from "../pages/MidiList/components/YoutubeUploadModal";
@@ -12,7 +12,7 @@ Modal.setAppElement("#root"); // 루트 요소의 ID가 'root'라고 가정합�
 
 const UploadPopup = ({ onClose }) => {
   const dispatch = useDispatch();
-  const name = useSelector((state) => state.user.nickname);
+  const name = useSelector((state) => state.user.user_instance.nickname);
 
   const [file, setFile] = useState(null); // 음악 파일
   const [image, setImage] = useState(null); // 이미지 상태 변수 추가
@@ -111,7 +111,6 @@ const UploadPopup = ({ onClose }) => {
     formData.append("poster", poster);
     formData.append("password", password);
 
-
     axiosInstance
       .post("/midi/upload", formData, {
         headers: {
@@ -160,6 +159,7 @@ const UploadPopup = ({ onClose }) => {
         // Check the file extension to determine the type
         const fileType = fileName.endsWith(".midi") || fileName.endsWith('.mid') ? "MIDI" : "MP3";
 
+        dispatch(setLoading(true))
         if (fileType === "MIDI") {
           console.log("Uploading MIDI file:", file);
           uploadMIDI(file, undefined, title, subtitle, name, password);
@@ -181,6 +181,7 @@ const UploadPopup = ({ onClose }) => {
             });
           });
         }
+        dispatch(setLoading(false))
       } else {
         console.log("Invalid file type selected. Not uploading.");
       }
