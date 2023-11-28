@@ -78,23 +78,12 @@ export class Keyboard {
 
         document.addEventListener('keydown', this.boundKeydown);
         document.addEventListener('keyup', this.boundKeyup);
-
-        // document.addEventListener('keydown', (event) => {
-        //     if (event.repeat) return;
-        //     if (this.tone.loaded !== true) return;
-        //     this.handleKey(event.key, 'down');
-        // });
-        // document.addEventListener('keyup', (event) => {
-        //     if (event.repeat) return;
-        //     if (this.tone.loaded !== true) return;
-        //     this.handleKey(event.key, 'up');
-        // });
     }
 
     onKeydown(event) {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
-        this.handleKey(event.key, 'down');
+        this.handleKey(event.key, 'down', this.octave, this.start_idx);
     }
 
     onKeyup(event) {

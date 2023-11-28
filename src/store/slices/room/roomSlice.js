@@ -5,7 +5,9 @@ const roomSlice = createSlice({
     name: "room",
     initialState: {
         room: new Room({}),
-        start: false
+        start: false,
+        keydown: {},
+        keyup: {},
     },
 
     reducers: {
@@ -24,7 +26,13 @@ const roomSlice = createSlice({
         },
         setStart(state, action) {
             state.start = action.payload.start;
-        }
+        },
+        setKeydown(state, action) {
+            state.keydown = action.payload.keydown;
+        },
+        setKeyup(state, action) {
+            state.keyup = action.payload.keyup;
+        },
     },
 });
 

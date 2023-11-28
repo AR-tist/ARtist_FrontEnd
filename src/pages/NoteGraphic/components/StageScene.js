@@ -12,6 +12,10 @@ const StageScene = () => {
   const start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   console.log(midiFile);
+  let piano_instance = null;
+
+  const keydown = useSelector(state => state.room.keydown);
+  const keyup = useSelector(state => state.room.keyup);
 
   function preload() { }
 
@@ -44,8 +48,32 @@ const StageScene = () => {
     console.log(notes);
 
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
+
+    // Piano Section
     this.piano = new Keyboard(this, width, height, 2, 7);
     this.piano.setInput(document);
+    piano_instance = this.piano;
+
+    // event listener for keyboard
+    const keydown_event = (event) => {
+      if (event.repeat) return;
+      if (this.piano.tone.loaded !== true) return;
+      dispatch({ type: 'socket/keyDown', payload: { key: event.key, octave: this.piano.octave, start_idx: this.piano.start_idx } });
+    }
+
+    const keyup_event = (event) => {
+      if (event.repeat) return;
+      if (this.piano.tone.loaded !== true) return;
+      dispatch({ type: 'socket/keyUp', payload: { key: event.key, octave: this.piano.octave, start_idx: this.piano.start_idx } });
+    }
+
+    document.removeEventListener('keydown', keydown_event);
+    document.removeEventListener('keyup', keyup_event);
+
+    document.addEventListener('keydown', keydown_event);
+    document.addEventListener('keyup', keyup_event);
+
+    // ====================
 
     this.timerCount = 0;
     this.isPaused = false;
@@ -90,6 +118,18 @@ const StageScene = () => {
       this.noteGraphic.goDown();
     }
   }
+
+  useEffect(() => {
+    if (piano_instance) {
+      piano_instance.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx);
+    }
+  }, [keydown]);
+
+  useEffect(() => {
+    if (piano_instance) {
+      piano_instance.handleKey(keyup.key, 'up', keyup.octave, keyup.start_idx);
+    }
+  }, [keyup]);
 
 
   useEffect(() => {

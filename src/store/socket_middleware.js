@@ -1,6 +1,6 @@
 import Room from '../models/Room'
 import { wsbaseURL } from '../utils/axios'
-import { setRoom, setStart } from './slices/room/roomAction'
+import { setKeydown, setRoom, setStart, setKeyup } from './slices/room/roomAction'
 import { setOngoingCode } from './slices/room/roomAction'
 
 
@@ -52,6 +52,12 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                 else if (data.type === 'start') {
                     dispatch(setStart(true));
                 }
+                else if (data.type === 'keyDown') {
+                    dispatch(setKeydown(data.data));
+                }
+                else if (data.type === 'keyUp') {
+                    dispatch(setKeyup(data.data));
+                }
             })
             socket.on('close', () => {
                 dispatch(setRoom(new Room({ error_code: 1 })));
@@ -67,6 +73,12 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
             break
         case 'socket/imready':
             socket.send(JSON.stringify({ type: 'imready' }))
+            break
+        case 'socket/keyDown':
+            socket.send(JSON.stringify({ type: 'keyDown', data: action.payload }))
+            break
+        case 'socket/keyUp':
+            socket.send(JSON.stringify({ type: 'keyUp', data: action.payload }))
             break
 
         default:
