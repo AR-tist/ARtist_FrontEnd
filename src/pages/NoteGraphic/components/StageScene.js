@@ -134,10 +134,8 @@ const StageScene = () => {
 
 
   useEffect(() => {
-    // const width = window.innerWidth * window.devicePixelRatio;
-    const width = 1000
-    const height = 500;
-    // const height = window.innerHeight * window.devicePixelRatio;
+    const width = window.innerWidth * window.devicePixelRatio;
+    const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
       width: width,
