@@ -83,7 +83,7 @@ export const onebyoneMIDI = (track) => {
     const find_start_at_the_same_time = (idx) => {
         let start_idxs = [idx,]
         for (let i = idx + 1; i < _track.length; i++) {
-            if (_track[i].deltaTime !== 0 || _track[i].type !== 9) {
+            if (_track[i].deltaTime > 10 || _track[i].type !== 9) {
                 break
             } else {
                 start_idxs.push(i)
@@ -94,6 +94,7 @@ export const onebyoneMIDI = (track) => {
     // 
 
     for (let idx = 0 < _track.length - 1; idx++;) {
+        // 누르는 이벤트를 찾음
         try {
             if (_track[idx].type !== 9)
                 continue
@@ -119,7 +120,7 @@ export const onebyoneMIDI = (track) => {
         // 다음 시작되는 지점 앞에 끝나는 지점을 삽입
         if (start_events.length === 0) continue
         for (let i = idx + start_events.length; i < _track.length; i++) {
-            if (_track[i].type === 9 && _track[i].deltaTime !== 0) {
+            if (_track[i].type === 9 && _track[i].deltaTime > 10) {
                 // console.log('next start', i, _track[i]);
                 for (let j = 0; j < start_events.length; j++)
                     _track.splice(i + j, 0, start_events[j]);
