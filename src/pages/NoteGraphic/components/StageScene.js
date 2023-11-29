@@ -159,12 +159,12 @@ const StageScene = () => {
           debug: false,
         }
       },
-      scale: {
-        mode: Phaser.Scale.ENVELOP,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: width,
-        height: height,
-      },
+      // scale: {
+      //   mode: Phaser.Scale.ENVELOP,
+      //   autoCenter: Phaser.Scale.CENTER_BOTH,
+      //   width: width,
+      //   height: height,
+      // },
       scene: {
         preload,
         create,
