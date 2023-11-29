@@ -24,7 +24,9 @@ const StageScene = () => {
   function preload() { }
 
   function create() {
-    const { x, y, width, height } = this.cameras.main;
+    // const { x, y, width, height } = this.cameras.main;
+    const width = 2000;
+    const height = 1000;
 
     this.cameras.main.setBackgroundColor('#27283B')
 
