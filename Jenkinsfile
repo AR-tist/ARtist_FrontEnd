@@ -15,10 +15,12 @@ pipeline {
         }
         stage('Build React App') {
             steps {
-                 sh 'pwd'
-                 sh 'ls'
-                 sh 'sudo npm run build'
-                 sh 'pwd'
+                dir('./') {
+                    sh 'pwd'
+                    sh 'ls'
+                    sh 'sudo npm run build'
+                    sh 'pwd'
+                }
             }
         }
     }
