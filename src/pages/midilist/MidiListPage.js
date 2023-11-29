@@ -11,6 +11,7 @@ import Layout from "../../components/Layout";
 import MusicList from "../../components/MusicList";
 import EditorPick from "../../components/EditorPick";
 
+// MidiListPage 컴포넌트
 const MidiListPage = () => {
   const dispatch = useDispatch();
   const midiList = useSelector((state) => state.midi.midiList);
