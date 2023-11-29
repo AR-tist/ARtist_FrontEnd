@@ -18,7 +18,7 @@ pipeline {
             steps {
                 dir('./') {
                     sh 'pwd'
-                    sh 'ls ./src/pages'
+                    sh 'ls ./src/pages/MidiList'
                     sh 'sudo npm run build'
                     sh 'pwd'
                 }
