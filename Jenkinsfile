@@ -1,9 +1,6 @@
 pipeline {
     agent any
     
-    environment {
-        NODE_PATH = '/var/lib/jenkins/workspace/ARtist - Frontend'
-    }
 
     stages {
         stage('Clone Git Repository') { 
@@ -21,7 +18,7 @@ pipeline {
             steps {
                 dir('./') {
                     sh 'pwd'
-                    sh 'ls'
+                    sh 'ls ./src/pages'
                     sh 'sudo npm run build'
                     sh 'pwd'
                 }
