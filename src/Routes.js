@@ -11,6 +11,7 @@ import PianoWSPage from "./pages/PianoWSPage";
 import Room from "./pages/Room/RoomPage";
 import EquipmentChangePage from "./pages/Equipment/EquipmentChangePage";
 import WholeSong from "./components/WholeSong";
+import DevPage from "./pages/Dev/DevPage.js";
 const App = () => {
   const loading = useSelector((state) => state.midi.loading);
 
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/equipment-change" element={<EquipmentChangePage />} />
         <Route path="/whole-song" element={<WholeSong />} />
         <Route path="*" element={<h1>찾을 수 없는 페이지입니다.</h1>} />
+        <Route path="/dev" element={<DevPage />} />
       </Routes>
       <Loading loading={loading} />
     </>

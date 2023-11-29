@@ -68,11 +68,11 @@ const Row = (props) => {
 
   const handleDownload = () => {
     // Download 로직 작성
-    if (props.downloadUrl) {
-      const fullDownloadUrl = `${axiosInstance.getUri()}${props.downloadUrl}`;
+    if (props.download_url) {
+      const fullDownloadUrl = `${axiosInstance.getUri()}${props.download_url}`;
       window.open(fullDownloadUrl);
     } else {
-      console.error("Download URL is not available.");
+      alert("다운로드 할 수 없습니다.");
     }
   };
 

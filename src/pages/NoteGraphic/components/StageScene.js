@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
+import { onebyoneMIDI } from '../../../utils/Utils';
 
 const StageScene = () => {
   const game = useRef(null);
@@ -24,9 +25,13 @@ const StageScene = () => {
 
   function create() {
     const { x, y, width, height } = this.cameras.main;
+
     this.cameras.main.setBackgroundColor('#27283B')
 
-    const track = midiFile.track[extarctEvent(midiFile.track)].event;
+    // const track = midiFile.track[extarctEvent(midiFile.track)].event;
+
+    const track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
+    console.log(track);
 
     let time = 0;
     let pre_notes = {}
@@ -138,8 +143,10 @@ const StageScene = () => {
 
 
   useEffect(() => {
-    const width = window.innerWidth * window.devicePixelRatio;
-    const height = window.innerHeight * window.devicePixelRatio;
+    const width = 2000;
+    const height = 1000;
+    // const width = window.innerWidth * window.devicePixelRatio;
+    // const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
       width: width,
