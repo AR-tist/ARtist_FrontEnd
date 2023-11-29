@@ -1,6 +1,9 @@
 pipeline {
     agent any
     
+    environment {
+        NODE_OPTIONS = "--max-old-space-size=1536"
+    }
 
     stages {
         stage('Clone Git Repository') { 
@@ -10,12 +13,12 @@ pipeline {
                 sh 'sudo chmod 777 -R /var/lib/jenkins/workspace'
             }
         }
-        // stage('Build') { 
-        //     steps {
-        //         echo 'Build'
-        //         sh 'sudo npm install -g'
-        //         sh 'npm run build'
-        //     }
-        // }
+        stage('Build') { 
+            steps {
+                echo 'Build'
+                sh 'sudo npm install -g'
+                sh 'npm run build'
+            }
+        }
     }
 } 
