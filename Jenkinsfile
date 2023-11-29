@@ -9,20 +9,5 @@ pipeline {
                 echo 'Clone Git Repository'
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                sh 'sudo npm install'
-            }
-        }
-        stage('Build React App') {
-            steps {
-                dir('./') {
-                    sh 'pwd'
-                    sh 'ls ./src/pages/MidiList'
-                    sh 'sudo npm run build'
-                    sh 'pwd'
-                }
-            }
-        }
     }
 } 
