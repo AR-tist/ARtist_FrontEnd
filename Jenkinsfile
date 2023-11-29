@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    environment {
+        NODE_PATH = '/var/lib/jenkins/workspace/ARtist - Frontend'
+    }
 
     stages {
         stage('Clone Git Repository') { 
