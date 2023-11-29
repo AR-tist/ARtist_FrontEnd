@@ -94,12 +94,18 @@ export class Keyboard {
         if (key === 120 & this.octave < this.num - 1) {
             for (let idx = 0; idx < 7; idx++)
                 this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+            for (let idx = 0; idx < 5; idx++)
+                this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+
             this.octave += 1
             return
         }
         if (key === 122 && this.octave > 0) {
             for (let idx = 0; idx < 7; idx++)
                 this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+            for (let idx = 0; idx < 5; idx++)
+                this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+
             this.octave -= 1
             return
         }
@@ -168,7 +174,7 @@ export class Keyboard {
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         } else {
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7 - 2) return
-            this.b_notes[idx + (octave) * 5].setFillStyle(0x333333);
+            this.b_notes[idx + (octave) * 5].setFillStyle(0x666666);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }

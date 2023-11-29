@@ -37,7 +37,7 @@ const Header = () => {
     dispatch(setNickname(tempNickname));
 
     document.getElementById("nickname_input").placeholder = tempNickname;
-    alert('Your nickname "' + tempNickname + '" is saved as a cookie.');
+    alert('닉네임이 "' + tempNickname + '"로 변경되었습니다.');
   };
 
   const navigateToWholeSong = () => {

@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 const StageScene = () => {
   const game = useRef(null);
   const midiFile = useSelector(state => state.midi.midi);
-  const start = useSelector(state => state.room.start);
+  const _start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   const piano_instance = useRef(null);
+  const start = useRef(false);
 
 
   console.log(midiFile);
@@ -114,12 +115,15 @@ const StageScene = () => {
   }
 
   function update(time, delta) {
-    if (this.isPaused && start) {
-    }
-    else {
-      this.noteGraphic.goDown();
-    }
+    if (this.isPaused || start === false) return;
+    this.noteGraphic.goDown();
+
   }
+
+  useEffect(() => {
+    console.log('Stage Scene Start');
+    start.current = _start;
+  }, [_start]);
 
   useEffect(() => {
     if (piano_instance.current === null) return;
