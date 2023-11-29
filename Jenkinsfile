@@ -10,6 +10,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
+                sh 'pwd'
                 sh 'sudo -u ubuntu npm install'
             }
         }
