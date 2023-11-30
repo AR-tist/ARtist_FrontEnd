@@ -82,18 +82,18 @@ const StageScene = () => {
 
     // ====================
 
-    this.timerCount = 0;
+    this.timerCount = new Date().getTime();
     this.isPaused = false;
 
     dispatch({ type: 'socket/imready' });
 
-    // timer
-    this.time.addEvent({
-      delay: 1, // 시간 단위 ms
-      callback: () => this.timerCount += 1, // delay 주기마다 수행할 로직
-      callbackScope: this, // callback 범위
-      loop: true, // 반복 여부
-    });
+    // // timer
+    // this.time.addEvent({
+    //   delay: 1, // 시간 단위 ms
+    //   callback: () => this.timerCount += 1, // delay 주기마다 수행할 로직
+    //   callbackScope: this, // callback 범위
+    //   loop: true, // 반복 여부
+    // });
 
     // pause 버튼
     const pauseButton = this.add.text(window.innerWidth * window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });

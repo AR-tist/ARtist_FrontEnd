@@ -13,7 +13,6 @@ export class NoteGenerator {
         this.tempo = 1.5;
 
         this.speed = height * 0.8 / this.tempo / 60;
-        this.timerCount = 0;
 
         // press collider용 라인 생성
         this.nowPressLine = scene.add.rectangle(
@@ -49,8 +48,10 @@ export class NoteGenerator {
 
     goDown() {
 
+        const currentTime = new Date().getTime() - this.scene.timerCount;
+        console.log(currentTime);
         this.noteArray.forEach(n => {
-            if (n.startAt <= this.scene.timerCount) {
+            if (n.startAt <= currentTime) {
                 n.graphic.y += this.speed;
                 n.basic.y += this.speed;
                 n.pressed.y += this.speed;
