@@ -164,6 +164,10 @@ const StageScene = () => {
         preload,
         create,
         update
+      },
+      fps: {
+        target: 60,
+        forceSetTimeOut: true
       }
     }
     const _game = new Phaser.Game(config);
