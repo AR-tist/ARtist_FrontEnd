@@ -50,6 +50,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                     dispatch(setOngoingCode(2));
                 }
                 else if (data.type === 'start') {
+                    console.log('서버로부터 start 받음')
                     dispatch(setStart(true));
                 }
                 else if (data.type === 'keyDown') {

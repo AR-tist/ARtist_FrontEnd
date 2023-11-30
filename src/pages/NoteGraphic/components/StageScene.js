@@ -119,13 +119,12 @@ const StageScene = () => {
   }
 
   function update(time, delta) {
-    if (this.isPaused || start === false) return;
+    if (this.isPaused || start.current === false) return;
     this.noteGraphic.goDown();
 
   }
 
   useEffect(() => {
-    console.log('Stage Scene Start');
     start.current = _start;
   }, [_start]);
 
