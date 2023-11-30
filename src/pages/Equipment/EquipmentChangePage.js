@@ -23,7 +23,10 @@ const EquipmentChangePage = () => {
         >
           <h1 style={{ fontSize: "25px" }}>장비 변경</h1>
         </div>
-        <div className="EquipmentList" style={{}}>
+        <div
+          className="EquipmentList"
+          style={{ display: "flex", marginLeft: "350px" }}
+        >
           <div
             className="Phone"
             style={{
@@ -31,16 +34,26 @@ const EquipmentChangePage = () => {
               flexDirection: "column",
             }}
           >
-            <img
-              src="./img/장비_휴대폰.png"
-              alt="장비_휴대폰"
+            <div
               style={{
-                marginLeft: "350px",
-                float: "left",
-                width: "200px",
-                height: "200px",
+                border: "1px solid black",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                width: "250px",
               }}
-            />
+            >
+              <img
+                src="./img/장비_휴대폰.png"
+                alt="장비_휴대폰"
+                style={{
+                  float: "left",
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
+              <h5 style={{ fontSize: "20px" }}>휴대폰</h5>
+            </div>
             <button
               style={{
                 display: "block",
@@ -55,10 +68,110 @@ const EquipmentChangePage = () => {
                 src="./img/장비_연결하기.png"
                 alt="장비_연결하기"
                 style={{
-                  marginLeft: "375px",
                   float: "left",
                   width: "150px",
                   height: "30px",
+                  marginLeft: "50px",
+                }}
+              />
+            </button>
+          </div>
+          <div
+            className="Keyboard"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "50px",
+            }}
+          >
+            <div
+              style={{
+                border: "1px solid black",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                width: "250px",
+              }}
+            >
+              <img
+                src="./img/장비_키보드.png"
+                alt="장비_키보드"
+                style={{
+                  float: "left",
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
+              <h5 style={{ fontSize: "20px" }}>키보드</h5>
+            </div>
+            <button
+              style={{
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              <img
+                src="./img/장비_연결하기.png"
+                alt="장비_연결하기"
+                style={{
+                  float: "left",
+                  width: "150px",
+                  height: "30px",
+                  marginLeft: "50px",
+                }}
+              />
+            </button>
+          </div>
+          <div
+            className="Piano"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "50px",
+            }}
+          >
+            <div
+              style={{
+                border: "1px solid black",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                width: "250px",
+              }}
+            >
+              <img
+                src="./img/장비_피아노.png"
+                alt="장비_피아노"
+                style={{
+                  float: "left",
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
+              <h5 style={{ fontSize: "20px" }}>피아노</h5>
+            </div>
+            <button
+              style={{
+                display: "block",
+                backgroundColor: "transparent",
+                border: "none",
+                boxSahdow: "none",
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              <img
+                src="./img/장비_연결하기.png"
+                alt="장비_연결하기"
+                style={{
+                  float: "left",
+                  width: "150px",
+                  height: "30px",
+                  marginLeft: "50px",
                 }}
               />
             </button>
@@ -77,27 +190,44 @@ const EquipmentChangePage = () => {
           <h1 style={{ fontSize: "25px", marginBottom: "10px" }}>
             현재 연결된 장비
           </h1>
-          <div style={{ border: "1px solid black" }}>
-            <img
-              src="./img/장비_휴대폰.png"
-              alt="장비_휴대폰"
+          <div
+            style={{
+              border: "1px solid black",
+              width: "850px",
+              display: "flex",
+            }}
+          >
+            <div
               style={{
+                border: "1px solid black",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                width: "250px",
                 marginTop: "20px",
                 marginLeft: "20px",
                 marginBottom: "20px",
-                float: "left",
-                width: "200px",
-                height: "200px",
               }}
-            />
+            >
+              <img
+                src="./img/장비_휴대폰.png"
+                alt="장비_휴대폰"
+                style={{
+                  float: "left",
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
+              <h5 style={{ fontSize: "20px" }}>휴대폰</h5>
+            </div>
             <div
               style={{
-                marginTop: "20px",
-                marginLeft: "240px",
+                marginTop: "40px",
+                marginLeft: "40px",
                 marginBottom: "20px",
               }}
             >
-              <h3 style={{ marginBottom: "10px" }}>galaxy s23</h3>
+              <h3 style={{ marginBottom: "20px" }}>galaxy s23</h3>
 
               <h3>IP : ???.???.???</h3>
             </div>
