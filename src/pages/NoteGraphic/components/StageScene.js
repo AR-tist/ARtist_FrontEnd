@@ -15,6 +15,19 @@ const StageScene = () => {
   const piano_instance = useRef(null);
   const start = useRef(false);
 
+  const keydown_event = (event) => {
+    if (event.repeat) return;
+    if (piano_instance.current.tone.loaded !== true) return;
+    const key = event.key.charCodeAt(0);
+    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+  }
+
+  const keyup_event = (event) => {
+    if (event.repeat) return;
+    if (piano_instance.current.tone.loaded !== true) return;
+    const key = event.key.charCodeAt(0);
+    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+  }
 
   console.log(midiFile);
 
@@ -63,22 +76,6 @@ const StageScene = () => {
     piano_instance.current = new Keyboard(this, width, height, 2, 7);
     piano_instance.current.setInput(document);
     // event listener for keyboard
-    const keydown_event = (event) => {
-      if (event.repeat) return;
-      if (piano_instance.current.tone.loaded !== true) return;
-      const key = event.key.charCodeAt(0);
-      dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
-    }
-
-    const keyup_event = (event) => {
-      if (event.repeat) return;
-      if (piano_instance.current.tone.loaded !== true) return;
-      const key = event.key.charCodeAt(0);
-      dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
-    }
-
-    document.removeEventListener('keydown', keydown_event);
-    document.removeEventListener('keyup', keyup_event);
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
@@ -182,6 +179,13 @@ const StageScene = () => {
         _game.scene.keys.default.piano.destroy();
       }
 
+
+      document.removeEventListener('keydown', keydown_event);
+      document.removeEventListener('keyup', keyup_event);
+
+      piano_instance.current.removeInput(document)
+      piano_instance.current.destroy()
+      piano_instance.current = null;
       _game.destroy(true);
       game.current = undefined;
 

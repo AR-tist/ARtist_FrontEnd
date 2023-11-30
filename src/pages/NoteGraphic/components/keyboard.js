@@ -80,6 +80,11 @@ export class Keyboard {
         document.addEventListener('keyup', this.boundKeyup);
     }
 
+    removeInput(document) {
+        document.removeEventListener('keydown', this.boundKeydown);
+        document.removeEventListener('keyup', this.boundKeyup);
+    }
+
     onKeydown(event) {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
@@ -215,6 +220,7 @@ export class Keyboard {
         for (const note of this.b_notes) {
             note.destroy();
         }
+
 
         this.w_notes = [];
         this.b_notes = [];
