@@ -37,9 +37,9 @@ const StageScene = () => {
   function preload() { }
 
   function create() {
-    // const { x, y, width, height } = this.cameras.main;
-    const width = 2000;
-    const height = 1000;
+    const { x, y, width, height } = this.cameras.main;
+    // const width = 2000;
+    // const height = 1000;
 
     this.cameras.main.setBackgroundColor('#27283B')
 
@@ -89,8 +89,8 @@ const StageScene = () => {
 
     // timer
     this.time.addEvent({
-      delay: 10, // 시간 단위 ms
-      callback: () => this.timerCount += 10, // delay 주기마다 수행할 로직
+      delay: 1, // 시간 단위 ms
+      callback: () => this.timerCount += 1, // delay 주기마다 수행할 로직
       callbackScope: this, // callback 범위
       loop: true, // 반복 여부
     });
@@ -142,10 +142,8 @@ const StageScene = () => {
 
 
   useEffect(() => {
-    const width = 2000;
-    const height = 1000;
-    // const width = window.innerWidth * window.devicePixelRatio;
-    // const height = window.innerHeight * window.devicePixelRatio;
+    const width = window.innerWidth * window.devicePixelRatio;
+    const height = window.innerHeight * window.devicePixelRatio;
     const config = {
       type: Phaser.AUTO,
       width: width,
@@ -156,12 +154,12 @@ const StageScene = () => {
           debug: false,
         }
       },
-      // scale: {
-      //   mode: Phaser.Scale.ENVELOP,
-      //   autoCenter: Phaser.Scale.CENTER_BOTH,
-      //   width: width,
-      //   height: height,
-      // },
+      scale: {
+        mode: Phaser.Scale.ENVELOP,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: width,
+        height: height,
+      },
       scene: {
         preload,
         create,

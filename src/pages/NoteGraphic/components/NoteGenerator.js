@@ -7,7 +7,12 @@ export class NoteGenerator {
 
         this.scene = scene;
         this.noteArray = [];
-        this.speed = parseFloat(timeDivision) / 157.0 * 2;
+
+        // this.speed = parseFloat(timeDivision) / 157.0 * 2;
+        // 위에서 아래까지 내려오는 시간 2초
+        this.tempo = 1.5;
+
+        this.speed = height * 0.8 / this.tempo / 60;
         this.timerCount = 0;
 
         // press collider용 라인 생성
@@ -37,7 +42,7 @@ export class NoteGenerator {
         // 미디 사각형 생성
         notes.forEach(n => {
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine));
+                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo));
         });
         console.log(this.noteArray);
     }
@@ -57,7 +62,7 @@ export class NoteGenerator {
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine, tempo) {
 
         this.startAt = startAt;
         this.endAt = endAt;
@@ -68,7 +73,9 @@ export class NoteRectangle {
             num = num - start_idx;
         }
         let s_w = width / num / 7;  // 사각형의 폭
-        let length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 * 2;  // 사각형의 길이
+        // let length = (endAt - startAt) * parseFloat(timeDivision) / 2750.0 * 2;  // 사각형의 길이
+        // let length = (endAt - startAt) * parseFloat(timeDivision) / 500;  // 사각형의 길이
+        let length = (endAt - startAt) * height * 0.8 / tempo / 1000
         const octave = Math.floor(note / 12) - start_idx;   // 옥타브
         let pos = note % 12;    // 음에 따른 위치
         const blackNote = [1, 3, 6, 8, 10];
