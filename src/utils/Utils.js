@@ -79,11 +79,11 @@ export const onebyoneMIDI = (track) => {
         return tmp_end_event
     }
 
-    // 같은 deltatime을 가진 start idx를 찾음
+    // 0 deltatime을 가진 start idx를 찾음
     const find_start_at_the_same_time = (idx) => {
         let start_idxs = [idx,]
         for (let i = idx + 1; i < _track.length; i++) {
-            if (_track[i].deltaTime > 10 || _track[i].type !== 9) {
+            if (_track[i].deltaTime > 25 || _track[i].type !== 9) {
                 break
             } else {
                 start_idxs.push(i)
@@ -112,8 +112,7 @@ export const onebyoneMIDI = (track) => {
             if (tmp_end_event === null) {
                 continue
             }
-            if (i !== 0)
-                tmp_end_event.deltaTime = 0;
+            tmp_end_event.deltaTime = 0;
             start_events.push(tmp_end_event);
         }
 
@@ -127,6 +126,10 @@ export const onebyoneMIDI = (track) => {
                 break
             }
         }
+
+        // for (let j = 0; j < start_events.length; j++)
+        //     _track.splice(idx + start_events.length + j, 0, start_events[j]);
+
         idx += start_idxs.length;
     }
     return _track
