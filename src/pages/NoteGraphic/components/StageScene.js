@@ -14,7 +14,7 @@ const StageScene = () => {
   const _start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   const piano_instance = useRef(null);
-  const start = useRef(999999999999999999);
+  const start = useRef(new Date().getTime());
   const isPaused = useRef(true);
 
   const keydown_event = (event) => {
