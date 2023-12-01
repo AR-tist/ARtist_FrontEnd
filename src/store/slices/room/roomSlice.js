@@ -5,7 +5,7 @@ const roomSlice = createSlice({
     name: "room",
     initialState: {
         room: new Room({}),
-        start: false,
+        start: 0,
         keydown: {},
         keyup: {},
     },

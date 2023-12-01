@@ -13,7 +13,7 @@ const StageScene = () => {
   const _start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   const piano_instance = useRef(null);
-  const start = useRef(false);
+  const start = useRef(0);
 
   const keydown_event = (event) => {
     if (event.repeat) return;
@@ -82,7 +82,6 @@ const StageScene = () => {
 
     // ====================
 
-    this.timerCount = new Date().getTime();
     this.isPaused = false;
 
     dispatch({ type: 'socket/imready' });
@@ -104,12 +103,12 @@ const StageScene = () => {
     pauseButton.on('pointerup', function () {
       this.clickCount += 1;
       if (this.clickCount % 2) {
-        this.temp = this.timerCount;
+        // this.temp = this.timerCount;
         this.isPaused = true;
         this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
-        this.timerCount = this.temp;
+        // this.timerCount = this.temp;
         this.isPaused = false;
         this.rec.destroy();
       }
@@ -119,13 +118,14 @@ const StageScene = () => {
   }
 
   function update(time, delta) {
-    if (this.isPaused || start.current === false) return;
-    this.noteGraphic.goDown();
+    if (this.isPaused || start.current === 0) return;
+    this.noteGraphic.goDown(start.current);
 
   }
 
   useEffect(() => {
     start.current = _start;
+    console.log(start.current);
   }, [_start]);
 
   useEffect(() => {
