@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
 import { onebyoneMIDI } from '../../../utils/Utils';
+import { setStart } from '../../../store/slices/room/roomAction';
 
 const StageScene = () => {
   const game = useRef(null);
@@ -13,7 +14,8 @@ const StageScene = () => {
   const _start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
   const piano_instance = useRef(null);
-  const start = useRef(0);
+  const start = useRef(999999999999999999);
+  const isPaused = useRef(true);
 
   const keydown_event = (event) => {
     if (event.repeat) return;
@@ -37,6 +39,7 @@ const StageScene = () => {
   function preload() { }
 
   function create() {
+    dispatch(setStart(0));
     const { x, y, width, height } = this.cameras.main;
     // const width = 2000;
     // const height = 1000;
@@ -82,7 +85,6 @@ const StageScene = () => {
 
     // ====================
 
-    this.isPaused = false;
 
     dispatch({ type: 'socket/imready' });
 
@@ -104,12 +106,12 @@ const StageScene = () => {
       this.clickCount += 1;
       if (this.clickCount % 2) {
         // this.temp = this.timerCount;
-        this.isPaused = true;
+        isPaused.current = true;
         this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
         // this.timerCount = this.temp;
-        this.isPaused = false;
+        isPaused.current = false;
         this.rec.destroy();
       }
     }, this)
@@ -118,13 +120,16 @@ const StageScene = () => {
   }
 
   function update(time, delta) {
-    if (this.isPaused || start.current === 0) return;
+    if (isPaused.current) return;
     this.noteGraphic.goDown(start.current);
 
   }
 
   useEffect(() => {
-    start.current = _start;
+    if (_start === 0) return;
+    start.current = _start + 1000;
+    isPaused.current = false;
+    console.log(new Date().getTime());
     console.log(start.current);
   }, [_start]);
 

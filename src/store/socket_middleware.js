@@ -38,7 +38,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
                         data.data.ongoing_code = 1;
                     }
                     dispatch(setRoom(new Room(data.data)));
-                    dispatch(setStart(false));
+                    dispatch(setStart(0));
                 }
                 else if (data.type === 'host_out') {
                     dispatch(setRoom(new Room({ error_code: 2 })));

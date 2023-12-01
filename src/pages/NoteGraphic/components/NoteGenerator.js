@@ -49,6 +49,7 @@ export class NoteGenerator {
     goDown(timerCount) {
 
         const currentTime = new Date().getTime() - timerCount;
+        if (currentTime < 0) return;
         this.noteArray.forEach(n => {
             if (n.startAt <= currentTime) {
                 n.graphic.y += this.speed;
