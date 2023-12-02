@@ -12,6 +12,13 @@ import Room from "./pages/Room/RoomPage";
 import EquipmentChangePage from "./pages/Equipment/EquipmentChangePage";
 import WholeSong from "./components/WholeSong";
 import DevPage from "./pages/Dev/DevPage.js";
+import EditorPick1Page from "./pages/EditorPick/EditorPick1Page.js";
+import EditorPick2Page from "./pages/EditorPick/EditorPick2Page.js";
+import EditorPick3Page from "./pages/EditorPick/EditorPick3Page.js";
+import EditorPick4Page from "./pages/EditorPick/EditorPick4Page.js";
+import EditorPick5Page from "./pages/EditorPick/EditorPick5Page.js";
+import EditorPick6Page from "./pages/EditorPick/EditorPick6Page.js";
+import EditorPick7Page from "./pages/EditorPick/EditorPick7Page.js";
 const App = () => {
   const loading = useSelector((state) => state.midi.loading);
 
@@ -27,6 +34,14 @@ const App = () => {
         <Route path="/room/:room_id" element={<Room />} />
         <Route path="/equipment-change" element={<EquipmentChangePage />} />
         <Route path="/whole-song" element={<WholeSong />} />
+        <Route path="/editor-pick-1" element={<EditorPick1Page />} />
+        <Route path="/editor-pick-2" element={<EditorPick2Page />} />
+        <Route path="/editor-pick-3" element={<EditorPick3Page />} />
+        <Route path="/editor-pick-4" element={<EditorPick4Page />} />
+        <Route path="/editor-pick-5" element={<EditorPick5Page />} />
+        <Route path="/editor-pick-6" element={<EditorPick6Page />} />
+        <Route path="/editor-pick-7" element={<EditorPick7Page />} />
+
         <Route path="*" element={<h1>찾을 수 없는 페이지입니다.</h1>} />
         <Route path="/dev" element={<DevPage />} />
       </Routes>

@@ -10,6 +10,7 @@ import { fetchMidiList } from "../../store/slices/midi/midiAction";
 import Layout from "../../components/Layout";
 import MusicList from "../../components/MusicList";
 import EditorPick from "../../components/EditorPick";
+import { useNavigate } from "react-router-dom";
 
 // MidiListPage 컴포넌트
 const MidiListPage = () => {
@@ -19,6 +20,8 @@ const MidiListPage = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const navigate = useNavigate(); // useNavigate 사용
 
   useEffect(() => {
     dispatch(fetchMidiList());
@@ -51,12 +54,12 @@ const MidiListPage = () => {
     {
       imageUrl:
         "https://cdn.music-flo.com/image/album/396/287/04/04/404287396_5df0adde.jpg?1576054238835/dims/resize/175/quality/90",
-      title: "올 크리스마스에틑 색다른 K-캐럴을",
+      title: "올 크리스마스에는 색다른 K-캐럴을",
     },
     {
       imageUrl:
-        "https://cdn.music-flo.com/image/album/798/146/00/04/400146798_5cb1354e.jpg?1555117391586/dims/resize/175/quality/90",
-      title: "눈 오는 날 카페 창가에 앉아 듣는 노래",
+        "https://cdn.music-flo.com/poc/p/image/channel/rep/20231120/718a0fa972144a4094a9b6d64fdec56f.jpg/dims/resize/175/quality/90",
+      title: "추억의 국내 겨울 노래",
     },
     {
       imageUrl:
@@ -75,11 +78,18 @@ const MidiListPage = () => {
     },
   ];
 
+  const handleEditorPickClick = (index) => {
+    navigate(`/editor-pick-${index + 1}`); // useNavigate로 페이지 이동
+  };
+
   return (
     <>
       <Header user={nickname} />
       <Layout>
-        <EditorPick items={editorpicks} />
+        <EditorPick
+          items={editorpicks}
+          onEditorPickClick={handleEditorPickClick}
+        />
         <MusicList midiList={midiList} />
       </Layout>
       {/* <div id="root">
