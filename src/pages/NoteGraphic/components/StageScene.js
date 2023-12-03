@@ -11,6 +11,7 @@ const StageScene = () => {
   const midiFile = useSelector(state => state.midi.midi);
   const start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
+  const piano = useRef(null);
   console.log(midiFile);
 
   function preload() { }
@@ -44,8 +45,8 @@ const StageScene = () => {
     console.log(notes);
 
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
-    this.piano = new Keyboard(this, width, height, 2, 7);
-    this.piano.setInput(document);
+    piano.current = new Keyboard(this, width, height, 2, 7);
+    piano.current.setInput(document);
 
     this.timerCount = 0;
     this.isPaused = false;
@@ -124,12 +125,14 @@ const StageScene = () => {
 
 
     return () => {
+      piano.current.destroy();
       if (_game.scene && _game.scene.keys && _game.scene.keys.default && _game.scene.keys.default.piano) {
         _game.scene.keys.default.piano.destroy();
       }
 
       _game.destroy(true);
       game.current = undefined;
+
 
 
     };
