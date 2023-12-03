@@ -5,22 +5,51 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
+import { onebyoneMIDI } from '../../../utils/Utils';
+import { setStart } from '../../../store/slices/room/roomAction';
 
 const StageScene = () => {
   const game = useRef(null);
   const midiFile = useSelector(state => state.midi.midi);
-  const start = useSelector(state => state.room.start);
+  const _start = useSelector(state => state.room.start);
   const dispatch = useDispatch();
-  const piano = useRef(null);
+  const piano_instance = useRef(null);
+  const start = useRef(new Date().getTime());
+  const isPaused = useRef(true);
+
+  const keydown_event = (event) => {
+    if (event.repeat) return;
+    if (piano_instance.current.tone.loaded !== true) return;
+    const key = event.key.charCodeAt(0);
+    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+  }
+
+  const keyup_event = (event) => {
+    if (event.repeat) return;
+    if (piano_instance.current.tone.loaded !== true) return;
+    const key = event.key.charCodeAt(0);
+    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+  }
+
   console.log(midiFile);
+
+  const keydown = useSelector(state => state.room.keydown);
+  const keyup = useSelector(state => state.room.keyup);
 
   function preload() { }
 
   function create() {
+    dispatch(setStart(0));
     const { x, y, width, height } = this.cameras.main;
+    // const width = 2000;
+    // const height = 1000;
+
     this.cameras.main.setBackgroundColor('#27283B')
 
-    const track = midiFile.track[extarctEvent(midiFile.track)].event;
+    // const track = midiFile.track[extarctEvent(midiFile.track)].event;
+
+    const track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
+    console.log(track);
 
     let time = 0;
     let pre_notes = {}
@@ -45,21 +74,26 @@ const StageScene = () => {
     console.log(notes);
 
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
-    piano.current = new Keyboard(this, width, height, 2, 7);
-    piano.current.setInput(document);
+    // Piano Section
+    piano_instance.current = new Keyboard(this, width, height, 2, 7);
+    piano_instance.current.setInput(document);
+    // event listener for keyboard
 
-    this.timerCount = 0;
-    this.isPaused = false;
+    document.addEventListener('keydown', keydown_event);
+    document.addEventListener('keyup', keyup_event);
+
+    // ====================
+
 
     dispatch({ type: 'socket/imready' });
 
-    // timer
-    this.time.addEvent({
-      delay: 10, // 시간 단위 ms
-      callback: () => this.timerCount += 10, // delay 주기마다 수행할 로직
-      callbackScope: this, // callback 범위
-      loop: true, // 반복 여부
-    });
+    // // timer
+    // this.time.addEvent({
+    //   delay: 1, // 시간 단위 ms
+    //   callback: () => this.timerCount += 1, // delay 주기마다 수행할 로직
+    //   callbackScope: this, // callback 범위
+    //   loop: true, // 반복 여부
+    // });
 
     // pause 버튼
     const pauseButton = this.add.text(window.innerWidth * window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
@@ -70,13 +104,13 @@ const StageScene = () => {
     pauseButton.on('pointerup', function () {
       this.clickCount += 1;
       if (this.clickCount % 2) {
-        this.temp = this.timerCount;
-        this.isPaused = true;
+        // this.temp = this.timerCount;
+        isPaused.current = true;
         this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
-        this.timerCount = this.temp;
-        this.isPaused = false;
+        // this.timerCount = this.temp;
+        isPaused.current = false;
         this.rec.destroy();
       }
     }, this)
@@ -85,12 +119,29 @@ const StageScene = () => {
   }
 
   function update(time, delta) {
-    if (this.isPaused && start) {
-    }
-    else {
-      this.noteGraphic.goDown();
-    }
+    if (isPaused.current) return;
+    this.noteGraphic.goDown(start.current);
+
   }
+
+  useEffect(() => {
+    if (_start === 0) return;
+    start.current = _start + 1000;
+    isPaused.current = false;
+    console.log(new Date().getTime());
+    console.log(start.current);
+  }, [_start]);
+
+  useEffect(() => {
+    if (piano_instance.current === null) return;
+    piano_instance.current.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx);
+
+  }, [keydown]);
+
+  useEffect(() => {
+    if (piano_instance.current === null) return;
+    piano_instance.current.handleKey(keyup.key, 'up', keyup.octave, keyup.start_idx);
+  }, [keyup]);
 
 
   useEffect(() => {
@@ -116,6 +167,10 @@ const StageScene = () => {
         preload,
         create,
         update
+      },
+      fps: {
+        target: 60,
+        forceSetTimeOut: true
       }
     }
     const _game = new Phaser.Game(config);
@@ -130,6 +185,13 @@ const StageScene = () => {
         _game.scene.keys.default.piano.destroy();
       }
 
+
+      document.removeEventListener('keydown', keydown_event);
+      document.removeEventListener('keyup', keyup_event);
+
+      piano_instance.current.removeInput(document)
+      piano_instance.current.destroy()
+      piano_instance.current = null;
       _game.destroy(true);
       game.current = undefined;
 

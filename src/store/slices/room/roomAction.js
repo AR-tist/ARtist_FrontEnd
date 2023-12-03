@@ -25,3 +25,15 @@ export const setStart = (start) => {
         dispatch(Actions.setStart({ start: start }));
     }
 }
+
+export const setKeydown = (keydown) => {
+    return (dispatch) => {
+        dispatch(Actions.setKeydown({ keydown: keydown }));
+    }
+}
+
+export const setKeyup = (keyup) => {
+    return (dispatch) => {
+        dispatch(Actions.setKeyup({ keyup: keyup }));
+    }
+}

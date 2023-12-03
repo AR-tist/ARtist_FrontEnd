@@ -4,6 +4,7 @@ import { inxtoNote } from '../../utils/tone';
 import NoteDisplay from './components/NoteDisplay';
 import * as Tone from 'tone';
 import { useSelector } from 'react-redux';
+import { onebyoneMIDI } from '../../utils/Utils';
 
 
 const MidiPlayPage = () => {
@@ -77,7 +78,8 @@ const MidiPlayPage = () => {
         if (midiFile === null) return;
         console.log(midiFile);
         console.log(extarctEvent(midiFile.track));
-        let track = midiFile.track[extarctEvent(midiFile.track)].event;
+        // let track = midiFile.track[extarctEvent(midiFile.track)].event;
+        let track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
 
         let time = []
         // 각 이벤트의 시간을 계산한다.

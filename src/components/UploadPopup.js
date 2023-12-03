@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import axiosInstance from "../utils/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMidiList } from "../store/slices/midi/midiAction";
+import { fetchMidiList, setLoading } from "../store/slices/midi/midiAction";
 import * as mm from "@magenta/music/es6";
 import "./UploadPopup.css";
 import YoutubeUploadModal from "../pages/MidiList/components/YoutubeUploadModal";
@@ -12,7 +12,7 @@ Modal.setAppElement("#root"); // 루트 요소의 ID가 'root'라고 가정합�
 
 const UploadPopup = ({ onClose }) => {
   const dispatch = useDispatch();
-  const name = useSelector((state) => state.user.name);
+  const name = useSelector((state) => state.user.user_instance.nickname);
 
   const [file, setFile] = useState(null); // 음악 파일
   const [image, setImage] = useState(null); // 이미지 상태 변수 추가
@@ -111,7 +111,6 @@ const UploadPopup = ({ onClose }) => {
     formData.append("poster", poster);
     formData.append("password", password);
 
-
     axiosInstance
       .post("/midi/upload", formData, {
         headers: {
@@ -125,6 +124,7 @@ const UploadPopup = ({ onClose }) => {
       .catch((error) => {
         console.error("Upload failed:", error);
       });
+      dispatch(setLoading(false))
   };
 
   //DB 수정하면 
@@ -154,12 +154,14 @@ const UploadPopup = ({ onClose }) => {
   };
 
   const handleUpload = () => {
+    dispatch(setLoading(true))
     if (file && title) {
       const fileName = file.name.toLowerCase();
       if (fileName.endsWith(".midi") || fileName.endsWith(".mp3") || fileName.endsWith(".mid")) {
         // Check the file extension to determine the type
         const fileType = fileName.endsWith(".midi") || fileName.endsWith('.mid') ? "MIDI" : "MP3";
 
+        
         if (fileType === "MIDI") {
           console.log("Uploading MIDI file:", file);
           uploadMIDI(file, undefined, title, subtitle, name, password);
@@ -181,6 +183,7 @@ const UploadPopup = ({ onClose }) => {
             });
           });
         }
+        
       } else {
         console.log("Invalid file type selected. Not uploading.");
       }
