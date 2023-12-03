@@ -10,7 +10,7 @@ export class NoteGenerator {
 
         // this.speed = parseFloat(timeDivision) / 157.0 * 2;
         // 위에서 아래까지 내려오는 시간 2초
-        this.tempo = 1.5;
+        this.tempo = 2.0;
 
         this.speed = height * 0.8 / this.tempo / 60;
 
@@ -41,7 +41,7 @@ export class NoteGenerator {
 
         // 미디 사각형 생성
         notes.forEach(n => {
-            this.noteArray.push(new NoteRectangle(n.note - 12, n.startAt, n.endAt, scene, width, height,
+            this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
                 start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo));
         });
         console.log(this.noteArray);
