@@ -180,7 +180,6 @@ const StageScene = () => {
 
 
     return () => {
-      piano.current.destroy();
       if (_game.scene && _game.scene.keys && _game.scene.keys.default && _game.scene.keys.default.piano) {
         _game.scene.keys.default.piano.destroy();
       }
