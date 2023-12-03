@@ -57,6 +57,7 @@ export class Keyboard {
             this.num = this.num - this.start_idx;
         }
 
+        this.o_w = width / this.num;    // octave width
         let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 };
 
         for (let j = 0; j < this.num; j++) {
@@ -70,6 +71,42 @@ export class Keyboard {
         }
         this.boundKeydown = this.onKeydown.bind(this);
         this.boundKeyup = this.onKeyup.bind(this);
+
+        // 세로선
+        for (let i = 1; i <= this.num; i++) {
+            scene.add.rectangle(
+                s_w * 7 * i, // x 
+                0, // y
+                1, // width
+                height,    // height
+                0xFFFFFF,    // color
+                0.15 // alpha
+            )
+                .setDepth(1)
+                .setOrigin(0, 0);
+        }
+
+        // 키보드일 때 텍스트
+        this.texts = [];
+        const textSize = 18;
+        this.texts.push(scene.add.text(0 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(1 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'S', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(2 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'D', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(3 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'F', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(4 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'G', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(5 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'H', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(6 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'J', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(7 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'K', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(8 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'L', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(9 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, ';', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(10 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, '\'', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(1 * s_w -textSize*0.3, height - s_h + 5, 'W', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(2 * s_w -textSize*0.3, height - s_h + 5, 'E', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(4 * s_w -textSize*0.3, height - s_h + 5, 'T', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(5 * s_w -textSize*0.3, height - s_h + 5, 'Y', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(6 * s_w -textSize*0.3, height - s_h + 5, 'U', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(8 * s_w -textSize*0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(9 * s_w -textSize*0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
 
 
 
@@ -166,6 +203,9 @@ export class Keyboard {
                 this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
             this.octave += 1
+            for (let i = 0; i < 18; i++) {
+                this.texts[i].setX(this.texts[i].x + this.o_w);
+            }
             return
         }
         if (key === 122 && this.octave > 0) {
@@ -175,6 +215,9 @@ export class Keyboard {
                 this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
             this.octave -= 1
+            for (let i = 0; i < 18; i++) {
+                this.texts[i].setX(this.texts[i].x - this.o_w);
+            }
             return
         }
         this.handleKey(key, 'up', this.octave, this.start_idx);
