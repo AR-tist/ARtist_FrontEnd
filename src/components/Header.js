@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import UploadPopup from "./UploadPopup.js";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { setNickname } from "../store/slices/user/userAction";
 const Header = () => {
   const dispatch = useDispatch();
@@ -21,11 +21,20 @@ const Header = () => {
     navigate("/equipment-change");
   };
 
-  const setCookie = () => {
-    let tempNickname = document.getElementById("nickname_input").value;
-    if (tempNickname == "") {
-      tempNickname = document.getElementById("nickname_input").placeholder;
+  const handleNicknameChange = () => {
+    const nicknameInput = document.getElementById("nickname_input");
+    const tempNickname = nicknameInput.value.trim();
+
+    if (tempNickname === "") {
+      // 입력값이 없으면 입력 필드에 포커스 설정
+      nicknameInput.focus();
+    } else {
+      // 입력값이 있으면 쿠키 저장 및 dispatch(setNickname()) 호출
+      setCookie(tempNickname);
     }
+  };
+
+  const setCookie = (tempNickname) => {
     const expires = new Date();
     expires.setDate(expires.getDate() + 7); // 7일 후 만료
     cookie.save("nickname", tempNickname, {
@@ -257,7 +266,7 @@ const Header = () => {
                 marginTop: "20px",
                 cursor: "pointer",
               }}
-              onClick={setCookie}
+              onClick={handleNicknameChange}
             >
               닉네임 변경
             </button>
