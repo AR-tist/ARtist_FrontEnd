@@ -20,7 +20,7 @@ const WholeSong = () => {
           fontSize: "28px",
         }}
       >
-        가을에 듣기 좋은 곡 ~
+        전체 업로드 곡
       </h2>
       <Layout>
         <MusicList midiList={midiList} />
