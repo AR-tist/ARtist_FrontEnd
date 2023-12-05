@@ -1,6 +1,6 @@
 const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
   return (
-    <div style={{ marginTop: "50px" }}>
+    <div style={{ marginTop: "50px", marginRight: "110px" }}>
       <div
         style={{
           width: "400px",

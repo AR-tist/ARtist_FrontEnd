@@ -4,14 +4,13 @@ import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../../store/slices/midi/midiAction";
-import axiosInstance from './../../utils/axios';
-import { fileToMidi } from './../../utils/Utils';
-import { setMidi } from './../../store/slices/midi/midiAction';
+import axiosInstance from "./../../utils/axios";
+import { fileToMidi } from "./../../utils/Utils";
+import { setMidi } from "./../../store/slices/midi/midiAction";
 import axios from "axios";
 import { setOngoingFalse } from "../../store/slices/room/roomAction";
-
 
 const Room = () => {
   let { room_id } = useParams();
@@ -32,10 +31,10 @@ const Room = () => {
       if (room.error_code === 1) alert("방이 없습니다.");
       else if (room.error_code === 2) alert("방장이 방을 나갔습니다.");
       navigate("/");
-
-    }
-    else if (room.ongoing_code === 2) {
-      const fullDownloadUrl = `${axiosInstance.getUri()}${room.music_instance.download_url}`;
+    } else if (room.ongoing_code === 2) {
+      const fullDownloadUrl = `${axiosInstance.getUri()}${
+        room.music_instance.download_url
+      }`;
 
       console.log("fullDownloadUrl", fullDownloadUrl);
       dispatch(setLoading(true));
@@ -50,29 +49,34 @@ const Room = () => {
         dispatch(setLoading(false));
         navigate("/graphic");
       });
-    }
-    else if (room.room_id !== room_id) {
+    } else if (room.room_id !== room_id) {
       console.log("room_id", room_id);
       dispatch(setLoading(true));
 
       // CreateRoom(props.filename, true, loadCookie(), 1234, 0);
       // dispatch({ type: 'socket/connect', payload: { filename, is_host, nickname, user_id, device } });
-      dispatch({ type: "socket/connect", payload: { room_id, nickname: user_instance.nickname, user_id: user_instance.user_id, device: user_instance.device } });
-
+      dispatch({
+        type: "socket/connect",
+        payload: {
+          room_id,
+          nickname: user_instance.nickname,
+          user_id: user_instance.user_id,
+          device: user_instance.device,
+        },
+      });
     } else {
       dispatch(setLoading(false));
     }
-
   }, [room]);
 
   useEffect(() => {
     return () => {
-      const path = window.location.href.split("/")
+      const path = window.location.href.split("/");
       if (path[path.length - 1] !== "graphic") {
         dispatch({ type: "socket/disconnect" });
         dispatch(setLoading(false));
       }
-    }
+    };
   }, []);
 
   return (
@@ -207,10 +211,11 @@ const Room = () => {
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
-                  alert("초대 링크가 클립보드에 복사되었습니다.")
-                }}>
+                  alert("초대 링크가 클립보드에 복사되었습니다.");
+                }}
+              >
                 초대 링크
-              </button >
+              </button>
               <button
                 style={{
                   marginLeft: "20px",
@@ -225,12 +230,18 @@ const Room = () => {
             </div>
           </div>
         </div>
-        {Object.entries(room.guests).map(([key, value]) => {
-          return <Participant profileImage="../img/프로필2.jpg"
-            nickname={value.nickname}
-            equipment="AR Piano"
-            statusColor="#FE4949" />;
-        })}
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {Object.entries(room.guests).map(([key, value]) => {
+            return (
+              <Participant
+                profileImage="../img/프로필2.jpg"
+                nickname={value.nickname}
+                equipment="AR Piano"
+                statusColor="#FE4949"
+              />
+            );
+          })}
+        </div>
       </Layout>
     </>
   );
