@@ -89,24 +89,24 @@ export class Keyboard {
         // 키보드일 때 텍스트
         this.texts = [];
         const textSize = 18;
-        this.texts.push(scene.add.text(0 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(1 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'S', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(2 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'D', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(3 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'F', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(4 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'G', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(5 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'H', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(6 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'J', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(7 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'K', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(8 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, 'L', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(9 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, ';', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(10 * s_w + s_w / 2 -textSize*0.3,  height - s_h + 5, '\'', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(1 * s_w -textSize*0.3, height - s_h + 5, 'W', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(2 * s_w -textSize*0.3, height - s_h + 5, 'E', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(4 * s_w -textSize*0.3, height - s_h + 5, 'T', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(5 * s_w -textSize*0.3, height - s_h + 5, 'Y', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(6 * s_w -textSize*0.3, height - s_h + 5, 'U', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(8 * s_w -textSize*0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(9 * s_w -textSize*0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(0 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(1 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'S', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(2 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'D', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(3 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'F', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(4 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'G', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(5 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'H', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(6 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'J', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(7 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'K', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(8 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'L', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(9 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, ';', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(10 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, '\'', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(1 * s_w - textSize * 0.3, height - s_h + 5, 'W', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(2 * s_w - textSize * 0.3, height - s_h + 5, 'E', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(4 * s_w - textSize * 0.3, height - s_h + 5, 'T', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(5 * s_w - textSize * 0.3, height - s_h + 5, 'Y', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(6 * s_w - textSize * 0.3, height - s_h + 5, 'U', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+        this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
 
 
 
@@ -127,8 +127,10 @@ export class Keyboard {
 
         const instance = this;
         WebMidi.enable(function (err) {
-            if (err) {
+            const currentProtocol = window.location.protocol;
+            if (err || currentProtocol !== 'https:') {
                 console.log("WebMidi could not be enabled.", err);
+                return;
             } else {
                 console.log("WebMidi enabled!");
             }
