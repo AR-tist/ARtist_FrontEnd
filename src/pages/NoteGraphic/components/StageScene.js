@@ -3,7 +3,7 @@ import { NoteGenerator } from "./NoteGenerator";
 import { Keyboard } from "./keyboard";
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { extarctEvent } from '../../../utils/Utils';
+import { extarctEvent, assignLh } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
 import { onebyoneMIDI } from '../../../utils/Utils';
 import { setStart } from '../../../store/slices/room/roomAction';
@@ -48,7 +48,8 @@ const StageScene = () => {
 
     // const track = midiFile.track[extarctEvent(midiFile.track)].event;
 
-    const track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
+    let _track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
+    const track = assignLh(_track);
     console.log(track);
 
     let time = 0;
@@ -58,7 +59,7 @@ const StageScene = () => {
       if (e.type === 9) {
         if (pre_notes[e.data[0]] === undefined)
           pre_notes[e.data[0]] = []
-        pre_notes[e.data[0]].push({ "note": e.data[0], "startAt": time });
+        pre_notes[e.data[0]].push({ "note": e.data[0], "startAt": time, "lh": e.lh });
       } else {
         pre_notes[e.data[0]][pre_notes[e.data[0]].length - 1]["endAt"] = time;
       }

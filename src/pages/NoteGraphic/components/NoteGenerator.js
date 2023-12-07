@@ -42,7 +42,7 @@ export class NoteGenerator {
         // 미디 사각형 생성
         notes.forEach(n => {
             this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo));
+                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo, n.lh));
         });
         console.log(this.noteArray);
     }
@@ -64,7 +64,7 @@ export class NoteGenerator {
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine, tempo) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine, tempo, lh) {
 
         this.startAt = startAt;
         this.endAt = endAt;
@@ -131,7 +131,12 @@ export class NoteRectangle {
         // this.graphic.strokeRoundedRect(pos + 1, -length - 1, s_w - line, length - line, { tl: 0, tr: 0, bl: 5, br: 5 });
 
         this.graphic = scene.add.graphics().setDepth(depth);
-        this.graphic.fillStyle(0x8470FF, 0.8);
+        // lh에 따라 색깔 다르게
+        if (lh === 1) {
+            this.graphic.fillStyle(0x8470FF, 0.8);
+        } else {
+            this.graphic.fillStyle(0x8A2BE2, 0.8);
+        }
         this.graphic.fillRect(pos, -length - line, s_w, length);
         this.graphic.lineStyle(line, 0xffffff, 0.4);
         this.graphic.strokeRect(pos + 1, -length - 1, s_w - line, length - line);
@@ -173,7 +178,7 @@ export class NoteRectangle {
         scene.physics.add.existing(this.graphic);
         scene.physics.add.existing(this.basic);
         // scene.physics.add.existing(this.pressed);
-        
+
         // scene.physics.add.overlap(this.graphic, nowPressLine, this.checkPressed);
         scene.physics.add.overlap(this.graphic, destroyLine, this.checkOutOfScreen);
         scene.physics.add.overlap(this.basic, destroyLine, this.checkOutOfScreen);

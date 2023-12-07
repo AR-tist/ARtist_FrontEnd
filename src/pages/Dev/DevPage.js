@@ -4,7 +4,7 @@ import { setLoading, setMidi } from "../../store/slices/midi/midiAction";
 import axios from "axios";
 import { fileToMidi } from "../../utils/Utils";
 import { extarctEvent } from "../../utils/Utils";
-import { onebyoneMIDI } from "../../utils/Utils";
+import { onebyoneMIDI, assignLh } from "../../utils/Utils";
 
 const DevPage = () => {
     const dispatch = useDispatch();
@@ -31,25 +31,10 @@ const DevPage = () => {
     const buttonEvent = () => {
         const _track = onebyoneMIDI(track.current);
 
-        console.log(_track);
+        const _track2 = assignLh(_track);
 
-        let time = 0;
-        let pre_notes = {}
+        console.log(_track2);
 
-        // track.current.forEach((e, i) => {
-        //     if (e.type !== 8 && e.type !== 9) return;
-        //     if (e.type === 9) {
-        //         if (pre_notes[e.data[0]] === undefined)
-        //             pre_notes[e.data[0]] = []
-        //         pre_notes[e.data[0]].push({ "note": e.data[0], "startAt": time });
-        //     } else {
-        //         pre_notes[e.data[0]][pre_notes[e.data[0]].length - 1]["endAt"] = time;
-        //     }
-        //     time += e.deltaTime * midi.current.timeDivision / 105.2;
-
-        // })
-
-        // console.log(pre_notes);
     }
     return (
         <div>

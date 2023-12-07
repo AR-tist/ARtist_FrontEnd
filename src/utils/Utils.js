@@ -56,6 +56,42 @@ export const getKey = (str) => {
     return key;
 }
 
+export const assignLh = (track) => {
+    const _track = [...track];
+    // re-assign for modify track
+    for (let idx = 0; idx < _track.length; idx++) {
+        _track[idx] = Object.assign({}, _track[idx]);
+    }
+
+    let note_list = [];
+
+    for (let i = 0; i < _track.length; i++) {
+        if (_track[i].type === 9) {
+            note_list.push(_track[i].data[0]);
+        }
+    }
+
+    let median = 0;
+    note_list.forEach((e) => {
+        median += e;
+    });
+
+    median = Math.floor(median / note_list.length);
+
+    console.log('The Median of this midi file : ', median);
+
+    for (let i = 0; i < _track.length; i++) {
+        if (_track[i].type === 9 || _track[i].type === 8) {
+            if (_track[i].data[0] < median) {
+                _track[i].lh = 0;
+            } else {
+                _track[i].lh = 1;
+            }
+        }
+    }
+    return _track
+}
+
 export const onebyoneMIDI = (track) => {
     const _track = [...track];
     // re-assign for modify track
