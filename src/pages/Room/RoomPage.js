@@ -11,6 +11,7 @@ import { fileToMidi } from "./../../utils/Utils";
 import { setMidi } from "./../../store/slices/midi/midiAction";
 import axios from "axios";
 import { setOngoingFalse } from "../../store/slices/room/roomAction";
+import Modal from "react-modal";
 
 const Room = () => {
   let { room_id } = useParams();
@@ -24,6 +25,8 @@ const Room = () => {
   const handleLikeClick = () => {
     setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
   };
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (room.error_code !== 0) {
@@ -88,27 +91,165 @@ const Room = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              marginTop: "30px",
-              marginBottom: "45px",
+              marginBottom: "20px",
             }}
           >
             <h1 style={{ fontSize: "25px" }}>{room.host_nickname}의 방</h1>
-            <button
-              style={{
-                width: "70px",
-                height: "25px",
-                color: "white",
-                backgroundColor: "#39d446",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                dispatch({ type: "socket/host_play" });
-              }}
-            >
-              PLAY
-            </button>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <button
+                style={{
+                  width: "70px",
+                  height: "25px",
+                  color: "white",
+                  backgroundColor: "#39d446",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  marginRight: "50px",
+                }}
+                onClick={() => {
+                  dispatch({ type: "socket/host_play" });
+                }}
+              >
+                PLAY
+              </button>
+              <button
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  boxShadow: "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => setModalIsOpen(true)}
+              >
+                <img
+                  src="../img/설정아이콘.png"
+                  alt="플레이_모드_설정"
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    objectFit: "cover",
+                  }}
+                />
+              </button>
+              <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+                style={{
+                  content: {
+                    width: "450px",
+                    height: "280px",
+                    borderRadius: "10px",
+                    background: "#fff",
+                    boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
+                    margin: "auto",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                  },
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: "0",
+                      fontSize: "20px",
+                      textAlign: "center",
+                      color: "#000",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    연습 모드
+                  </p>
+                  <div>
+                    <button
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "10px",
+                        background: "#fff",
+                        boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
+                        fontSize: "18px",
+                        textAlign: "center",
+                        color: "#000",
+                        cursor: "pointer",
+                      }}
+                    >
+                      왼손
+                    </button>
+
+                    <button
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "10px",
+                        background: "#fff",
+                        boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
+                        fontSize: "18px",
+                        textAlign: "center",
+                        color: "#000",
+                        cursor: "pointer",
+                        marginLeft: "20px",
+                      }}
+                    >
+                      오른손
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: "0",
+                      fontSize: "20px",
+                      textAlign: "center",
+                      color: "#000",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    연주 모드
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <button
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "10px",
+                        background: "#fff",
+                        boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "18px",
+                        textAlign: "center",
+                        color: "#000",
+                        cursor: "pointer",
+                      }}
+                    >
+                      양손
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+            </div>
           </div>
 
           <div
