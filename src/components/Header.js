@@ -195,7 +195,7 @@ const Header = () => {
               >
                 <img
                   className="search-img"
-                  src="img\검색회색.png"
+                  src="../img/검색회색.png"
                   alt="검색"
                   style={{
                     width: "20px",
@@ -301,7 +301,7 @@ const Header = () => {
               }}
               onClick={handleChangeEquipmentClick}
             >
-              장비 변경
+              장비 연결하기
             </button>
             <button
               className="entire-song-button"
