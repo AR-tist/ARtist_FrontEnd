@@ -62,6 +62,7 @@ const EquipmentChangePage = () => {
             style={{
               display: "flex",
               flexDirection: "column",
+              marginLeft: "30px",
             }}
           >
             <button
@@ -91,6 +92,7 @@ const EquipmentChangePage = () => {
             style={{
               display: "flex",
               flexDirection: "column",
+              marginLeft: "30px",
             }}
           >
             <button
