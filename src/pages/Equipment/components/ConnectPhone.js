@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { setPhoneWsbaseURL, getPhoneWsbaseURL } from "../../../utils/axios";
+import React, { useState, useEffect } from "react";
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
@@ -9,32 +8,37 @@ const ConnectPhone = () => {
     const ip_address = document.getElementById("ip_address").value;
     const newWs = new WebSocket("ws://" + ip_address + ":4439");
     setWs(newWs);
-  
+
     newWs.onopen = () => {
       // connection opened
       console.log("connected");
       newWs.send("ready"); // send a message
       setServerStatus("Running"); // Update server status in React state
     };
-  
+
     newWs.onerror = (error) => {
       console.error("WebSocket encountered an error:", error);
       // Handle the error as needed
       setServerStatus("Error"); // Update server status in React state
     };
-  
-    // Handle other WebSocket events here if needed (onmessage, onclose, etc.)
+
+    // Move onmessage event handling inside connect function
+    newWs.onmessage = (e) => {
+      // a message was received
+      console.log(e);
+    };
   };
-  
-  const disconnect = () => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.close();
-      console.log("disconnecting");
-    } else {
-      console.log("WebSocket is not open or already closed.");
-    }
-    setServerStatus("Stopped"); // Update server status when disconnected
-  };
+
+  useEffect(() => {
+    // Cleanup function to ensure proper disconnection
+    return () => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+        console.log("disconnecting");
+      }
+      setServerStatus("Stopped"); // Update server status when disconnected
+    };
+  }, [ws]);
 
   return (
     <div>
@@ -87,7 +91,7 @@ const ConnectPhone = () => {
 
       <button
         onClick={() => {
-          disconnect();
+          // Disconnect logic is now handled in the cleanup function of useEffect
         }}
         style={{
           width: "300px",
