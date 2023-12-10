@@ -87,7 +87,7 @@ const MidiPlayPage = () => {
             if (e.type !== 8 && e.type !== 9) return;
             if (time.length === 0) time.push(e.deltaTime);
             else
-                time.push(time[time.length - 1] + e.deltaTime * midiFile.timeDivision / 105.2);
+                time.push(time[time.length - 1] + e.deltaTime * midiFile.timeDivision / 96.3);
         })
         console.log(time);
 
