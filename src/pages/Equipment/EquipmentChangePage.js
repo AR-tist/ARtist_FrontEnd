@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
+import NoEquipment from "./components/NoEquipment";
+import ConnectPhone from "./components/ConnectPhone";
 import { useSelector } from "react-redux";
 
 const EquipmentChangePage = () => {
   const nickname = useSelector((state) => state.user.name);
+  const [selectedButton, setSelectedButton] = useState(1);
 
+  const handleButtonClick = (buttonNumber) => {
+    setSelectedButton(buttonNumber);
+  };
+  // ip 주소를 입력해 웹소켓을 연결합니다.
+  
   return (
     <>
       <Header user={nickname} />
@@ -36,6 +44,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
+              onClick={() => handleButtonClick(1)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -66,6 +75,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
+              onClick={() => handleButtonClick(2)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -96,6 +106,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
+              onClick={() => handleButtonClick(3)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -117,52 +128,12 @@ const EquipmentChangePage = () => {
             </button>
           </div>
         </div>
-
-        <h2
-          style={{
-            marginLeft: "360px",
-            marginTop: "50px",
-            fontSize: "24px",
-          }}
-        >
-          현재 연결된 장비
-        </h2>
-        <div
-          style={{
-            width: "892px",
-            height: "280px",
-            position: "absolute",
-            left: "359.5px",
-            top: "609.5px",
-            borderRadius: "10px",
-            background: "#fff",
-            boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
-          }}
-        ></div>
-        <p
-          style={{
-            position: "absolute",
-            left: "668px",
-            top: "736px",
-            fontSize: "24px",
-            fontWeight: "500",
-            textAlign: "left",
-            color: "#000",
-          }}
-        >
-          현재 연결된 장비가 없습니다.
-        </p>
-        <img
-          src="./img/연결장비없음.png"
-          style={{
-            width: "153px",
-            height: "155px",
-            position: "absolute",
-            left: "418.5px",
-            top: "672.5px",
-            objectFit: "cover",
-          }}
-        />
+        <div>
+          {selectedButton === 1 && <ConnectPhone />}
+          {selectedButton === 2 && <NoEquipment />}
+          {selectedButton === 3 && <NoEquipment />}
+        </div>
+        
       </div>
 
       <div style={{ width: "381px", height: "706px" }}>
