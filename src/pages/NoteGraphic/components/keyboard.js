@@ -66,7 +66,7 @@ export class Keyboard {
             }
             for (let i = 0; i < 6; i++) {
                 if (i === 2) continue;
-                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000).setDepth(2));
+                this.b_notes.push(scene.add.rectangle(j * 7 * s_w + i * s_w + s_w, height - s_h * 0.75, s_w / 2, s_h / 2, 0x000000).setDepth(3));
             }
         }
         this.boundKeydown = this.onKeydown.bind(this);
@@ -108,8 +108,15 @@ export class Keyboard {
         this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
         this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
 
-
-
+        this.users = [];    // user_id
+        this.colors = [ // 건반 눌릴 때 색
+            0xF49E9E,
+            0xFAC2A0,
+            0xF3EAAB,
+            0xB0E6B3,
+            0xA8E2EA,
+            0xA7B8EF
+        ]; 
     }
 
 
@@ -225,7 +232,7 @@ export class Keyboard {
         this.handleKey(key, 'up', this.octave, this.start_idx);
     }
 
-    handleKey(key, action, octave = 0, start_idx = 1) {
+    handleKey(key, action, octave = 0, start_idx = 1, user_id) {
         let noteIdx;
         let mode = 0;
         switch (key) {
@@ -272,22 +279,32 @@ export class Keyboard {
         }
 
         if (action === 'down') {
-            this.pushNote(noteIdx, mode, octave, start_idx);
+            this.pushNote(noteIdx, mode, octave, start_idx, user_id);
         } else if (action === 'up') {
             this.releaseNote(noteIdx, mode, octave, start_idx);
         }
     }
 
-    pushNote(idx, mode = 0, octave, start_idx) {
+    pushNote(idx, mode = 0, octave, start_idx, user_id) {
+        let user_idx = -1;
         if (mode === 0) {
             console.log('%d %d %d', octave, start_idx, idx)
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7) return
-            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(0xaaaaaa);
+            
+            user_idx = this.users.findIndex(e => e == user_id);
+            if (user_idx == -1) {
+                this.users.push(user_id);
+                user_idx = this.users.findIndex(e => e == user_id);
+            }
+            console.log(this.users);
+            console.log(user_idx);
+
+            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(this.colors[user_idx%6]);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         } else {
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7 - 2) return
-            this.b_notes[idx + (octave) * 5].setFillStyle(0x666666);
+            this.b_notes[idx + (octave) * 5].setFillStyle(this.colors[user_idx%6]);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }

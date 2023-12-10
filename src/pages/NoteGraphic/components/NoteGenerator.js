@@ -111,68 +111,24 @@ export class NoteRectangle {
 
         const line = 2; // 테두리 두께
 
-        /* pressed: nowPressLine을 지나면 이것만 보임(보라색 그라데이션) */
-        // this.pressed = scene.add.graphics().setDepth(depth);
-        // this.pressed.lineGradientStyle(line, 0x8470FF, 0x8470FF, 0x8A2BE2, 0x8A2BE2,
-        //     0.1, 0.1, 0.7, 0.7);
-        // this.pressed.fillGradientStyle(0x8470FF, 0x8470FF, 0x8A2BE2, 0x8A2BE2,
-        //     0.1, 0.1, 0.7, 0.7);
-        // this.pressed.fillRect(pos, -length - line, s_w, length);
-        // this.pressed.strokeRect(
-        //     pos + 1,
-        //     -length - 1,
-        //     s_w - line,
-        //     length - line
-        // );
-
-        // this.graphic = scene.add.graphics().setDepth(depth);
-        // this.graphic.fillRoundedRect(pos, -length - line, s_w, length, { tl: 0, tr: 0, bl: 5, br: 5 });
-        // this.graphic.lineStyle(4, 0xffffff, 1);
-        // this.graphic.strokeRoundedRect(pos + 1, -length - 1, s_w - line, length - line, { tl: 0, tr: 0, bl: 5, br: 5 });
-
+        /* graphic: note별 길이에 맞는 사각형 */
         this.graphic = scene.add.graphics().setDepth(depth);
         // lh에 따라 색깔 다르게
         if (lh === 1) {
-            this.graphic.fillStyle(0x8470FF, 0.8);
+            this.graphic.fillStyle(0xE66868, 0.8);
         } else {
-            this.graphic.fillStyle(0x8A2BE2, 0.8);
+            this.graphic.fillStyle(0xDF77CB, 0.8);
         }
         this.graphic.fillRect(pos, -length - line, s_w, length);
         this.graphic.lineStyle(line, 0xffffff, 0.4);
         this.graphic.strokeRect(pos + 1, -length - 1, s_w - line, length - line);
 
-        /* graphic: note별 길이에 맞는 사각형(흰색 그라데이션) */
-        // this.graphic = scene.add.graphics().setDepth(depth);
-        // this.graphic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-        //     0.05, 0.05, 0.7, 0.7);
-        // this.graphic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-        //     0.05, 0.05, 0.7, 0.7);
-        // this.graphic.fillRect(pos, -length - line, s_w, length);
-        // this.graphic.strokeRect(
-        //     pos + 1,
-        //     -length - 1,
-        //     s_w - line,
-        //     length - line
-        // );
-
         /* basic: 기본 크기 사각형(흰색) */
         const basicLength = 12;
         this.basic = scene.add.graphics().setDepth(depth);
-        // this.basic.lineGradientStyle(line, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-        //     0.0, 0.0, 1.0, 1.0);
-        // this.basic.lineStyle(line, 0xffffff, 1);
-        // this.basic.fillStyle(0xFFFFFF, 0.8);
         this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
             0.1, 0.1, 0.8, 0.8);
         this.basic.fillRect(pos, -basicLength - line, s_w, basicLength);
-        // this.basic.setBlendMode(Phaser.BlendModes.SCREEN);
-        // this.basic.strokeRect(
-        //     pos + 1,
-        //     -basicLength - 2,
-        //     s_w - line,
-        //     basicLength - line + 1
-        // );
-
 
         // 충돌 감지 추가
         scene.physics.add.existing(this.graphic);
