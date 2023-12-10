@@ -115,9 +115,9 @@ export class NoteRectangle {
         this.graphic = scene.add.graphics().setDepth(depth);
         // lh에 따라 색깔 다르게
         if (lh === 1) {
-            this.graphic.fillStyle(0xE66868, 0.8);
+            this.graphic.fillStyle(0x8470FF, 0.8);
         } else {
-            this.graphic.fillStyle(0xDF77CB, 0.8);
+            this.graphic.fillStyle(0x4C39D7, 0.8);
         }
         this.graphic.fillRect(pos, -length - line, s_w, length);
         this.graphic.lineStyle(line, 0xffffff, 0.4);
@@ -126,8 +126,13 @@ export class NoteRectangle {
         /* basic: 기본 크기 사각형(흰색) */
         const basicLength = 12;
         this.basic = scene.add.graphics().setDepth(depth);
-        this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
-            0.1, 0.1, 0.8, 0.8);
+        if (lh === 1) {
+            this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+                0.1, 0.1, 0.8, 0.8);
+        } else {
+            this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+                0.1, 0.1, 0.6, 0.6);
+        }
         this.basic.fillRect(pos, -basicLength - line, s_w, basicLength);
 
         // 충돌 감지 추가

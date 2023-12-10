@@ -139,15 +139,6 @@ const StageScene = () => {
   // 여기에 keydown.user_id 를 통해서 구별하시면 됩니다.
   useEffect(() => {
     if (piano_instance.current === null) return;
-    // console.log(keydown.user_id);
-    // user_idx = users.findIndex(e => e == keydown.user_id);
-    // // console.log(user_idx);
-    // if (user_idx == -1) {
-    //   users.push(keydown.user_id);
-    //   user_idx = users.findIndex(e => e == keydown.user_id);
-    //   // console.log(user_idx);
-    // }
-    // console.log(users);
     piano_instance.current.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx, keydown.user_id);
 
   }, [keydown]);

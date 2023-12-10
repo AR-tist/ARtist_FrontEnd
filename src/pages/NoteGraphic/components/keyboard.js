@@ -287,18 +287,16 @@ export class Keyboard {
 
     pushNote(idx, mode = 0, octave, start_idx, user_id) {
         let user_idx = -1;
+        user_idx = this.users.findIndex(e => e == user_id);
+        if (user_idx == -1) {
+            this.users.push(user_id);
+            user_idx = this.users.findIndex(e => e == user_id);
+        }
+        console.log(this.users)
+
         if (mode === 0) {
             console.log('%d %d %d', octave, start_idx, idx)
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7) return
-            
-            user_idx = this.users.findIndex(e => e == user_id);
-            if (user_idx == -1) {
-                this.users.push(user_id);
-                user_idx = this.users.findIndex(e => e == user_id);
-            }
-            console.log(this.users);
-            console.log(user_idx);
-
             this.w_notes[idx + (octave) * 7].getRect().setFillStyle(this.colors[user_idx%6]);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
