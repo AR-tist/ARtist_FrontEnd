@@ -28,6 +28,14 @@ const Room = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [selectedMode, setSelectedMode] = useState(""); // 선택된 모드 상태 추가
+
+  // 모드 설정 함수
+  const handleModeSelect = (selected) => {
+    setSelectedMode(selected);
+    setModalIsOpen(false); // 모달 닫기
+  };
+
   useEffect(() => {
     if (room.error_code !== 0) {
       dispatch(setLoading(false));
@@ -180,6 +188,7 @@ const Room = () => {
                         color: "#000",
                         cursor: "pointer",
                       }}
+                      onClick={() => handleModeSelect("연습 모드 - 왼손")}
                     >
                       왼손
                     </button>
@@ -197,6 +206,7 @@ const Room = () => {
                         cursor: "pointer",
                         marginLeft: "20px",
                       }}
+                      onClick={() => handleModeSelect("연습 모드 - 오른손")}
                     >
                       오른손
                     </button>
@@ -243,6 +253,7 @@ const Room = () => {
                         color: "#000",
                         cursor: "pointer",
                       }}
+                      onClick={() => handleModeSelect("연주 모드 - 양손")}
                     >
                       양손
                     </button>
@@ -379,6 +390,7 @@ const Room = () => {
                 nickname={value.nickname}
                 equipment="AR Piano"
                 statusColor="#FE4949"
+                mode={selectedMode}
               />
             );
           })}

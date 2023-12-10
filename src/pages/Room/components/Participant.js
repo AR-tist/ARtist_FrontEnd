@@ -1,4 +1,12 @@
-const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
+import React, { useState } from "react";
+
+const Participant = ({
+  profileImage,
+  nickname,
+  equipment,
+  mode,
+  statusColor,
+}) => {
   return (
     <div style={{ marginTop: "50px", marginRight: "110px" }}>
       <div
@@ -25,7 +33,8 @@ const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
           />
           <div>
             <h3 style={{ marginTop: "10px" }}>{nickname}</h3>
-            <p style={{ marginTop: "20px", color: "#BBBBBB" }}>{equipment}</p>
+            <p style={{ marginTop: "10px", color: "#BBBBBB" }}>{equipment}</p>
+            <p style={{ marginTop: "5px", color: "#BBBBBB" }}>{mode}</p>
           </div>
 
           <button
