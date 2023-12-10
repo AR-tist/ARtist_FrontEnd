@@ -12,7 +12,6 @@ const EquipmentChangePage = () => {
   const handleButtonClick = (buttonNumber) => {
     setSelectedButton(buttonNumber);
   };
-  // ip 주소를 입력해 웹소켓을 연결합니다.
   
   return (
     <>
