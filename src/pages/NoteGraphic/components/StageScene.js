@@ -63,7 +63,7 @@ const StageScene = () => {
       } else {
         pre_notes[e.data[0]][pre_notes[e.data[0]].length - 1]["endAt"] = time;
       }
-      time += e.deltaTime * midiFile.timeDivision / 105.2;
+      time += e.deltaTime * midiFile.timeDivision / 96.3;
     })
 
     let notes = [];
