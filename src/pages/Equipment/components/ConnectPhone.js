@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDevice, setPhoneSocket } from "../../../store/slices/user/userAction";
+import {setPhoneWsbaseURL} from "../../../utils/axios"
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
@@ -10,6 +10,7 @@ const ConnectPhone = () => {
     const ip_address = document.getElementById("ip_address").value;
     const newWs = new WebSocket("ws://" + ip_address + ":4439");
     setWs(newWs);
+    setPhoneWsbaseURL(newWs);
 
     newWs.onopen = () => {
       // connection opened
@@ -24,24 +25,24 @@ const ConnectPhone = () => {
       setServerStatus("Error"); // Update server status in React state
     };
 
-    // Move onmessage event handling inside connect function
-    newWs.onmessage = (e) => {
-      // a message was received
-      console.log(e);
-    };
+    // // Move onmessage event handling inside connect function
+    // newWs.onmessage = (e) => {
+    //   // a message was received
+    //   console.log(e);
+    // };
 
   };
 
-  // useEffect(() => {
-  //   // Cleanup function to ensure proper disconnection
-  //   return () => {
-  //     if (ws && ws.readyState === WebSocket.OPEN) {
-  //       ws.close();
-  //       console.log("disconnecting");
-  //     }
-  //     setServerStatus("Stopped"); // Update server status when disconnected
-  //   };
-  // }, [ws]);
+  useEffect(() => {
+    // Cleanup function to ensure proper disconnection
+    return () => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+        console.log("disconnecting");
+      }
+      setServerStatus("Stopped"); // Update server status when disconnected
+    };
+  }, [ws]);
 
   return (
     <div>

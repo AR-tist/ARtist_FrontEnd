@@ -9,9 +9,10 @@ import { setLoading } from "../../store/slices/midi/midiAction";
 import axiosInstance from "./../../utils/axios";
 import { fileToMidi } from "./../../utils/Utils";
 import { setMidi } from "./../../store/slices/midi/midiAction";
-import axios from "axios";
+import { getPhoneWsbaseURL } from "./../../utils/axios";
 import { setOngoingFalse } from "../../store/slices/room/roomAction";
 import Modal from "react-modal";
+import axios from "axios";
 
 const Room = () => {
   let { room_id } = useParams();
@@ -19,12 +20,13 @@ const Room = () => {
   const navigate = useNavigate();
   const user_instance = useSelector((state) => state.user.user_instance);
   const room = useSelector((state) => state.room.room);
-  const phoneSocket = useSelector((state) => state.user.user_instance.phoneSocket);
+  const phoneSocket = getPhoneWsbaseURL();
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
 
   const handleLikeClick = () => {
     setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
+    console.log(phoneSocket)
   };
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
