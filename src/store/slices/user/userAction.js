@@ -6,3 +6,15 @@ export const setNickname = (nickname) => {
         dispatch(Actions.setnickname({ nickname: nickname }));
     }
 }
+
+export const setDevice = (device) => {
+    return (dispatch) => {
+        dispatch(Actions.setdevice({ device: device }));
+    }
+}
+
+export const setPhoneSocket = (phoneSocket) => {
+    return (dispatch) => {
+        dispatch(Actions.setphoneSocket({ phoneSocket: phoneSocket }));
+    }
+}

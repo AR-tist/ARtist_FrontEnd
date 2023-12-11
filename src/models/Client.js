@@ -27,6 +27,7 @@ class Client {
         this.user_id = user_id || '';
         this.nickname = nickname || '';
         this.device = device || '';
+        this.phoneSocket = null;
     }
 
 }

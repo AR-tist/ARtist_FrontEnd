@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setDevice, setPhoneSocket } from "../../../store/slices/user/userAction";
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
@@ -8,6 +10,8 @@ const ConnectPhone = () => {
     const ip_address = document.getElementById("ip_address").value;
     const newWs = new WebSocket("ws://" + ip_address + ":4439");
     setWs(newWs);
+    setDevice(2);
+    setPhoneSocket(newWs);
 
     newWs.onopen = () => {
       // connection opened
@@ -27,18 +31,19 @@ const ConnectPhone = () => {
       // a message was received
       console.log(e);
     };
+
   };
 
-  useEffect(() => {
-    // Cleanup function to ensure proper disconnection
-    return () => {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.close();
-        console.log("disconnecting");
-      }
-      setServerStatus("Stopped"); // Update server status when disconnected
-    };
-  }, [ws]);
+  // useEffect(() => {
+  //   // Cleanup function to ensure proper disconnection
+  //   return () => {
+  //     if (ws && ws.readyState === WebSocket.OPEN) {
+  //       ws.close();
+  //       console.log("disconnecting");
+  //     }
+  //     setServerStatus("Stopped"); // Update server status when disconnected
+  //   };
+  // }, [ws]);
 
   return (
     <div>
@@ -87,25 +92,6 @@ const ConnectPhone = () => {
         }}
       >
         연결하기
-      </button>
-
-      <button
-        onClick={() => {
-          // Disconnect logic is now handled in the cleanup function of useEffect
-        }}
-        style={{
-          width: "300px",
-          height: "50px",
-          position: "absolute",
-          left: "668px",
-          top: "792px", // Adjusted the top position
-          fontSize: "24px",
-          fontWeight: "500",
-          textAlign: "left",
-          color: "#000",
-        }}
-      >
-        연결 끊기
       </button>
 
       <div>

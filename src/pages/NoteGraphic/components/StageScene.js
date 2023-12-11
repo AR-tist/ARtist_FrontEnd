@@ -32,6 +32,10 @@ const StageScene = () => {
   }
 
   console.log(midiFile);
+  const device = useSelector(state => state.user.device);
+  const phoneSocket = useSelector(state => state.user.phoneSocket);
+  console.log(device + "asdasdas");
+  console.log(phoneSocket);
 
   const keydown = useSelector(state => state.room.keydown);
   const keyup = useSelector(state => state.room.keyup);

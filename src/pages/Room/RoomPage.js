@@ -19,6 +19,7 @@ const Room = () => {
   const navigate = useNavigate();
   const user_instance = useSelector((state) => state.user.user_instance);
   const room = useSelector((state) => state.room.room);
+  const phoneSocket = useSelector((state) => state.user.user_instance.phoneSocket);
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
 
@@ -78,6 +79,8 @@ const Room = () => {
     } else {
       dispatch(setLoading(false));
     }
+
+    console.log("phoneSocket", phoneSocket);
   }, [room]);
 
   useEffect(() => {
@@ -89,6 +92,21 @@ const Room = () => {
       }
     };
   }, []);
+
+  function copyToClipboard() {
+    try {
+      navigator.clipboard.writeText(window.location.href).then(
+        () => {
+          alert("초대 링크가 클립보드에 복사되었습니다.");
+        },
+        () => {
+          alert("초대 링크 복사에 실패했습니다.");
+        }
+      );
+    } catch (err) {
+      console.error('Unable to copy to clipboard', err);
+    }
+  }
 
   return (
     <>
@@ -362,8 +380,7 @@ const Room = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("초대 링크가 클립보드에 복사되었습니다.");
+                  copyToClipboard();
                 }}
               >
                 초대 링크
