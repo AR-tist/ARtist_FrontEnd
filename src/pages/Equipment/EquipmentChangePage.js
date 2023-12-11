@@ -3,16 +3,18 @@ import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import NoEquipment from "./components/NoEquipment";
 import ConnectPhone from "./components/ConnectPhone";
+import ConnectKeyboard from "./components/ConnectKeyboard";
+import ConnectPiano from "./components/ConnectPiano";
 import { useSelector } from "react-redux";
 
 const EquipmentChangePage = () => {
   const nickname = useSelector((state) => state.user.name);
-  const [selectedButton, setSelectedButton] = useState(1);
+  const [selectedButton, setSelectedButton] = useState(4);
 
   const handleButtonClick = (buttonNumber) => {
     setSelectedButton(buttonNumber);
   };
-  
+
   return (
     <>
       <Header user={nickname} />
@@ -129,10 +131,10 @@ const EquipmentChangePage = () => {
         </div>
         <div>
           {selectedButton === 1 && <ConnectPhone />}
-          {selectedButton === 2 && <NoEquipment />}
-          {selectedButton === 3 && <NoEquipment />}
+          {selectedButton === 2 && <ConnectKeyboard />}
+          {selectedButton === 3 && <ConnectPiano />}
+          {selectedButton === 4 && <NoEquipment />}
         </div>
-        
       </div>
 
       <div style={{ width: "381px", height: "706px" }}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {setPhoneWsbaseURL} from "../../../utils/axios"
+import { setPhoneWsbaseURL } from "../../../utils/axios";
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
@@ -30,7 +30,6 @@ const ConnectPhone = () => {
     //   // a message was received
     //   console.log(e);
     // };
-
   };
 
   useEffect(() => {
@@ -46,6 +45,15 @@ const ConnectPhone = () => {
 
   return (
     <div>
+      <h2
+        style={{
+          marginLeft: "360px",
+          marginTop: "50px",
+          fontSize: "24px",
+        }}
+      >
+        현재 연결된 장비
+      </h2>
       <div
         style={{
           width: "892px",
@@ -58,20 +66,33 @@ const ConnectPhone = () => {
           boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
         }}
       ></div>
+      <img
+        src="../img/장비_휴대폰.png"
+        style={{
+          width: "168px",
+          height: "121px",
+          position: "absolute",
+          left: "443.5px",
+          top: "689.5px",
+          objectFit: "cover",
+        }}
+      />
       <input
         type="text"
         id="ip_address"
-        placeholder="IP 주소를 입력해주세요."
+        placeholder="  IP 주소를 입력해주세요."
         style={{
-          width: "300px",
+          width: "400px",
           height: "50px",
           position: "absolute",
-          left: "668px",
-          top: "650px",
-          fontSize: "24px",
+          left: "700px",
+          top: "680px",
+          fontSize: "18px",
           fontWeight: "500",
           textAlign: "left",
-          color: "#000",
+          color: "#EDECEC",
+          border: "none",
+          borderBottom: "2px solid #EDECEC",
         }}
       />
       <button
@@ -79,15 +100,17 @@ const ConnectPhone = () => {
           connect();
         }}
         style={{
-          width: "300px",
-          height: "50px",
+          width: "404px",
+          height: "48px",
           position: "absolute",
-          left: "668px",
-          top: "736px",
-          fontSize: "24px",
-          fontWeight: "500",
-          textAlign: "left",
-          color: "#000",
+          left: "700px",
+          top: "784px",
+          fontSize: "20px",
+          fontWeight: "550",
+          textAlign: "center",
+          color: "#636363",
+          borderRadius: "30px",
+          background: "#EDECEC",
         }}
       >
         연결하기

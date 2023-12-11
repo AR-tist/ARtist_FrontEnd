@@ -1,6 +1,6 @@
 import Reac from "react";
 
-const NoEquipment = () => {
+const ConnectKeyboard = () => {
   return (
     <div>
       <h2
@@ -24,6 +24,17 @@ const NoEquipment = () => {
           boxShadow: "0px 2px 10px 0 rgba(0,0,0,0.25)",
         }}
       ></div>
+      <img
+        src="../img/장비_키보드.png"
+        style={{
+          width: "168px",
+          height: "121px",
+          position: "absolute",
+          left: "443.5px",
+          top: "689.5px",
+          objectFit: "cover",
+        }}
+      />
       <p
         style={{
           position: "absolute",
@@ -35,21 +46,10 @@ const NoEquipment = () => {
           color: "#000",
         }}
       >
-        현재 연결된 장비가 없습니다.
+        키보드가 연결되었습니다.
       </p>
-      <img
-        src="./img/연결장비없음.png"
-        style={{
-          width: "153px",
-          height: "155px",
-          position: "absolute",
-          left: "443.5px",
-          top: "672.5px",
-          objectFit: "cover",
-        }}
-      />
     </div>
   );
 };
 
-export default NoEquipment;
+export default ConnectKeyboard;
