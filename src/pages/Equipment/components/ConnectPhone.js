@@ -10,8 +10,6 @@ const ConnectPhone = () => {
     const ip_address = document.getElementById("ip_address").value;
     const newWs = new WebSocket("ws://" + ip_address + ":4439");
     setWs(newWs);
-    setDevice(2);
-    setPhoneSocket(newWs);
 
     newWs.onopen = () => {
       // connection opened

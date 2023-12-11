@@ -82,7 +82,6 @@ const StageScene = () => {
     // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7);
     piano_instance.current.setInput(document);
-    // event listener for keyboard
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
