@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPhoneWsbaseURL } from "../../../utils/axios";
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
   const [ws, setWs] = useState(null);
+  const [handCoordinates, setHandCoordinates] = useState({ x: 0, y: 0 });
+
+  const canvasRef = useRef(null);
 
   const connect = () => {
     const ip_address = document.getElementById("ip_address").value;
@@ -25,11 +28,46 @@ const ConnectPhone = () => {
       setServerStatus("Error"); // Update server status in React state
     };
 
-    // // Move onmessage event handling inside connect function
-    // newWs.onmessage = (e) => {
-    //   // a message was received
-    //   console.log(e);
-    // };
+    // Move onmessage event handling inside connect function
+    newWs.onmessage = (e) => {
+      try {
+        const dataString = e.data;
+
+        // Extract numeric values using regular expressions
+        const match = dataString.match(/x : (.*), y : (.*)/);
+
+        if (match) {
+          const x = parseFloat(match[1]);
+          const y = parseFloat(match[2]);
+
+          // Map coordinates from -1 to 1 to the custom range (0 to 120 for x and 0 to 60 for y)
+          const mappedX = (x + 1) * 240; // Map -1 to 1 to 0 to 120
+          const mappedY = (y + 1) * 120; // Map -1 to 1 to 0 to 60
+
+          setHandCoordinates({ x: mappedX, y: mappedY });
+
+          console.log("message received:", mappedX, mappedY);
+
+           // Draw the coordinates on the canvas
+          const canvas = canvasRef.current;
+          const context = canvas.getContext('2d');
+
+          // Clear the canvas
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw a dot at the mapped coordinates
+          context.fillStyle = 'blue';
+          context.beginPath();
+          context.arc(mappedX, mappedY, 5, 0, 2 * Math.PI);
+          context.fill();
+        }else{
+          console.log("message received:", dataString);
+        }
+       
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
   };
 
   useEffect(() => {
@@ -90,7 +128,7 @@ const ConnectPhone = () => {
           fontSize: "18px",
           fontWeight: "500",
           textAlign: "left",
-          color: "#EDECEC",
+          color: "#000",
           border: "none",
           borderBottom: "2px solid #EDECEC",
         }}
@@ -116,10 +154,38 @@ const ConnectPhone = () => {
         연결하기
       </button>
 
-      <div>
+      
         {/* Display the current server status */}
-        <p>Server Status: {serverStatus}</p>
-      </div>
+        <p
+          style={
+            {
+              position: "absolute",
+              left: "700px",
+              top: "736px",
+              fontSize: "24px",
+              fontWeight: "500",
+              textAlign: "left",
+              color: "#000",
+            }
+          }>Server Status: {serverStatus}</p>
+
+          <div
+            style={
+              {
+                position: "absolute",
+                left: "700px",
+                top: "1200px",
+              }
+            }>
+            <h1>Hand Tracking App</h1>
+            <canvas
+              ref={canvasRef}
+              width={480}
+              height={240}
+              style={{ border: '1px solid black', marginTop: '10px' }}
+            />
+          </div>
+      
     </div>
   );
 };

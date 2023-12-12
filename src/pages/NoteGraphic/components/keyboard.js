@@ -132,7 +132,7 @@ export class Keyboard {
         document.addEventListener('keydown', this.boundKeydown);
         document.addEventListener('keyup', this.boundKeyup);
 
-        const instance = this;
+        const instance = this; 
         WebMidi.enable(function (err) {
             const currentProtocol = window.location.protocol;
             if (err || currentProtocol !== 'https:') {
