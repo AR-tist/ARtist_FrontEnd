@@ -39,7 +39,7 @@ const ConnectPhone = () => {
         const hand = dataString_split[0].trim();
         const xPoints = JSON.parse(dataString_split[1].trim());
         const yPoints = JSON.parse(dataString_split[2].trim());
-    
+        console.log(hand);
         // Draw the coordinates on the canvas
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
@@ -50,7 +50,7 @@ const ConnectPhone = () => {
         const colors = ['red', 'green', 'blue', 'orange', 'purple'];
         const colors2 = ['cyan', 'magenta', 'yellow', 'black', 'gray'];
 
-        const selectedColors = hand === 1 ? colors : colors2;
+        const selectedColors = (hand == 1) ? colors : colors2;
         
         for (let i = 0; i < 5; i++) {
           const mappedX = (xPoints[i] + 1) * 240;
@@ -68,17 +68,17 @@ const ConnectPhone = () => {
     }
   };
 
-  useEffect(() => {
-    // Cleanup function to ensure proper disconnection
-    return () => {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.close();
-        console.log("disconnecting");
-      }
-      setServerStatus("Stopped"); // Update server status when disconnected
+  // useEffect(() => {
+  //   // Cleanup function to ensure proper disconnection
+  //   return () => {
+  //     if (ws && ws.readyState === WebSocket.OPEN) {
+  //       ws.close();
+  //       console.log("disconnecting");
+  //     }
+  //     setServerStatus("Stopped"); // Update server status when disconnected
       
-    };
-  }, [ws]);
+  //   };
+  // }, [ws]);
 
   // useEffect(() => {
   //       const dataString = "1? [0.015338495, -0.2171075, -0.16534102, -0.050892502, 0.16146241] ? [0.90428984, 0.65731287, 0.5149822, 0.4266714, 0.41745383]";

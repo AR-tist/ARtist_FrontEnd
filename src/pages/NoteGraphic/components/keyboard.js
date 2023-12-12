@@ -58,6 +58,7 @@ export class Keyboard {
         }
 
         this.o_w = width / this.num;    // octave width
+        console.log(width);
         let { s_w, s_h } = { s_w: width / this.num / 7, s_h: height * 0.2 };
 
         for (let j = 0; j < this.num; j++) {
@@ -108,6 +109,24 @@ export class Keyboard {
         this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
         this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
 
+        // AR 피아노 인풋일 때 그래픽
+        // 연주 범위 사각형
+        this.playRangeRect = scene.add.graphics().setDepth(5);
+        const lineThick = 10;
+        this.playRangeRect.lineStyle(lineThick, 0x625BF7, 0.4);
+        this.playRangeRect.strokeRect(0 + lineThick/2, height - s_h + lineThick/2, this.o_w * 4 - lineThick, s_h - lineThick);
+        // 손가락 위치 원
+        this.leftHand = [];
+        this.rightHand = [];
+        for (let i = 0; i < 5; i++) {
+            this.leftHand.push(scene.add.circle(20, height - s_h, 5, 0x4C39D7).setDepth(5));
+            // this.leftHand[i].setStrokeStyle(1, 0x27283B);
+            this.rightHand.push(scene.add.circle(40, height - s_h, 5, 0x8470FF).setDepth(5));
+            // this.rightHand[i].setStrokeStyle(1, 0x27283B);
+        }
+
+        this.keyboardStartY = height - s_h; // 추후 정리 예정
+        
         this.users = [];    // user_id
         this.colors = [ // 건반 눌릴 때 색
             0xF49E9E,
@@ -205,6 +224,37 @@ export class Keyboard {
         if (event.repeat) return;
         if (this.tone.loaded !== true) return;
         const key = event.key.charCodeAt(0);
+
+        /* 키보드 인풋일 때 처리 */ //AR피아노 테스트를 위해 일단 주석 처리
+        // if (key === 120 & this.octave < this.num - 1) {
+        //     for (let idx = 0; idx < 7; idx++)
+        //         this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+        //     for (let idx = 0; idx < 5; idx++)
+        //         this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+
+        //     this.octave += 1
+    
+        //     for (let i = 0; i < 18; i++) {
+        //         this.texts[i].setX(this.texts[i].x + this.o_w);
+        //     }            
+        //     return
+        // }
+        // if (key === 122 && this.octave > 0) {
+        //     for (let idx = 0; idx < 7; idx++)
+        //         this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+        //     for (let idx = 0; idx < 5; idx++)
+        //         this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+
+        //     this.octave -= 1
+
+        //     for (let i = 0; i < 18; i++) {
+        //         this.texts[i].setX(this.texts[i].x - this.o_w);
+        //     }
+        //     return
+        // }
+        // this.handleKey(key, 'up', this.octave, this.start_idx);
+
+        /* AR피아노 인풋일 때 처리 */
         if (key === 120 & this.octave < this.num - 1) {
             for (let idx = 0; idx < 7; idx++)
                 this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
@@ -212,9 +262,10 @@ export class Keyboard {
                 this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
             this.octave += 1
-            for (let i = 0; i < 18; i++) {
-                this.texts[i].setX(this.texts[i].x + this.o_w);
-            }
+    
+            // for (let i = 0; i < 18; i++) {
+                this.playRangeRect.setX(this.playRangeRect.x + this.o_w);
+            // }            
             return
         }
         if (key === 122 && this.octave > 0) {
@@ -224,9 +275,10 @@ export class Keyboard {
                 this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
             this.octave -= 1
-            for (let i = 0; i < 18; i++) {
-                this.texts[i].setX(this.texts[i].x - this.o_w);
-            }
+
+            // for (let i = 0; i < 18; i++) {
+                this.playRangeRect.setX(this.playRangeRect.x - this.o_w);
+            // }
             return
         }
         this.handleKey(key, 'up', this.octave, this.start_idx);
@@ -319,6 +371,16 @@ export class Keyboard {
             this.b_notes[idx + (octave) * 5].setFillStyle(0x000000);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerRelease([inxtoNoteB[idx]]);
+        }
+    }
+
+    setHandPosition(hand, index, x, y) {
+        const nowX = x * this.o_w * 3;   // + zx버튼으로 옥타브에 따라 바뀔 변수 추가하기
+        const nowY = y * this.o_w * 1.5 + this.keyboardStartY;
+        if (hand == 1) {
+            this.rightHand[index].setPosition(nowX, nowY);
+        } else {
+            this.leftHand[index].setPosition(nowX, nowY);
         }
     }
 

@@ -20,6 +20,26 @@ const StageScene = () => {
 
   const phoneSocket = getPhoneWsbaseURL();
 
+  phoneSocket.onmessage = (e) => {
+    try {
+      const dataString = e.data;
+      console.log(e);
+  
+      const dataString_split = dataString.split("?", 3);
+  
+      const hand = dataString_split[0].trim();
+      const xPoints = JSON.parse(dataString_split[1].trim());
+      const yPoints = JSON.parse(dataString_split[2].trim());
+
+      for (let i = 0; i < 5; i++) {
+        piano_instance.current.setHandPosition(hand, i, xPoints[i], yPoints[i]);
+      }
+
+    } catch (error) {
+      console.error('Error parsing WebSocket message:', error);
+    }
+  }
+
   const keydown_event = (event) => {
     if (event.repeat) return;
     if (piano_instance.current.tone.loaded !== true) return;
