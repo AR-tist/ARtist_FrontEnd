@@ -37,7 +37,7 @@ const ConnectPhone = () => {
         const dataString_split = dataString.split("?", 3);
     
         const hand = dataString_split[0].trim();
-        const xPoints = JSON.parse(dataString_split[1].trim()); // Parse the string to an array
+        const xPoints = JSON.parse(dataString_split[1].trim());
         const yPoints = JSON.parse(dataString_split[2].trim());
     
         // Draw the coordinates on the canvas

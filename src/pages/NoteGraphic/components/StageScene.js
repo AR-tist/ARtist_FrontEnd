@@ -7,6 +7,7 @@ import { extarctEvent, assignLh } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
 import { onebyoneMIDI } from '../../../utils/Utils';
 import { setStart } from '../../../store/slices/room/roomAction';
+import { getPhoneWsbaseURL } from '../../../utils/axios';
 
 const StageScene = () => {
   const game = useRef(null);
@@ -16,6 +17,8 @@ const StageScene = () => {
   const piano_instance = useRef(null);
   const start = useRef(new Date().getTime());
   const isPaused = useRef(true);
+
+  const phoneSocket = getPhoneWsbaseURL();
 
   const keydown_event = (event) => {
     if (event.repeat) return;
@@ -33,7 +36,6 @@ const StageScene = () => {
 
   console.log(midiFile);
   const device = useSelector(state => state.user.device);
-  const phoneSocket = useSelector(state => state.user.phoneSocket);
   console.log(device + "asdasdas");
   console.log(phoneSocket);
 
