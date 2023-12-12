@@ -32,42 +32,40 @@ const ConnectPhone = () => {
     newWs.onmessage = (e) => {
       try {
         const dataString = e.data;
+        console.log(e);
+    
+        const dataString_split = dataString.split("?", 3);
+    
+        const hand = dataString_split[0].trim();
+        const xPoints = JSON.parse(dataString_split[1].trim()); // Parse the string to an array
+        const yPoints = JSON.parse(dataString_split[2].trim());
+    
+        // Draw the coordinates on the canvas
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+    
+        // Clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    
+        const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+        const colors2 = ['cyan', 'magenta', 'yellow', 'black', 'gray'];
 
-        // Extract numeric values using regular expressions
-        const match = dataString.match(/x : (.*), y : (.*)/);
-
-        if (match) {
-          const x = parseFloat(match[1]);
-          const y = parseFloat(match[2]);
-
-          // Map coordinates from -1 to 1 to the custom range (0 to 120 for x and 0 to 60 for y)
-          const mappedX = (x + 1) * 240; // Map -1 to 1 to 0 to 120
-          const mappedY = (y + 1) * 120; // Map -1 to 1 to 0 to 60
-
-          setHandCoordinates({ x: mappedX, y: mappedY });
-
-          console.log("message received:", mappedX, mappedY);
-
-           // Draw the coordinates on the canvas
-          const canvas = canvasRef.current;
-          const context = canvas.getContext('2d');
-
-          // Clear the canvas
-          context.clearRect(0, 0, canvas.width, canvas.height);
-
-          // Draw a dot at the mapped coordinates
-          context.fillStyle = 'blue';
+        const selectedColors = hand === 1 ? colors : colors2;
+        
+        for (let i = 0; i < 5; i++) {
+          const mappedX = (xPoints[i] + 1) * 240;
+          const mappedY = (yPoints[i] + 1) * 120;
+    
+          // Draw a dot at the mapped coordinates with different colors
+          context.fillStyle = selectedColors[i];
           context.beginPath();
           context.arc(mappedX, mappedY, 5, 0, 2 * Math.PI);
           context.fill();
-        }else{
-          console.log("message received:", dataString);
         }
-       
       } catch (error) {
         console.error('Error parsing WebSocket message:', error);
       }
-    };
+    }
   };
 
   useEffect(() => {
@@ -78,9 +76,23 @@ const ConnectPhone = () => {
         console.log("disconnecting");
       }
       setServerStatus("Stopped"); // Update server status when disconnected
+      
     };
   }, [ws]);
 
+  // useEffect(() => {
+  //       const dataString = "1? [0.015338495, -0.2171075, -0.16534102, -0.050892502, 0.16146241] ? [0.90428984, 0.65731287, 0.5149822, 0.4266714, 0.41745383]";
+
+  //       // dataString을 처음 "," 기준 2개로 나눕니다.
+  //       const dataString_split = dataString.split("?", 3);
+  //       console.log(dataString_split[1]);
+
+  //       const hand = dataString_split[0].trim();
+  //       const xPoint = dataString_split[1].trim();
+  //       const yPoint = dataString_split[2].trim();
+
+
+  // },[]);
   return (
     <div>
       <h2
