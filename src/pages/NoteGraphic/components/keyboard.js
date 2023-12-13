@@ -114,7 +114,7 @@ export class Keyboard {
         this.playRangeRect = scene.add.graphics().setDepth(5);
         const lineThick = 10;
         this.playRangeRect.lineStyle(lineThick, 0x625BF7, 0.4);
-        this.playRangeRect.strokeRect(0 + lineThick/2, height - s_h + lineThick/2, this.o_w * 4 - lineThick, s_h - lineThick);
+        this.playRangeRect.strokeRect(0 + lineThick/2, height - s_h + lineThick/2, this.o_w * 10 / 7 - lineThick, s_h - lineThick);
         // 손가락 위치 원
         this.leftHand = [];
         this.rightHand = [];
@@ -126,6 +126,7 @@ export class Keyboard {
         }
 
         this.keyboardStartY = height - s_h; // 추후 정리 예정
+        this.s_h = s_h;
         
         this.users = [];    // user_id
         this.colors = [ // 건반 눌릴 때 색
@@ -344,7 +345,7 @@ export class Keyboard {
             this.users.push(user_id);
             user_idx = this.users.findIndex(e => e == user_id);
         }
-        console.log(this.users)
+        // console.log(this.users)
 
         if (mode === 0) {
             console.log('%d %d %d', octave, start_idx, idx)
@@ -375,13 +376,41 @@ export class Keyboard {
     }
 
     setHandPosition(hand, index, x, y) {
-        const nowX = x * this.o_w * 3;   // + zx버튼으로 옥타브에 따라 바뀔 변수 추가하기
-        const nowY = y * this.o_w * 1.5 + this.keyboardStartY;
+        const nowX = x * this.o_w * 1.4 + this.octave * this.o_w;
+        const nowY = y * this.o_w * 0.8 + this.keyboardStartY + this.s_h / 4;
         if (hand == 1) {
             this.rightHand[index].setPosition(nowX, nowY);
         } else {
             this.leftHand[index].setPosition(nowX, nowY);
         }
+    }
+
+    pushNoteAR(hand, finger) {
+        console.log(finger);
+        if (Array.isArray(finger)) return;
+        const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
+        const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
+        let noteIdx = 0;
+        let mode = 0;
+
+        if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
+            noteIdx = Math.floor(nowX / this.o_w * 7);
+
+        } else {    // 검은 건반, 흰 건반 같이 있는 부분
+            noteIdx = Math.round(nowX / this.o_w * 7) - 1;
+
+            if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
+                noteIdx = Math.floor(nowX / this.o_w * 7);
+            } else {
+                mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
+            }
+
+        }
+        
+
+        // StageScene에 keydown_event처럼 처리하는 방법...?
+        const user_id = "test"; // 임시
+        this.pushNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
     }
 
     destroy() {
