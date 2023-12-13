@@ -19,20 +19,52 @@ const StageScene = () => {
   const isPaused = useRef(true);
 
   const phoneSocket = getPhoneWsbaseURL();
+  // try {
+  //   const dataString = e.data;
+  //   const tag = dataString.split("!", 2);
+  //   const data = tag[1];
+  //   console.log(tag[1]);
+
+  //   switch (tag[0]) {
+  //     case "0":
+  //       drawHand(data);
+  //       break;
+  //     case "1":
+  //       console.log(data);
+  //       break;
+  //     default:
+  //       console.log("unknown tag");
+  //       break;
+  //   }
+  // } catch (error) { }
 
   phoneSocket.onmessage = (e) => {
     try {
       const dataString = e.data;
       console.log(e);
-  
-      const dataString_split = dataString.split("?", 3);
-  
-      const hand = dataString_split[0].trim();
-      const xPoints = JSON.parse(dataString_split[1].trim());
-      const yPoints = JSON.parse(dataString_split[2].trim());
+      const tag = dataString.split("!", 2);
+      const data = tag[1];
 
-      for (let i = 0; i < 5; i++) {
-        piano_instance.current.setHandPosition(hand, i, xPoints[i], yPoints[i]);
+      switch (tag[0]) {
+        case "0":
+          const dataString_split = dataString.split("?", 3);
+      
+          const hand = dataString_split[0].trim();
+          const xPoints = JSON.parse(dataString_split[1].trim());
+          const yPoints = JSON.parse(dataString_split[2].trim());
+
+          for (let i = 0; i < 5; i++) {
+            piano_instance.current.setHandPosition(hand, i, xPoints[i], yPoints[i]);
+          }
+        case "1":
+          const dataSplit = dataString.split("?", 2);
+          const handLH = dataSplit[0].trim();
+          const pushNote = JSON.parse(dataSplit[1].trim());
+          console.log(pushNote);
+          break;
+        default:
+          console.log("unknown tag");
+          break;
       }
 
     } catch (error) {

@@ -16,83 +16,65 @@ const ConnectPhone = () => {
     setPhoneWsbaseURL(newWs);
 
     newWs.onopen = () => {
-      // connection opened
       console.log("connected");
-      newWs.send("ready"); // send a message
-      setServerStatus("Running"); // Update server status in React state
+      newWs.send("ready");
+      setServerStatus("Running");
     };
 
     newWs.onerror = (error) => {
       console.error("WebSocket encountered an error:", error);
-      // Handle the error as needed
-      setServerStatus("Error"); // Update server status in React state
+      setServerStatus("Error");
     };
 
-    // Move onmessage event handling inside connect function
     newWs.onmessage = (e) => {
       try {
         const dataString = e.data;
-        console.log(e);
-    
-        const dataString_split = dataString.split("?", 3);
-    
-        const hand = dataString_split[0].trim();
-        const xPoints = JSON.parse(dataString_split[1].trim());
-        const yPoints = JSON.parse(dataString_split[2].trim());
-        console.log(hand);
-        // Draw the coordinates on the canvas
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-    
-        // Clear the canvas
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    
-        const colors = ['red', 'green', 'blue', 'orange', 'purple'];
-        const colors2 = ['cyan', 'magenta', 'yellow', 'black', 'gray'];
+        const tag = dataString.split("!", 2);
+        const data = tag[1];
 
-        const selectedColors = (hand == 1) ? colors : colors2;
-        
-        for (let i = 0; i < 5; i++) {
-          const mappedX = (xPoints[i] + 1) * 240;
-          const mappedY = (yPoints[i] + 1) * 120;
-    
-          // Draw a dot at the mapped coordinates with different colors
-          context.fillStyle = selectedColors[i];
-          context.beginPath();
-          context.arc(mappedX, mappedY, 5, 0, 2 * Math.PI);
-          context.fill();
+        switch (tag[0]) {
+          case "0":
+            drawHand(data);
+            break;
+          case "1":
+            const dataString_split = data.split("?", 2);
+            const handLH = dataString_split[0].trim();
+            const pushNote = JSON.parse(dataString_split[1].trim());
+            console.log(dataString_split);
+            break;
+          default:
+            console.log("unknown tag");
+            break;
         }
-      } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
-      }
-    }
+      } catch (error) { }
+    };
   };
 
-  // useEffect(() => {
-  //   // Cleanup function to ensure proper disconnection
-  //   return () => {
-  //     if (ws && ws.readyState === WebSocket.OPEN) {
-  //       ws.close();
-  //       console.log("disconnecting");
-  //     }
-  //     setServerStatus("Stopped"); // Update server status when disconnected
-      
-  //   };
-  // }, [ws]);
-
-  // useEffect(() => {
-  //       const dataString = "1? [0.015338495, -0.2171075, -0.16534102, -0.050892502, 0.16146241] ? [0.90428984, 0.65731287, 0.5149822, 0.4266714, 0.41745383]";
-
-  //       // dataString을 처음 "," 기준 2개로 나눕니다.
-  //       const dataString_split = dataString.split("?", 3);
-  //       console.log(dataString_split[1]);
-
-  //       const hand = dataString_split[0].trim();
-  //       const xPoint = dataString_split[1].trim();
-  //       const yPoint = dataString_split[2].trim();
-
-
-  // },[]);
+  const drawHand = (data) => {
+    const dataString_split = data.split("?", 3);
+    const hand = dataString_split[0].trim();
+    const xPoints = JSON.parse(dataString_split[1].trim());
+    const yPoints = JSON.parse(dataString_split[2].trim());
+  
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  
+    const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+    const colors2 = ['cyan', 'magenta', 'yellow', 'black', 'gray'];
+    const selectedColors = hand === "1" ? colors : colors2;
+  
+    for (let i = 0; i < 5; i++) {
+      // Rotate coordinates 90 degrees to the right
+      const mappedX = (yPoints[i] + 1) * 240; // Use Y coordinate as X
+      const mappedY = (-(xPoints[i]) + 1) * 120; // Negate X coordinate and use as Y
+  
+      context.fillStyle = selectedColors[i];
+      context.beginPath();
+      context.arc(mappedX, mappedY, 5, 0, 2 * Math.PI);
+      context.fill();
+    }
+  };
   return (
     <div>
       <h2
@@ -203,3 +185,4 @@ const ConnectPhone = () => {
 };
 
 export default ConnectPhone;
+
