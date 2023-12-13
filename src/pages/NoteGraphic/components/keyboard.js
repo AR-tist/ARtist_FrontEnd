@@ -395,14 +395,24 @@ export class Keyboard {
 
         if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
             noteIdx = Math.floor(nowX / this.o_w * 7);
+            if (noteIdx > 9) return;
 
         } else {    // 검은 건반, 흰 건반 같이 있는 부분
             noteIdx = Math.round(nowX / this.o_w * 7) - 1;
+            console.log(noteIdx);
+            if (noteIdx == -1) noteIdx = 0;
 
             if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
                 noteIdx = Math.floor(nowX / this.o_w * 7);
             } else {
                 mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
+                if (noteIdx >= 9) return;
+                if (noteIdx > 2 && noteIdx < 6) {
+                    noteIdx -= 1;
+                }
+                else if (noteIdx > 6 && noteIdx < 9) {
+                    noteIdx -= 2;
+                }
             }
 
         }
@@ -410,7 +420,7 @@ export class Keyboard {
 
         // StageScene에 keydown_event처럼 처리하는 방법...?
         const user_id = "test"; // 임시
-        this.pushNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
+        this.pushNote(noteIdx, mode, 0, this.start_idx, user_id);  // user_id를 받아와야함
     }
 
     destroy() {
