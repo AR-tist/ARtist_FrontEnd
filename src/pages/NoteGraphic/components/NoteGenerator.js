@@ -117,7 +117,7 @@ export class NoteRectangle {
         if (lh === 1) {
             this.graphic.fillStyle(0x8470FF, 0.8);
         } else {
-            this.graphic.fillStyle(0x4C39D7, 0.8);
+            this.graphic.fillStyle(0xd79d39, 0.8);
         }
         this.graphic.fillRect(pos, -length - line, s_w, length);
         this.graphic.lineStyle(line, 0xffffff, 0.4);
