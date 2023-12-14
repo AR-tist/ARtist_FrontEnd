@@ -44,6 +44,7 @@ const StageScene = () => {
       // console.log(e);
       const tag = dataString.split("!", 2);
       const data = tag[1];
+      // console.log(tag);
       // console.log(data);
       switch (tag[0]) {
         case "0":
@@ -56,12 +57,21 @@ const StageScene = () => {
           for (let i = 0; i < 5; i++) {
             piano_instance.current.setHandPosition(hand, i, xPoints[i], yPoints[i]);
           }
+          break;
         case "1":
-          const dataSplit = data.split("?", 2);
+      
+          const dataSplit = data.split("?", 3);
           const handLH = dataSplit[0].trim();
           const pushNote = JSON.parse(dataSplit[1].trim());
 
-          piano_instance.current.pushNoteAR(handLH, pushNote);
+          // 만약pushNote가 0,1,2,3,4가 아니면 return
+          if (pushNote < 0 || pushNote > 4) return;
+
+          console.log(dataSplit);
+          if (dataSplit[2].trim() === "0") 
+            piano_instance.current.pushNoteAR(handLH, pushNote);
+          else
+            piano_instance.current.releaseNoteAR(handLH, pushNote);
           break;
         default:
           console.log("unknown tag");
