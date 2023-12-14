@@ -70,9 +70,8 @@ const ConnectPiano = () => {
           color: "#636363",
           borderRadius: "30px",
           background: "#EDECEC",
-        }
-        }>
-        연결
+        }}>
+        연결하기
       </button>
     </div>
   );
