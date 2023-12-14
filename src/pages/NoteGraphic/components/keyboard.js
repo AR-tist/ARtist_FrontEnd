@@ -154,8 +154,10 @@ export class Keyboard {
 
         const instance = this;
         WebMidi.enable(function (err) {
+
             const currentProtocol = window.location.protocol;
-            if (err || currentProtocol !== 'https:') {
+            // if (err || currentProtocol !== 'https:') {
+            if (err) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {
@@ -189,11 +191,12 @@ export class Keyboard {
                     default: return;
                 }
 
+                const user_id = "test"; // 임시
                 if (action === 'down') {
-                    instance.pushNote(noteidx, mode, octave, 0);
+                    instance.pushNote(noteidx, mode, octave, 2, user_id);
                 }
                 else if (action === 'up') {
-                    instance.releaseNote(noteidx, mode, octave, 0);
+                    instance.releaseNote(noteidx, mode, octave, 2, user_id);
                 }
             }
             Myinputs.addListener('noteon', e => {

@@ -43,9 +43,8 @@ const Room = () => {
       else if (room.error_code === 2) alert("방장이 방을 나갔습니다.");
       navigate("/");
     } else if (room.ongoing_code === 2) {
-      const fullDownloadUrl = `${axiosInstance.getUri()}${
-        room.music_instance.download_url
-      }`;
+      const fullDownloadUrl = `${axiosInstance.getUri()}${room.music_instance.download_url
+        }`;
 
       console.log("fullDownloadUrl", fullDownloadUrl);
       dispatch(setLoading(true));

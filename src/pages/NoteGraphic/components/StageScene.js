@@ -49,7 +49,7 @@ const StageScene = () => {
       switch (tag[0]) {
         case "0":
           const data_split = data.split("?", 3);
-      
+
           const hand = data_split[0].trim();
           const xPoints = JSON.parse(data_split[1].trim());
           const yPoints = JSON.parse(data_split[2].trim());
@@ -59,7 +59,7 @@ const StageScene = () => {
           }
           break;
         case "1":
-      
+
           const dataSplit = data.split("?", 3);
           const handLH = dataSplit[0].trim();
           const pushNote = JSON.parse(dataSplit[1].trim());
@@ -68,7 +68,7 @@ const StageScene = () => {
           if (pushNote < 0 || pushNote > 4) return;
 
           console.log(dataSplit);
-          if (dataSplit[2].trim() === "0") 
+          if (dataSplit[2].trim() === "0")
             piano_instance.current.pushNoteAR(handLH, pushNote);
           else
             piano_instance.current.releaseNoteAR(handLH, pushNote);
@@ -231,7 +231,7 @@ const StageScene = () => {
         }
       },
       scale: {
-        mode: Phaser.Scale.ENVELOP,
+        mode: Phaser.Scale.AUTO,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: width,
         height: height,
