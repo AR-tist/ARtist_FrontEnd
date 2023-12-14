@@ -8,7 +8,7 @@ import { setNickname, setClient } from "../store/slices/user/userAction";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user_instance = useSelector((state) => state.user.user_instance);
+  const user_instance = cookie.load("user_instance");
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleUploadClick = () => {
     setPopupVisible(true); // 팝업 창 열기
@@ -63,6 +63,8 @@ const Header = () => {
     // 입력값이 있을 때만 auto_keyword_area를 보이도록 설정
     setAutoKeywordVisible(keyword.length > 0);
   };
+
+
 
   return (
     <>
@@ -128,7 +130,7 @@ const Header = () => {
             <input
               id="nickname_input"
               type="text"
-              placeholder={user_instance.nickname}
+              placeholder={user_instance.device}
               maxlength="15"
               style={{
                 backgroundColor: "transparent",

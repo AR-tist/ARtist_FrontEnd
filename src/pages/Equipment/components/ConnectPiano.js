@@ -1,6 +1,9 @@
 import Reac from "react";
+import { Dispatch } from "react";
+import cookie from "react-cookies";
 
 const ConnectPiano = () => {
+  const user_instance = cookie.load("user_instance");
   return (
     <div>
       <h2
@@ -48,6 +51,29 @@ const ConnectPiano = () => {
       >
         피아노가 연결되었습니다.
       </p>
+      <button
+        onClick={() => {
+          user_instance.device = 1;
+          cookie.save("user_instance", user_instance);
+          const test = cookie.load("user_instance");
+          console.log(user_instance.divice)
+        }}
+        style={{
+          width: "404px",
+          height: "48px",
+          position: "absolute",
+          left: "700px",
+          top: "784px",
+          fontSize: "20px",
+          fontWeight: "550",
+          textAlign: "center",
+          color: "#636363",
+          borderRadius: "30px",
+          background: "#EDECEC",
+        }
+        }>
+        연결
+      </button>
     </div>
   );
 };
