@@ -17,6 +17,7 @@ const StageScene = () => {
   const piano_instance = useRef(null);
   const start = useRef(new Date().getTime());
   const isPaused = useRef(true);
+  const user_instance = useSelector(state => state.user);
 
   const phoneSocket = getPhoneWsbaseURL();
   // try {
@@ -142,11 +143,15 @@ const StageScene = () => {
       })
     }
     console.log(notes);
+    console.log(user_instance.user_instance.device);
 
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
     // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7);
-    piano_instance.current.setInput(document);
+    // 유저의 디바이스가 1이면 webMidi실행
+    if(user_instance.user_instance.device === 1){
+      piano_instance.current.setInput(document);
+    }
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
