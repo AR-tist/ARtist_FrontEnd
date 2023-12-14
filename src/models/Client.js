@@ -9,25 +9,18 @@ Object.freeze(device);
 
 class Client {
     constructor({ user_id, nickname, device }) {
-        if (user_id === undefined) {
-            user_id = cookie.load('user_instance').user_id;
-            if (user_id === undefined) {
-                user_id = uuidv4();
-                // cookie.save('user_id', user_id);
-            }
+        var user_instance = cookie.load('user_instance');
+        if (user_instance === undefined) {
+            this.user_id = user_id || uuidv4();
+            this.nickname = nickname || '익명';
+            this.device = device || 0;
+            cookie.save('user_instance', this);
         }
-        if (nickname === undefined) {
-            nickname = cookie.load('user_instance').nickname;
-            if (nickname === undefined) {
-                nickname = '익명';
-                // cookie.save('nickname', nickname);
-            }
+        else {
+            this.user_id = user_instance.user_id;
+            this.nickname = user_instance.nickname;
+            this.device = user_instance.device;
         }
-
-        this.user_id = user_id || '';
-        this.nickname = nickname || '';
-        this.device = device || '';
-        this.phoneSocket = null;
     }
 
 }

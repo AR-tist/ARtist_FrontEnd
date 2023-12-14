@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPhoneWsbaseURL } from "../../../utils/axios";
+import cookie from "react-cookies";
 
 const ConnectPhone = () => {
   const [serverStatus, setServerStatus] = useState("Stopped");
   const [ws, setWs] = useState(null);
   const [handCoordinates, setHandCoordinates] = useState({ x: 0, y: 0 });
+
+  const user_instance = useSelector((state) => state.user.user_instance);
 
   const canvasRef = useRef(null);
 
@@ -19,6 +22,19 @@ const ConnectPhone = () => {
       console.log("connected");
       newWs.send("ready");
       setServerStatus("Running");
+      if (serverStatus == "Running") {
+        alert("연결 성공!");
+        user_instance.device = 2;
+        cookie.save("user_instance", user_instance, {
+        });
+      } else {
+        alert("연결 실패!");
+        user_instance.device = 0;
+        cookie.save("user_instance", user_instance, {
+          // expires: new Date(Date.now() + 60 * 60 * 1000),
+        });
+      }
+
     };
 
     newWs.onerror = (error) => {
@@ -55,20 +71,20 @@ const ConnectPhone = () => {
     const hand = dataString_split[0].trim();
     const xPoints = JSON.parse(dataString_split[1].trim());
     const yPoints = JSON.parse(dataString_split[2].trim());
-  
+
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
     const colors = ['red', 'green', 'blue', 'orange', 'purple'];
     const colors2 = ['cyan', 'magenta', 'yellow', 'black', 'gray'];
     const selectedColors = hand === "1" ? colors : colors2;
-  
+
     for (let i = 0; i < 5; i++) {
       // Rotate coordinates 90 degrees to the right
       const mappedX = (yPoints[i] + 1) * 240; // Use Y coordinate as X
       const mappedY = (-(xPoints[i]) + 1) * 120; // Negate X coordinate and use as Y
-  
+
       context.fillStyle = selectedColors[i];
       context.beginPath();
       context.arc(mappedX, mappedY, 5, 0, 2 * Math.PI);
@@ -148,38 +164,38 @@ const ConnectPhone = () => {
         연결하기
       </button>
 
-      
-        {/* Display the current server status */}
-        <p
-          style={
-            {
-              position: "absolute",
-              left: "700px",
-              top: "736px",
-              fontSize: "24px",
-              fontWeight: "500",
-              textAlign: "left",
-              color: "#000",
-            }
-          }>Server Status: {serverStatus}</p>
 
-          <div
-            style={
-              {
-                position: "absolute",
-                left: "700px",
-                top: "1200px",
-              }
-            }>
-            <h1>Hand Tracking App</h1>
-            <canvas
-              ref={canvasRef}
-              width={480}
-              height={240}
-              style={{ border: '1px solid black', marginTop: '10px' }}
-            />
-          </div>
-      
+      {/* Display the current server status */}
+      <p
+        style={
+          {
+            position: "absolute",
+            left: "700px",
+            top: "736px",
+            fontSize: "24px",
+            fontWeight: "500",
+            textAlign: "left",
+            color: "#000",
+          }
+        }>Server Status: {serverStatus}</p>
+
+      <div
+        style={
+          {
+            position: "absolute",
+            left: "700px",
+            top: "1200px",
+          }
+        }>
+        <h1>Hand Tracking App</h1>
+        <canvas
+          ref={canvasRef}
+          width={480}
+          height={240}
+          style={{ border: '1px solid black', marginTop: '10px' }}
+        />
+      </div>
+
     </div>
   );
 };

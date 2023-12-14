@@ -37,17 +37,12 @@ const Header = () => {
   };
 
   const setCookie = (tempNickname) => {
-    const expires = new Date();
-    expires.setDate(expires.getDate() + 7); // 7일 후 만료
+    // const expires = new Date();
+    // expires.setDate(expires.getDate() + 7); // 7일 후 만료
     user_instance.nickname = tempNickname;
-    cookie.save("user_instance", user_instance, {
-      path: "/",
-      expires,
-      // secure : true,
-      // httpOnly : true
-    })
 
-    // dispatch(setNickname(tempNickname));
+    dispatch(setNickname(tempNickname));
+    // console.log(user_instance);
     dispatch(setClient(user_instance));
 
     document.getElementById("nickname_input").placeholder = user_instance.nickname;
