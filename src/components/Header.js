@@ -130,7 +130,7 @@ const Header = () => {
             <input
               id="nickname_input"
               type="text"
-              placeholder={user_instance.device}
+              placeholder={user_instance.nickname}
               maxlength="15"
               style={{
                 backgroundColor: "transparent",
