@@ -10,17 +10,17 @@ Object.freeze(device);
 class Client {
     constructor({ user_id, nickname, device }) {
         if (user_id === undefined) {
-            user_id = cookie.load('user_id');
+            user_id = cookie.load('user_instance').user_id;
             if (user_id === undefined) {
                 user_id = uuidv4();
-                cookie.save('user_id', user_id);
+                // cookie.save('user_id', user_id);
             }
         }
         if (nickname === undefined) {
-            nickname = cookie.load('nickname');
+            nickname = cookie.load('user_instance').nickname;
             if (nickname === undefined) {
                 nickname = '익명';
-                cookie.save('nickname', nickname);
+                // cookie.save('nickname', nickname);
             }
         }
 

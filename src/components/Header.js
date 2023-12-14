@@ -3,7 +3,8 @@ import UploadPopup from "./UploadPopup.js";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import { useSelector, useDispatch } from "react-redux";
-import { setNickname } from "../store/slices/user/userAction";
+import { setNickname, setClient } from "../store/slices/user/userAction";
+
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,21 +33,25 @@ const Header = () => {
       // 입력값이 있으면 쿠키 저장 및 dispatch(setNickname()) 호출
       setCookie(tempNickname);
     }
+
   };
 
   const setCookie = (tempNickname) => {
     const expires = new Date();
     expires.setDate(expires.getDate() + 7); // 7일 후 만료
-    cookie.save("nickname", tempNickname, {
+    user_instance.nickname = tempNickname;
+    cookie.save("user_instance", user_instance, {
       path: "/",
       expires,
       // secure : true,
       // httpOnly : true
-    });
-    dispatch(setNickname(tempNickname));
+    })
 
-    document.getElementById("nickname_input").placeholder = tempNickname;
-    alert('닉네임이 "' + tempNickname + '"로 변경되었습니다.');
+    // dispatch(setNickname(tempNickname));
+    dispatch(setClient(user_instance));
+
+    document.getElementById("nickname_input").placeholder = user_instance.nickname;
+    alert('닉네임이 "' + user_instance.nickname + '"로 변경되었습니다.');
   };
 
   const navigateToWholeSong = () => {
