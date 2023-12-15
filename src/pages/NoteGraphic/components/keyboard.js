@@ -156,8 +156,8 @@ export class Keyboard {
         WebMidi.enable(function (err) {
 
             const currentProtocol = window.location.protocol;
-            // if (err || currentProtocol !== 'https:') {
-            if (err) {
+            if (err || currentProtocol !== 'https:') {
+                // if (err) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {

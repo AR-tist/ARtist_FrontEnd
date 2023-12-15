@@ -100,8 +100,7 @@ const StageScene = () => {
   }
 
   console.log(midiFile);
-  const device = useSelector(state => state.user.device);
-  console.log(device + "asdasdas");
+  const device = useSelector(state => state.user.user_instance.device);
   console.log(phoneSocket);
 
   const keydown = useSelector(state => state.room.keydown);
@@ -149,10 +148,7 @@ const StageScene = () => {
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
     // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7);
-    // 유저의 디바이스가 1이면 webMidi실행
-    if (user_instance.device === 1) {
-      piano_instance.current.setInput(document);
-    }
+    piano_instance.current.setInput(document);
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
