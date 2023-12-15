@@ -403,7 +403,18 @@ const Header = () => {
                     color: "#7f7f7f",
                   }}
                 >
-                  ex연습 모드 - 소프라노
+                  {(() => {
+                    switch (user_instance.play_mode) {
+                      case 0:
+                        return "연주 모드 - 기본";
+                      case 1:
+                        return "연습 모드 - 소프라노";
+                      case 2:
+                        return "연습 모드 - 알토";
+                      default:
+                        return "Unknown play mode";
+                    }
+                  })()}
                 </p>
               </div>
             </div>
