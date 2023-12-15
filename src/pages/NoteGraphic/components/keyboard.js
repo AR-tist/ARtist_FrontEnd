@@ -5,6 +5,7 @@ import { WebMidi } from 'webmidi';
 Tone.context.lookAhead = 0;
 
 export class Keyboard {
+    
 
     constructor(scene, width, height, start_idx = 1, last_idx = 4) {
         this.tone = new Tone.Sampler({
@@ -47,6 +48,7 @@ export class Keyboard {
             }
         }).toDestination();
 
+        this.pressedNotes = {};
         this.w_notes = [];
         this.b_notes = [];
         this.octave = 0;
@@ -424,9 +426,8 @@ export class Keyboard {
         }
     }
 
+
     pushNoteAR(hand, finger) {
-        // console.log(finger);
-        if (Array.isArray(finger)) return;
         const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
         const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
         let noteIdx = 0;
@@ -453,52 +454,70 @@ export class Keyboard {
                     noteIdx -= 2;
                 }
             }
-
         }
 
+        // Store the pressed noteIdx, startIdx, and octave values in the dictionary
+        this.pressedNotes[finger] = {
+            noteIdx: noteIdx,
+            mode: mode,
+            startIdx: this.start_idx,
+            octave: this.octave
+        };
 
-        // StageScene에 keydown_event처럼 처리하는 방법...?
+        console.log(this.pressedNotes)
+
         const user_id = "test"; // 임시
-        this.pushNote(noteIdx, mode, 0, this.start_idx, user_id);  // user_id를 받아와야함
+        this.pushNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
     }
 
     releaseNoteAR(hand, finger) {
         // console.log(finger);
         if (Array.isArray(finger)) return;
-        const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
-        const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
-        let noteIdx = 0;
-        let mode = 0;
+        // const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
+        // const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
+        // let noteIdx = 0;
+        // let mode = 0;
+        const user_id = "test"; // 임시
 
-        if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
-            noteIdx = Math.floor(nowX / this.o_w * 7);
-            if (noteIdx > 9) return;
-
-        } else {    // 검은 건반, 흰 건반 같이 있는 부분
-            noteIdx = Math.round(nowX / this.o_w * 7) - 1;
-            // console.log(noteIdx);
-            if (noteIdx == -1) noteIdx = 0;
-
-            if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
-                noteIdx = Math.floor(nowX / this.o_w * 7);
-            } else {
-                mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
-                if (noteIdx >= 9) return;
-                if (noteIdx > 2 && noteIdx < 6) {
-                    noteIdx -= 1;
-                }
-                else if (noteIdx > 6 && noteIdx < 9) {
-                    noteIdx -= 2;
-                }
-            }
-
+        if(finger in this.pressedNotes){
+            this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, user_id);
+            delete this.pressedNotes[finger];
+        }else{
+            return;
         }
 
+        // if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
+        //     noteIdx = Math.floor(nowX / this.o_w * 7);
+        //     if (noteIdx > 9) return;
+        // } else {    // 검은 건반, 흰 건반 같이 있는 부분
+        //     noteIdx = Math.round(nowX / this.o_w * 7) - 1;
+        //     // console.log(noteIdx);
+        //     if (noteIdx == -1) noteIdx = 0;
 
-        // StageScene에 keydown_event처럼 처리하는 방법...?
-        const user_id = "test"; // 임시
-        this.releaseNote(noteIdx, mode, 0, this.start_idx, user_id);  // user_id를 받아와야함
+        //     if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
+        //         noteIdx = Math.floor(nowX / this.o_w * 7);
+        //     } else {
+        //         mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
+        //         if (noteIdx >= 9) return;
+        //         if (noteIdx > 2 && noteIdx < 6) {
+        //             noteIdx -= 1;
+        //         } else if (noteIdx > 6 && noteIdx < 9) {
+        //             noteIdx -= 2;
+        //         }
+        //     }
+        // }
+
+        // Release the note
+        
+        // this.releaseNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
+
+
+        // Remove the note from the pressedNotes dictionary
+        // delete this.pressedNotes[finger];
+        // console.log(this.pressedNotes)
     }
+
+
     destroy() {
         // Tone.Sampler 인스턴스 해제
         this.tone.dispose();
