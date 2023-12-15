@@ -417,8 +417,8 @@ export class Keyboard {
     }
 
     setHandPosition(hand, index, x, y) {
-        const nowX = x * this.o_w * 1.4 + this.octave * this.o_w;
-        const nowY = y * this.o_w * 0.8 + this.keyboardStartY + this.s_h / 4;
+        const nowX = y * this.o_w * 1.4 + this.octave * this.o_w;
+        const nowY = -x * this.o_w * 0.8 + this.keyboardStartY + this.s_h * 1.25;
         if (hand == 1) {
             this.rightHand[index].setPosition(nowX, nowY);
         } else {
@@ -428,7 +428,9 @@ export class Keyboard {
 
 
     pushNoteAR(hand, finger) {
-        const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
+        // console.log(finger);
+        if (Array.isArray(finger)) return;
+        const nowX = (hand == 1) ? this.rightHand[finger].x - this.octave * this.o_w : this.leftHand[finger].x - this.octave * this.o_w;
         const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
         let noteIdx = 0;
         let mode = 0;
