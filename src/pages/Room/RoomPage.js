@@ -12,6 +12,7 @@ import { setMidi } from "./../../store/slices/midi/midiAction";
 import { setOngoingFalse } from "../../store/slices/room/roomAction";
 import Modal from "react-modal";
 import axios from "axios";
+import { getIsLike, postLike } from '../../utils/api/room_RESTapi';
 
 const Room = () => {
   let { room_id } = useParams();
@@ -21,9 +22,10 @@ const Room = () => {
   const room = useSelector((state) => state.room.room);
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
-
-  const handleLikeClick = () => {
-    setLiked(!liked); // 버튼을 클릭할 때마다 liked 상태를 토글
+  const handleLikeClick = async () => {
+    const is_liked = await postLike(room.music_instance.filename, user_instance.user_id);
+    console.log(is_liked);
+    setLiked(is_liked); // 버튼을 클릭할 때마다 liked 상태를 토글
   };
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -81,8 +83,16 @@ const Room = () => {
     // console.log("phoneSocket", phoneSocket);
   }, [room]);
 
+  const getIsLikeAsync = async () => {
+    const is_like = await getIsLike(room.music_instance.filename, user_instance.user_id);
+    setLiked(is_like);
+  };
+
   useEffect(() => {
+    getIsLikeAsync();
+
     return () => {
+
       const path = window.location.href.split("/");
       if (path[path.length - 1] !== "graphic") {
         dispatch({ type: "socket/disconnect" });
