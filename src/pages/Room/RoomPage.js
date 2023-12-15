@@ -12,7 +12,7 @@ import { setMidi } from "./../../store/slices/midi/midiAction";
 import { setOngoingFalse } from "../../store/slices/room/roomAction";
 import Modal from "react-modal";
 import axios from "axios";
-import { getIsLike, postLike } from '../../utils/api/room_RESTapi';
+import { getIsLike, postLike } from "../../utils/api/room_RESTapi";
 
 const Room = () => {
   let { room_id } = useParams();
@@ -23,7 +23,10 @@ const Room = () => {
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
   const handleLikeClick = async () => {
-    const is_liked = await postLike(room.music_instance.filename, user_instance.user_id);
+    const is_liked = await postLike(
+      room.music_instance.filename,
+      user_instance.user_id
+    );
     console.log(is_liked);
     setLiked(is_liked); // 버튼을 클릭할 때마다 liked 상태를 토글
   };
@@ -45,8 +48,9 @@ const Room = () => {
       else if (room.error_code === 2) alert("방장이 방을 나갔습니다.");
       navigate("/");
     } else if (room.ongoing_code === 2) {
-      const fullDownloadUrl = `${axiosInstance.getUri()}${room.music_instance.download_url
-        }`;
+      const fullDownloadUrl = `${axiosInstance.getUri()}${
+        room.music_instance.download_url
+      }`;
 
       console.log("fullDownloadUrl", fullDownloadUrl);
       dispatch(setLoading(true));
@@ -84,7 +88,10 @@ const Room = () => {
   }, [room]);
 
   const getIsLikeAsync = async () => {
-    const is_like = await getIsLike(room.music_instance.filename, user_instance.user_id);
+    const is_like = await getIsLike(
+      room.music_instance.filename,
+      user_instance.user_id
+    );
     setLiked(is_like);
   };
 
@@ -92,7 +99,6 @@ const Room = () => {
     getIsLikeAsync();
 
     return () => {
-
       const path = window.location.href.split("/");
       if (path[path.length - 1] !== "graphic") {
         dispatch({ type: "socket/disconnect" });
@@ -112,7 +118,7 @@ const Room = () => {
         }
       );
     } catch (err) {
-      console.error('Unable to copy to clipboard', err);
+      console.error("Unable to copy to clipboard", err);
     }
   }
 
@@ -216,7 +222,7 @@ const Room = () => {
                       }}
                       onClick={() => handleModeSelect("연습 모드 - 왼손")}
                     >
-                      왼손
+                      알토
                     </button>
 
                     <button
@@ -234,7 +240,7 @@ const Room = () => {
                       }}
                       onClick={() => handleModeSelect("연습 모드 - 오른손")}
                     >
-                      오른손
+                      소프라노
                     </button>
                   </div>
                 </div>
@@ -281,7 +287,7 @@ const Room = () => {
                       }}
                       onClick={() => handleModeSelect("연주 모드 - 양손")}
                     >
-                      양손
+                      기본
                     </button>
                   </div>
                 </div>

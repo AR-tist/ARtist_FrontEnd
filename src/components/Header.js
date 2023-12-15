@@ -33,7 +33,6 @@ const Header = () => {
       // 입력값이 있으면 쿠키 저장 및 dispatch(setNickname()) 호출
       setCookie(tempNickname);
     }
-
   };
 
   const setCookie = (tempNickname) => {
@@ -45,7 +44,8 @@ const Header = () => {
     // console.log(user_instance);
     dispatch(setClient(user_instance));
 
-    document.getElementById("nickname_input").placeholder = user_instance.nickname;
+    document.getElementById("nickname_input").placeholder =
+      user_instance.nickname;
     alert('닉네임이 "' + user_instance.nickname + '"로 변경되었습니다.');
   };
 
@@ -63,8 +63,6 @@ const Header = () => {
     // 입력값이 있을 때만 auto_keyword_area를 보이도록 설정
     setAutoKeywordVisible(keyword.length > 0);
   };
-
-
 
   return (
     <>
@@ -321,6 +319,96 @@ const Header = () => {
             >
               전체 업로드 곡 보기 {">"}
             </button>
+          </div>
+          <div style={{ width: "149px", height: "192px" }}>
+            <div
+              style={{
+                width: "149px",
+                height: "166px",
+                position: "absolute",
+                left: "80px",
+                top: "736.5px",
+                borderRadius: "10px",
+                background: "#fff",
+                border: "solid 1px",
+                borderColor: "#7f7f7f",
+              }}
+            ></div>
+            <img
+              src="../img/정보아이콘.png"
+              style={{
+                width: "31px",
+                height: "31px",
+                objectFit: "cover",
+                position: "absolute",
+                top: "726px",
+              }}
+            />
+            <div style={{ width: "122px", height: "105px" }}>
+              <div style={{ width: "39px", height: "42px" }}>
+                <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "768px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#A4A4A4",
+                  }}
+                >
+                  장비
+                </p>
+                <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "793px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#7f7f7f",
+                  }}
+                >
+                  {(() => {
+                    switch (user_instance.device) {
+                      case 0:
+                        return "키보드";
+                      case 1:
+                        return "피아노";
+                      case 2:
+                        return "휴대폰";
+                      default:
+                        return "Unknown Device";
+                    }
+                  })()}
+                </p>
+              </div>
+              <div style={{ width: "122px", height: "42px" }}>
+                <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "831px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#A4A4A4",
+                  }}
+                >
+                  모드
+                </p>
+                <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "856px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#7f7f7f",
+                  }}
+                >
+                  연습 모드 - 소프라노
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </header>
