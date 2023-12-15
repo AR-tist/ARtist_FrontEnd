@@ -3,7 +3,7 @@ import { now } from 'tone';
 import ex from './images/ex.png';
 
 export class NoteGenerator {
-    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision) {
+    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision, play_mode) {
 
         this.scene = scene;
         this.noteArray = [];
@@ -42,7 +42,7 @@ export class NoteGenerator {
         // 미디 사각형 생성
         notes.forEach(n => {
             this.noteArray.push(new NoteRectangle(n.note - 12, n.startAt, n.endAt, scene, width, height,
-                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo, n.lh));
+                start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo, n.lh, play_mode));
         });
         console.log(this.noteArray);
     }
@@ -64,7 +64,7 @@ export class NoteGenerator {
 }
 
 export class NoteRectangle {
-    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine, tempo, lh) {
+    constructor(note, startAt, endAt, scene, width, height, start_idx, last_idx, timeDivision, nowPressLine, destroyLine, tempo, lh, play_mode) {
 
         this.startAt = startAt;
         this.endAt = endAt;
@@ -115,23 +115,46 @@ export class NoteRectangle {
         this.graphic = scene.add.graphics().setDepth(depth);
         // lh에 따라 색깔 다르게
         if (lh === 1) {
-            this.graphic.fillStyle(0x8470FF, 0.8);
+            if (play_mode == 2) { 
+                this.graphic.fillStyle(0xECDD70, 0.0);
+                this.graphic.lineStyle(line, 0xffffff, 0.0);
+            }
+            else { 
+                this.graphic.fillStyle(0xECDD70, 0.8);
+                this.graphic.lineStyle(line, 0xffffff, 0.4);
+            }
         } else {
-            this.graphic.fillStyle(0xd79d39, 0.8);
+            if (play_mode == 1) {
+                this.graphic.fillStyle(0x8470FF, 0.0);
+                this.graphic.lineStyle(line, 0xffffff, 0.0);
+            }
+            else {
+                this.graphic.fillStyle(0x8470FF, 0.8);
+                this.graphic.lineStyle(line, 0xffffff, 0.4);
+            }
         }
         this.graphic.fillRect(pos, -length - line, s_w, length);
-        this.graphic.lineStyle(line, 0xffffff, 0.4);
         this.graphic.strokeRect(pos + 1, -length - 1, s_w - line, length - line);
 
         /* basic: 기본 크기 사각형(흰색) */
         const basicLength = 12;
         this.basic = scene.add.graphics().setDepth(depth);
         if (lh === 1) {
-            this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+            if (play_mode == 2) { 
+                this.basic.fillStyle(0x27283B, 0.0);
+            }
+            else {
+                this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
                 0.1, 0.1, 0.8, 0.8);
+            }
         } else {
-            this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
+            if (play_mode == 1) { 
+                this.basic.fillStyle(0x27283B, 0.0);
+            }
+            else {
+                this.basic.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF,
                 0.1, 0.1, 0.6, 0.6);
+            }
         }
         this.basic.fillRect(pos, -basicLength - line, s_w, basicLength);
 

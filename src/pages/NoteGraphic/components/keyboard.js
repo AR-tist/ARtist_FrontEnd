@@ -382,17 +382,19 @@ export class Keyboard {
             this.users.push(user_id);
             user_idx = this.users.findIndex(e => e == user_id);
         }
-        // console.log(this.users)
+        console.log(this.users)
+
+        const color = (user_id == undefined) ? 0xB0B0B0 : this.colors[user_idx % 6];
 
         if (mode === 0) {
             // console.log('%d %d %d', octave, start_idx, idx)
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7) return
-            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(this.colors[user_idx % 6]);
+            this.w_notes[idx + (octave) * 7].getRect().setFillStyle(color);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 7;
             this.tone.triggerAttack([inxtoNoteW[idx]]);
         } else {
             if (idx + (octave + start_idx) * 7 >= (start_idx + this.num) * 7 - 2) return
-            this.b_notes[idx + (octave) * 5].setFillStyle(this.colors[user_idx % 6]);
+            this.b_notes[idx + (octave) * 5].setFillStyle(color);
             idx = idx + (octave + start_idx > 8 ? 8 : octave + start_idx) * 5;
             this.tone.triggerAttack([inxtoNoteB[idx]]);
         }

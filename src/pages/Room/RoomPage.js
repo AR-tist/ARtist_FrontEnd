@@ -13,6 +13,7 @@ import { setOngoingFalse } from "../../store/slices/room/roomAction";
 import Modal from "react-modal";
 import axios from "axios";
 import { getIsLike, postLike } from "../../utils/api/room_RESTapi";
+import cookie from "react-cookies";
 
 const Room = () => {
   let { room_id } = useParams();
@@ -38,6 +39,20 @@ const Room = () => {
   // 모드 설정 함수
   const handleModeSelect = (selected) => {
     setSelectedMode(selected);
+
+    if (selected == "연주 모드 - 양손") {
+      user_instance.play_mode = 0;
+      cookie.save("user_instance", user_instance);
+    } 
+    else if (selected == "연습 모드 - 오른손") {
+      user_instance.play_mode = 1;
+      cookie.save("user_instance", user_instance);
+    } 
+    else if (selected == "연습 모드 - 왼손") {
+      user_instance.play_mode = 2;
+      cookie.save("user_instance", user_instance);
+    }
+    
     setModalIsOpen(false); // 모달 닫기
   };
 
