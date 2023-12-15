@@ -143,11 +143,10 @@ const StageScene = () => {
       })
     }
     console.log(notes);
-    console.log(user_instance.hand);
 
-    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.hand);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.play_mode);
     // Piano Section
-    piano_instance.current = new Keyboard(this, width, height, 2, 7);
+    piano_instance.current = new Keyboard(this, width, height, 2, 7, user_instance.device);
     piano_instance.current.setInput(document, dispatch);
 
     document.addEventListener('keydown', keydown_event);

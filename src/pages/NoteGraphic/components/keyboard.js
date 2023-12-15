@@ -7,7 +7,7 @@ Tone.context.lookAhead = 0;
 export class Keyboard {
     
 
-    constructor(scene, width, height, start_idx = 1, last_idx = 4) {
+    constructor(scene, width, height, start_idx = 1, last_idx = 4, device) {
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -89,42 +89,50 @@ export class Keyboard {
                 .setOrigin(0, 0);
         }
 
-        // 키보드일 때 텍스트
-        this.texts = [];
-        const textSize = 18;
-        this.texts.push(scene.add.text(0 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(1 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'S', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(2 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'D', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(3 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'F', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(4 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'G', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(5 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'H', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(6 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'J', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(7 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'K', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(8 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'L', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(9 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, ';', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(10 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, '\'', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(1 * s_w - textSize * 0.3, height - s_h + 5, 'W', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(2 * s_w - textSize * 0.3, height - s_h + 5, 'E', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(4 * s_w - textSize * 0.3, height - s_h + 5, 'T', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(5 * s_w - textSize * 0.3, height - s_h + 5, 'Y', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(6 * s_w - textSize * 0.3, height - s_h + 5, 'U', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
-        this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
 
-        // AR 피아노 인풋일 때 그래픽
-        // 연주 범위 사각형
-        this.playRangeRect = scene.add.graphics().setDepth(5);
+        this.device = device;
+        this.playRangeRect = scene.add.graphics().setDepth(5);  // 연주 범위 사각형
         const lineThick = 10;
         this.playRangeRect.lineStyle(lineThick, 0x625BF7, 0.4);
-        this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 10 / 7 - lineThick, s_h - lineThick);
-        // 손가락 위치 원
-        this.leftHand = [];
-        this.rightHand = [];
-        for (let i = 0; i < 5; i++) {
-            this.leftHand.push(scene.add.circle(20, height - s_h, 5, 0x4C39D7).setDepth(5));
-            // this.leftHand[i].setStrokeStyle(1, 0x27283B);
-            this.rightHand.push(scene.add.circle(40, height - s_h, 5, 0x8470FF).setDepth(5));
-            // this.rightHand[i].setStrokeStyle(1, 0x27283B);
+
+        // 키보드일 때 텍스트
+        if (device == 0) {
+            this.texts = [];
+            const textSize = 18;
+            this.texts.push(scene.add.text(0 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(1 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'S', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(2 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'D', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(3 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'F', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(4 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'G', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(5 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'H', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(6 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'J', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(7 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'K', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(8 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'L', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(9 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, ';', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(10 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, '\'', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(1 * s_w - textSize * 0.3, height - s_h + 5, 'W', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(2 * s_w - textSize * 0.3, height - s_h + 5, 'E', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(4 * s_w - textSize * 0.3, height - s_h + 5, 'T', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(5 * s_w - textSize * 0.3, height - s_h + 5, 'Y', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(6 * s_w - textSize * 0.3, height - s_h + 5, 'U', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
+            // 연주 범위 사각형
+            this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 10 / 7 - lineThick, s_h - lineThick);
+        }
+        // AR 피아노 인풋일 때 그래픽
+        else if (device == 2) {
+            // 연주 범위 사각형
+            this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 2 - lineThick, s_h - lineThick);
+            // 손가락 위치 원
+            this.leftHand = [];
+            this.rightHand = [];
+            for (let i = 0; i < 5; i++) {
+                this.leftHand.push(scene.add.circle(20, height - s_h, 5, 0x4C39D7).setDepth(5));
+                // this.leftHand[i].setStrokeStyle(1, 0x27283B);
+                this.rightHand.push(scene.add.circle(40, height - s_h, 5, 0x8470FF).setDepth(5));
+                // this.rightHand[i].setStrokeStyle(1, 0x27283B);
+            }
         }
 
         this.keyboardStartY = height - s_h; // 추후 정리 예정
@@ -259,69 +267,63 @@ export class Keyboard {
         if (this.tone.loaded !== true) return;
         const key = event.key.charCodeAt(0);
 
-        /* 키보드 인풋일 때 처리 */ //AR피아노 테스트를 위해 일단 주석 처리
-        // if (key === 120 & this.octave < this.num - 1) {
-        //     for (let idx = 0; idx < 7; idx++)
-        //         this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
-        //     for (let idx = 0; idx < 5; idx++)
-        //         this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+        /* 키보드 인풋일 때 처리 */
+        if (this.device == 0) {
+            if (key === 120 & this.octave < this.num - 1) {
+                for (let idx = 0; idx < 7; idx++)
+                    this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+                for (let idx = 0; idx < 5; idx++)
+                    this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
-        //     this.octave += 1
+                this.octave += 1
 
-        //     for (let i = 0; i < 18; i++) {
-        //         this.texts[i].setX(this.texts[i].x + this.o_w);
-        //     }            
-        //     return
-        // }
-        // if (key === 122 && this.octave > 0) {
-        //     for (let idx = 0; idx < 7; idx++)
-        //         this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
-        //     for (let idx = 0; idx < 5; idx++)
-        //         this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+                this.playRangeRect.setX(this.playRangeRect.x + this.o_w);
+                for (let i = 0; i < 18; i++) {
+                    this.texts[i].setX(this.texts[i].x + this.o_w);
+                }            
+                return
+            }
+            if (key === 122 && this.octave > 0) {
+                for (let idx = 0; idx < 7; idx++)
+                    this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+                for (let idx = 0; idx < 5; idx++)
+                    this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
-        //     this.octave -= 1
+                this.octave -= 1
 
-        //     for (let i = 0; i < 18; i++) {
-        //         this.texts[i].setX(this.texts[i].x - this.o_w);
-        //     }
-        //     return
-        // }
-        // this.handleKey(key, 'up', this.octave, this.start_idx);
-
+                this.playRangeRect.setX(this.playRangeRect.x - this.o_w);
+                for (let i = 0; i < 18; i++) {
+                    this.texts[i].setX(this.texts[i].x - this.o_w);
+                }
+                return
+            }
+            this.handleKey(key, 'up', this.octave, this.start_idx);
+        }
         /* AR피아노 인풋일 때 처리 */
-        if (key === 120 & this.octave < this.num - 1) {
-            for (let idx = 0; idx < 7; idx++)
-                this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
-            for (let idx = 0; idx < 5; idx++)
-                this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+        else if (this.device == 2) {
+            if (key === 120 & this.octave < this.num - 1) {
+                for (let idx = 0; idx < 7; idx++)
+                    this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+                for (let idx = 0; idx < 5; idx++)
+                    this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
-            this.octave += 1
+                this.octave += 1
 
-            // for (let i = 0; i < 18; i++) {
-            this.playRangeRect.setX(this.playRangeRect.x + this.o_w);
-            // }            
-            for (let i = 0; i < 18; i++) {
-                this.texts[i].setX(this.texts[i].x + this.o_w);
+                this.playRangeRect.setX(this.playRangeRect.x + this.o_w);
+                return
             }
-            return
-        }
-        if (key === 122 && this.octave > 0) {
-            for (let idx = 0; idx < 7; idx++)
-                this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
-            for (let idx = 0; idx < 5; idx++)
-                this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
+            if (key === 122 && this.octave > 0) {
+                for (let idx = 0; idx < 7; idx++)
+                    this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
+                for (let idx = 0; idx < 5; idx++)
+                    this.b_notes[idx + (this.octave) * 5].setFillStyle(0x000000);
 
-            this.octave -= 1
+                this.octave -= 1
 
-            // for (let i = 0; i < 18; i++) {
-            this.playRangeRect.setX(this.playRangeRect.x - this.o_w);
-            // }
-            for (let i = 0; i < 18; i++) {
-                this.texts[i].setX(this.texts[i].x - this.o_w);
+                this.playRangeRect.setX(this.playRangeRect.x - this.o_w);
+                return
             }
-            return
         }
-        this.handleKey(key, 'up', this.octave, this.start_idx);
     }
 
     handleKey(key, action, octave = 0, start_idx = 1, user_id) {
@@ -418,7 +420,7 @@ export class Keyboard {
 
     setHandPosition(hand, index, x, y) {
         const nowX = y * this.o_w * 1.4 + this.octave * this.o_w;
-        const nowY = -x * this.o_w * 0.8 + this.keyboardStartY + this.s_h * 1.25;
+        const nowY = -x * this.o_w * 0.8 + this.keyboardStartY + this.s_h;
         if (hand == 1) {
             this.rightHand[index].setPosition(nowX, nowY);
         } else {
