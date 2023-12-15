@@ -419,7 +419,7 @@ export class Keyboard {
     }
 
     setHandPosition(hand, index, x, y) {
-        const nowX = y * this.o_w * 1.4 + this.octave * this.o_w;
+        const nowX = y * this.o_w * 2 + this.octave * this.o_w;
         const nowY = -x * this.o_w * 0.8 + this.keyboardStartY + this.s_h;
         if (hand == 1) {
             this.rightHand[index].setPosition(nowX, nowY);
@@ -439,23 +439,29 @@ export class Keyboard {
 
         if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
             noteIdx = Math.floor(nowX / this.o_w * 7);
-            if (noteIdx > 9) return;
+            if (noteIdx > 13) return;
 
         } else {    // 검은 건반, 흰 건반 같이 있는 부분
             noteIdx = Math.round(nowX / this.o_w * 7) - 1;
             // console.log(noteIdx);
-            if (noteIdx == -1) noteIdx = 0;
-
-            if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
+            if (noteIdx == -1) { 
+                noteIdx = 0;
+            } else if (noteIdx == 2 || noteIdx == 6 || noteIdx == 9) { // 미 or 파 or 시 or 도
                 noteIdx = Math.floor(nowX / this.o_w * 7);
-            } else {
+            } else if (noteIdx == 13) {
+                noteIdx = 13
+            } 
+            else {
                 mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
-                if (noteIdx >= 9) return;
+                if (noteIdx >= 13) return;
                 if (noteIdx > 2 && noteIdx < 6) {
                     noteIdx -= 1;
                 }
                 else if (noteIdx > 6 && noteIdx < 9) {
                     noteIdx -= 2;
+                }
+                else if (noteIdx > 9 && noteIdx < 13) {
+                    noteIdx -= 3;
                 }
             }
         }
