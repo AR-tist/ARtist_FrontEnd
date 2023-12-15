@@ -23,12 +23,10 @@ const ConnectPhone = () => {
       newWs.send("ready");
       setServerStatus("Running");
       if (serverStatus == "Running") {
-        alert("연결 성공!");
         user_instance.device = 2;
         cookie.save("user_instance", user_instance, {
         });
       } else {
-        alert("연결 실패!");
         user_instance.device = 0;
         cookie.save("user_instance", user_instance, {
           // expires: new Date(Date.now() + 60 * 60 * 1000),
