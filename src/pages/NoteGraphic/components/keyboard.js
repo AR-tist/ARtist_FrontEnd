@@ -144,7 +144,7 @@ export class Keyboard {
 
     }
 
-    setInput(document) {
+    setInput(document, dispatch) {
         // 기존 이벤트 리스너를 제거
         document.removeEventListener('keydown', this.boundKeydown);
         document.removeEventListener('keyup', this.boundKeyup);
@@ -156,8 +156,8 @@ export class Keyboard {
         WebMidi.enable(function (err) {
 
             const currentProtocol = window.location.protocol;
-            if (err || currentProtocol !== 'https:') {
-                // if (err) {
+            // if (err || currentProtocol !== 'https:') {
+            if (err) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {
@@ -191,12 +191,40 @@ export class Keyboard {
                     default: return;
                 }
 
+                const getKeyFromNoteAndMode = (noteIdx, mode) => {
+                    let key;
+
+                    switch (noteIdx) {
+                        case 0: key = mode === 1 ? 119 : 97; break;
+                        case 1: key = mode === 1 ? 101 : 115; break;
+                        case 2: key = mode === 1 ? 116 : 100; break;
+                        case 3: key = mode === 1 ? 121 : 102; break;
+                        case 4: key = mode === 1 ? 117 : 103; break;
+                        case 5: key = mode === 1 ? 111 : 104; break;
+                        case 6: key = mode === 1 ? 112 : 106; break;
+                        case 7: key = mode === 1 ? 107 : 0; break;
+                        case 8: key = mode === 1 ? 108 : 0; break;
+                        case 9: key = mode === 1 ? 0 : 59; break;
+                        case 10: key = mode === 1 ? 0 : 39; break;
+                        default: key = 0; break;
+                    }
+
+                    return key;
+                }
+
                 const user_id = "test"; // 임시
                 if (action === 'down') {
                     instance.pushNote(noteidx, mode, octave, 2, user_id);
+
+                    const key = getKeyFromNoteAndMode(noteidx, mode);
+
+
+                    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
                 else if (action === 'up') {
                     instance.releaseNote(noteidx, mode, octave, 2, user_id);
+                    const key = getKeyFromNoteAndMode(noteidx, mode);
+                    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
             }
             Myinputs.addListener('noteon', e => {

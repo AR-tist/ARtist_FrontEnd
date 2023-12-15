@@ -41,7 +41,7 @@ export class NoteGenerator {
 
         // 미디 사각형 생성
         notes.forEach(n => {
-            this.noteArray.push(new NoteRectangle(n.note, n.startAt, n.endAt, scene, width, height,
+            this.noteArray.push(new NoteRectangle(n.note - 12, n.startAt, n.endAt, scene, width, height,
                 start_idx, last_idx, timeDivision, this.nowPressLine, this.destroyLine, this.tempo, n.lh));
         });
         console.log(this.noteArray);
