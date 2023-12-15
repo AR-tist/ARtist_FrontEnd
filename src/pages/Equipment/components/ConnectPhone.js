@@ -8,7 +8,7 @@ const ConnectPhone = () => {
   const [ws, setWs] = useState(null);
   const [handCoordinates, setHandCoordinates] = useState({ x: 0, y: 0 });
 
-  const user_instance = useSelector((state) => state.user.user_instance);
+  const user_instance = cookie.load("user_instance");
 
   const canvasRef = useRef(null);
 
@@ -18,25 +18,20 @@ const ConnectPhone = () => {
     setWs(newWs);
     setPhoneWsbaseURL(newWs);
 
+    user_instance.device = 2;
+    cookie.save("user_instance", user_instance);
+
     newWs.onopen = () => {
       console.log("connected");
       newWs.send("ready");
       setServerStatus("Running");
-      if (serverStatus == "Running") {
-        user_instance.device = 2;
-        cookie.save("user_instance", user_instance, {
-        });
-      } else {
-        user_instance.device = 0;
-        cookie.save("user_instance", user_instance, {
-          // expires: new Date(Date.now() + 60 * 60 * 1000),
-        });
-      }
 
     };
 
     newWs.onerror = (error) => {
       console.error("WebSocket encountered an error:", error);
+      user_instance.device = 0;
+      cookie.save("user_instance", user_instance);
       setServerStatus("Error");
     };
 
