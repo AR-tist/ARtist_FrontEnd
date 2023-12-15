@@ -405,7 +405,7 @@ const Header = () => {
                     color: "#7f7f7f",
                   }}
                 >
-                  연습 모드 - 소프라노
+                  ex연습 모드 - 소프라노
                 </p>
               </div>
             </div>
