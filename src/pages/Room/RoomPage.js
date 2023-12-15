@@ -34,28 +34,6 @@ const Room = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const [selectedMode, setSelectedMode] = useState(""); // 선택된 모드 상태 추가
-
-  // 모드 설정 함수
-  const handleModeSelect = (selected) => {
-    setSelectedMode(selected);
-
-    if (selected == "연주 모드 - 양손") {
-      user_instance.play_mode = 0;
-      cookie.save("user_instance", user_instance);
-    } 
-    else if (selected == "연습 모드 - 오른손") {
-      user_instance.play_mode = 1;
-      cookie.save("user_instance", user_instance);
-    } 
-    else if (selected == "연습 모드 - 왼손") {
-      user_instance.play_mode = 2;
-      cookie.save("user_instance", user_instance);
-    }
-    
-    setModalIsOpen(false); // 모달 닫기
-  };
-
   useEffect(() => {
     if (room.error_code !== 0) {
       dispatch(setLoading(false));
@@ -235,7 +213,12 @@ const Room = () => {
                         color: "#000",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleModeSelect("연습 모드 - 왼손")}
+                      onClick={() => {
+                        user_instance.play_mode = 2;
+                        cookie.save("user_instance", user_instance);
+                        console.log(user_instance.play_mode);
+                        setModalIsOpen(false);
+                      }}
                     >
                       알토
                     </button>
@@ -253,7 +236,12 @@ const Room = () => {
                         cursor: "pointer",
                         marginLeft: "20px",
                       }}
-                      onClick={() => handleModeSelect("연습 모드 - 오른손")}
+                      onClick={() => {
+                        user_instance.play_mode = 1;
+                        cookie.save("user_instance", user_instance);
+                        console.log(user_instance.play_mode);
+                        setModalIsOpen(false);
+                      }}
                     >
                       소프라노
                     </button>
@@ -300,7 +288,12 @@ const Room = () => {
                         color: "#000",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleModeSelect("연주 모드 - 양손")}
+                      onClick={() => {
+                        user_instance.play_mode = 0;
+                        cookie.save("user_instance", user_instance);
+                        console.log(user_instance.play_mode);
+                        setModalIsOpen(false);
+                      }}
                     >
                       기본
                     </button>
@@ -436,7 +429,6 @@ const Room = () => {
                 nickname={value.nickname}
                 equipment="AR Piano"
                 statusColor="#FE4949"
-                mode={selectedMode}
               />
             );
           })}

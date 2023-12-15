@@ -1,12 +1,9 @@
 import React, { useState } from "react";
+import cookie from "react-cookies";
 
-const Participant = ({
-  profileImage,
-  nickname,
-  equipment,
-  mode,
-  statusColor,
-}) => {
+const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
+  const user_instance = cookie.load("user_instance");
+
   return (
     <div style={{ marginTop: "50px", marginRight: "110px" }}>
       <div
@@ -34,7 +31,20 @@ const Participant = ({
           <div>
             <h3 style={{ marginTop: "10px" }}>{nickname}</h3>
             <p style={{ marginTop: "10px", color: "#BBBBBB" }}>{equipment}</p>
-            <p style={{ marginTop: "5px", color: "#BBBBBB" }}>{mode}</p>
+            <p style={{ marginTop: "5px", color: "#BBBBBB" }}>
+              {(() => {
+                switch (user_instance.play_mode) {
+                  case 0:
+                    return "연주 모드 - 기본";
+                  case 1:
+                    return "연습 모드 - 소프라노";
+                  case 2:
+                    return "연습 모드 - 알토";
+                  default:
+                    return "Unknown play mode";
+                }
+              })()}
+            </p>
           </div>
 
           <button
