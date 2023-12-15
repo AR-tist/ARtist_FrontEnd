@@ -33,18 +33,20 @@ const random_nick_2 = [
     '악어',
 ]
 class Client {
-    constructor({ user_id, nickname, device }) {
+    constructor({ user_id, nickname, device, play_mode }) {
         var user_instance = cookie.load('user_instance');
         if (user_instance === undefined) {
             this.user_id = user_id || uuidv4();
             this.nickname = nickname || random_nick_1[Math.floor(Math.random() * random_nick_1.length)] + random_nick_2[Math.floor(Math.random() * random_nick_2.length)] + Math.floor(Math.random() * 100);
             this.device = device || 0;
+            this.play_mode = play_mode || 0;
             cookie.save('user_instance', this);
         }
         else {
             this.user_id = user_instance.user_id;
             this.nickname = user_instance.nickname;
             this.device = user_instance.device;
+            this.play_mode = user_instance.play_mode;
         }
     }
 
