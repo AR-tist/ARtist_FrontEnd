@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UploadPopup from "./UploadPopup.js";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
@@ -330,11 +330,9 @@ const Header = () => {
                 top: "736.5px",
                 borderRadius: "10px",
                 background: "#fff",
-                border: "solid 1px",
-                borderColor: "#7f7f7f",
               }}
             ></div>
-            <img
+            {/* <img
               src="../img/정보아이콘.png"
               style={{
                 width: "31px",
@@ -343,14 +341,14 @@ const Header = () => {
                 position: "absolute",
                 top: "726px",
               }}
-            />
+            /> */}
             <div style={{ width: "122px", height: "105px" }}>
               <div style={{ width: "39px", height: "42px" }}>
                 <p
                   style={{
                     position: "absolute",
                     left: "90px",
-                    top: "768px",
+                    top: "400px",
                     fontSize: "14px",
                     textAlign: "center",
                     color: "#A4A4A4",
@@ -362,7 +360,7 @@ const Header = () => {
                   style={{
                     position: "absolute",
                     left: "90px",
-                    top: "793px",
+                    top: "425px",
                     fontSize: "14px",
                     textAlign: "center",
                     color: "#7f7f7f",
@@ -387,7 +385,7 @@ const Header = () => {
                   style={{
                     position: "absolute",
                     left: "90px",
-                    top: "831px",
+                    top: "470px",
                     fontSize: "14px",
                     textAlign: "center",
                     color: "#A4A4A4",
@@ -399,7 +397,7 @@ const Header = () => {
                   style={{
                     position: "absolute",
                     left: "90px",
-                    top: "856px",
+                    top: "490px",
                     fontSize: "14px",
                     textAlign: "center",
                     color: "#7f7f7f",
