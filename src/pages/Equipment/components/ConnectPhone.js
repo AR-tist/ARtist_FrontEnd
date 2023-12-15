@@ -175,7 +175,7 @@ const ConnectPhone = () => {
             textAlign: "left",
             color: "#000",
           }
-        }>Server Status: {serverStatus}</p>
+        }>연결 상태: {serverStatus === "Running" ? "연결됨" : "연결안됨"}</p>
 
       <div
         style={
