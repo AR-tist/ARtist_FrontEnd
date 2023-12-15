@@ -89,14 +89,14 @@ const StageScene = () => {
     if (event.repeat) return;
     if (piano_instance.current.tone.loaded !== true) return;
     const key = event.key.charCodeAt(0);
-    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.current.start_idx } });
   }
 
   const keyup_event = (event) => {
     if (event.repeat) return;
     if (piano_instance.current.tone.loaded !== true) return;
     const key = event.key.charCodeAt(0);
-    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.start_idx } });
+    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.current.start_idx } });
   }
 
   console.log(midiFile);
@@ -148,7 +148,7 @@ const StageScene = () => {
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision);
     // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7);
-    piano_instance.current.setInput(document);
+    piano_instance.current.setInput(document, dispatch);
 
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
