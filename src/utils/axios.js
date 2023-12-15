@@ -5,7 +5,7 @@ import Socket from "./socket";
 
 const baseURL = "https://api-artist.ideawolf.net";
 
-const wsbaseURL = "ws://13.124.50.132:8000/ws/";
+const wsbaseURL = "wss://api-artist.ideawolf.net/ws/";
 let phoneWsbaseURL = new Socket(); // Use let instead of const
 
 const axiosInstance = axios.create({
