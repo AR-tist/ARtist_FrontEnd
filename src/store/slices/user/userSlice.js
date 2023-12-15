@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        user_instance: new Client({ id: uuidv4(), name: '익명', value: 0 }),
+        user_instance: new Client({ id: uuidv4(), value: 0 }),
     },
 
     reducers: {
