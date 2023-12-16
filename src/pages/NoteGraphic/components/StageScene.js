@@ -155,8 +155,7 @@ const StageScene = () => {
       })
     }
     console.log(notes);
-    let totalTimens = notes[notes.length - 1].endAt
-    const seconds = totalTimens / 1000;
+    const seconds = time / 1000;
 
     minutes = Math.floor(seconds / 60);
     remainingSeconds = Math.floor(seconds % 60);
