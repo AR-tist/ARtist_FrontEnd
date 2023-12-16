@@ -167,43 +167,43 @@ const Room = () => {
             <h1 style={{ fontSize: "25px" }}>{room.host_nickname}의 방</h1>
             <div style={{ display: "flex", alignItems: "center" }}>
 
-            <div>
-              <div style={{ display: "flex", alignItems: "center", marginLeft: "30px", fontSize: "15px", marginBottom: "5px", color: "gray" }}>
-                Tempo               
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-            <button style={{
-                  width: "30px",
-                  height: "25px",
-                  backgroundColor: "#dee2e6",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  
-                }}
-                onClick={minusTempo}>-</button>
-              <span
-                style={{
-                  width: "50px",
-                  height: "25px",
-                  border: "1px solid #dee2e6",
-                  borderRadius: "2px",
-                  textAlign: "center",
-                }}
-              >
-                {user_instance.tempo}
-              </span>
-              <button style={{
-                width: "30px",
-                height: "25px",
-                backgroundColor: "#dee2e6",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                marginRight: "50px",
-              }}
-                onClick={addTempo}>+</button>
-              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", marginLeft: "30px", fontSize: "15px", marginBottom: "5px", color: "gray" }}>
+                  Tempo
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <button style={{
+                    width: "30px",
+                    height: "25px",
+                    backgroundColor: "#dee2e6",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+
+                  }}
+                    onClick={minusTempo}>-</button>
+                  <span
+                    style={{
+                      width: "50px",
+                      height: "25px",
+                      border: "1px solid #dee2e6",
+                      borderRadius: "2px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {user_instance.tempo}
+                  </span>
+                  <button style={{
+                    width: "30px",
+                    height: "25px",
+                    backgroundColor: "#dee2e6",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginRight: "50px",
+                  }}
+                    onClick={addTempo}>+</button>
+                </div>
               </div>
               <button
                 style={{
@@ -441,24 +441,23 @@ const Room = () => {
               </div>
 
               <div style={{ marginTop: "80px" }}>
-                <p
+                {/* <p
                   style={{
                     fontSize: "15px",
                     color: "#505050",
                     display: "inline-block",
                   }}
                 >
-                  곡 길이
-                </p>
+                </p> */}
                 <p
                   style={{
                     fontSize: "15px",
                     color: "#505050",
                     display: "inline-block",
-                    marginLeft: "5px",
+                    // marginLeft: "5px",
                   }}
                 >
-                  {room.music_instance.music_length}
+                  {Math.floor(room.music_instance.music_length / 60)}:{String(Math.floor(room.music_instance.music_length % 60)).padEnd(2, '0')}
                 </p>
               </div>
             </div>
