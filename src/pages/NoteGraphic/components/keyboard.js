@@ -474,12 +474,24 @@ export class Keyboard {
             octave: this.octave
         };
 
-        console.log(this.pressedNotes)
+        console.log(noteIdx, mode);
 
-
+        let arOctave = this.octave;
+        let arNoteIdx = this.pressedNotes[finger].noteIdx
         this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
-        const key = getKeyFromNoteAndMode(Math.floor(noteIdx % 11), mode);
-        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: this.octave + Math.floor(noteIdx / 11), start_idx: this.start_idx } });
+        if(mode == 0){
+            if(noteIdx >= 11){
+                arNoteIdx = Math.floor(noteIdx % 11);
+                arOctave += 1;
+            }
+        }else if(mode == 1){
+            if(noteIdx >= 7){
+                arNoteIdx = Math.floor(noteIdx % 7);
+                arOctave += 1;
+            }
+        }
+        const key = getKeyFromNoteAndMode(arNoteIdx, mode);
+        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: arOctave, start_idx: this.start_idx } });
     }
 
     releaseNoteAR(hand, finger, dispatch) {
@@ -492,8 +504,22 @@ export class Keyboard {
 
         if (finger in this.pressedNotes) {
             this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, this.user_id);
-            const key = getKeyFromNoteAndMode(Math.floor(this.pressedNotes[finger].noteIdx % 11), this.pressedNotes[finger].mode);
-            dispatch({ type: 'socket/keyUp', payload: { key: key, octave: this.octave + Math.floor(this.pressedNotes[finger].noteIdx / 11), start_idx: this.start_idx } });
+            let arOctave = this.pressedNotes[finger].octave
+            let arNoteIdx = this.pressedNotes[finger].noteIdx
+            if(this.pressedNotes[finger].mode == 0){
+                if(this.pressedNotes[finger].noteIdx >= 11){
+                    arNoteIdx = Math.floor(this.pressedNotes[finger].noteIdx % 11);
+                    arOctave += 1;
+                }
+            }else if(this.pressedNotes[finger].mode == 1){
+                if(this.pressedNotes[finger].noteIdx >= 7){
+                    arNoteIdx = Math.floor(this.pressedNotes[finger].noteIdx % 7);
+                    arOctave += 1;
+                }
+            }
+            
+            const key = getKeyFromNoteAndMode(arNoteIdx, this.pressedNotes[finger].mode);
+            dispatch({ type: 'socket/keyUp', payload: { key: key, octave: arOctave, start_idx: this.start_idx } });
             delete this.pressedNotes[finger];
         } else {
             return;
