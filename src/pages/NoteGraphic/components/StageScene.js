@@ -113,7 +113,8 @@ const StageScene = () => {
     const { x, y, width, height } = this.cameras.main;
     // const width = 2000;
     // const height = 1000;
-    this.tempo = 2.0;
+    // let user_instance = cookie.load('user_instance');
+    this.tempo = user_instance.tempo;
 
     this.cameras.main.setBackgroundColor('#27283B')
 

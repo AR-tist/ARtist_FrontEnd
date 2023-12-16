@@ -118,18 +118,36 @@ const Room = () => {
 
   const [tempo, setTempo] = useState(user_instance.tempo);
 
+  function roundToDecimal(number, decimalPlaces) {
+    const factor = 10 ** decimalPlaces;
+    return Math.round(number * factor) / factor;
+  }
+
+
   const addTempo = () => {
-    if (tempo < 5) {
+    if (tempo < 5 && tempo >= 1) {
       setTempo(tempo + 1); // Update tempo state
       user_instance.tempo = tempo + 1; // Update user_instance
       cookie.save("user_instance", user_instance);
+    } else if (tempo < 1) {
+      setTempo(roundToDecimal(tempo + 0.1, 1));
+      user_instance.tempo = roundToDecimal(tempo + 0.1, 1);
+      cookie.save("user_instance", user_instance);
     }
+
+    console.log(tempo);
   }
   
   const minusTempo = () => {
+    if (tempo === 0.1) return;
+  
     if (tempo > 1) {
       setTempo(tempo - 1); // Update tempo state
       user_instance.tempo = tempo - 1; // Update user_instance
+      cookie.save("user_instance", user_instance);
+    } else {
+      setTempo(roundToDecimal(tempo - 0.1, 1));
+      user_instance.tempo = roundToDecimal(tempo - 0.1, 1);
       cookie.save("user_instance", user_instance);
     }
   }

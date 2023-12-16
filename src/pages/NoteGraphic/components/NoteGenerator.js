@@ -12,6 +12,7 @@ export class NoteGenerator {
         // 위에서 아래까지 내려오는 시간 2초
         // this.tempo = 2.0;
         this.tempo = tempo;
+        console.log(this.tempo);
 
         this.speed = height * 0.8 / this.tempo / 60;
 
