@@ -5,7 +5,7 @@ import { WebMidi } from 'webmidi';
 Tone.context.lookAhead = 0;
 
 export class Keyboard {
-    
+
 
     constructor(scene, width, height, start_idx = 1, last_idx = 4, device) {
         this.tone = new Tone.Sampler({
@@ -166,8 +166,9 @@ export class Keyboard {
         WebMidi.enable(function (err) {
 
             const currentProtocol = window.location.protocol;
-            // if (err || currentProtocol !== 'https:') {
-            if (err) {
+            const baseIP = window.location.hostname;
+            console.log(baseIP);
+            if (err || ((currentProtocol !== 'https:') || (baseIP !== 'localhost'))) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {
@@ -280,7 +281,7 @@ export class Keyboard {
                 this.playRangeRect.setX(this.playRangeRect.x + this.o_w);
                 for (let i = 0; i < 18; i++) {
                     this.texts[i].setX(this.texts[i].x + this.o_w);
-                }            
+                }
                 return
             }
             if (key === 122 && this.octave > 0) {
@@ -444,13 +445,13 @@ export class Keyboard {
         } else {    // 검은 건반, 흰 건반 같이 있는 부분
             noteIdx = Math.round(nowX / this.o_w * 7) - 1;
             // console.log(noteIdx);
-            if (noteIdx == -1) { 
+            if (noteIdx == -1) {
                 noteIdx = 0;
             } else if (noteIdx == 2 || noteIdx == 6 || noteIdx == 9) { // 미 or 파 or 시 or 도
                 noteIdx = Math.floor(nowX / this.o_w * 7);
             } else if (noteIdx == 13) {
                 noteIdx = 13
-            } 
+            }
             else {
                 mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
                 if (noteIdx >= 13) return;
@@ -489,10 +490,10 @@ export class Keyboard {
         // let mode = 0;
         const user_id = "test"; // 임시
 
-        if(finger in this.pressedNotes){
+        if (finger in this.pressedNotes) {
             this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, user_id);
             delete this.pressedNotes[finger];
-        }else{
+        } else {
             return;
         }
 
@@ -518,7 +519,7 @@ export class Keyboard {
         // }
 
         // Release the note
-        
+
         // this.releaseNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
 
 
