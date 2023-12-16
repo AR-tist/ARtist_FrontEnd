@@ -135,7 +135,6 @@ const Room = () => {
       cookie.save("user_instance", user_instance);
     }
 
-    console.log(tempo);
   }
   
   const minusTempo = () => {
