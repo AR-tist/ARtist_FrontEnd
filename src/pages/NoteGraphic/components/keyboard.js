@@ -528,6 +528,7 @@ export class Keyboard {
 
         this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
         const keyandoctave = getKeyFromNoteAndModeAr(noteIdx, mode);
+        console.log(noteIdx, mode ,keyandoctave.key, keyandoctave.add_octave);
         dispatch({ type: 'socket/keyDown', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
     }
 

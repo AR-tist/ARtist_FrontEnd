@@ -128,7 +128,7 @@ const Room = () => {
 
   const addTempo = () => {
     const tempo = user_instance.tempo;
-    if (tempo < 5 && tempo >= 1) {
+    if (tempo < 10 && tempo >= 1) {
       dispatch(setTempo(tempo + 1)); // Update tempo state
       cookie.save("user_instance", user_instance);
     } else if (tempo < 1) {
