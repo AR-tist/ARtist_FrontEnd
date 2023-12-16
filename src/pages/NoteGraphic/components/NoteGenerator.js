@@ -3,14 +3,15 @@ import { now } from 'tone';
 import ex from './images/ex.png';
 
 export class NoteGenerator {
-    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision, play_mode) {
+    constructor(scene, width, height, notes, start_idx = 1, last_idx = 4, timeDivision, play_mode, tempo) {
 
         this.scene = scene;
         this.noteArray = [];
 
         // this.speed = parseFloat(timeDivision) / 157.0 * 2;
         // 위에서 아래까지 내려오는 시간 2초
-        this.tempo = 2.0;
+        // this.tempo = 2.0;
+        this.tempo = tempo;
 
         this.speed = height * 0.8 / this.tempo / 60;
 

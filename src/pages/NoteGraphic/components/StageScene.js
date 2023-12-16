@@ -113,6 +113,7 @@ const StageScene = () => {
     const { x, y, width, height } = this.cameras.main;
     // const width = 2000;
     // const height = 1000;
+    this.tempo = 2.0;
 
     this.cameras.main.setBackgroundColor('#27283B')
 
@@ -144,7 +145,7 @@ const StageScene = () => {
     }
     console.log(notes);
 
-    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.play_mode);
+    this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.play_mode, this.tempo);
     // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7, user_instance.device);
     piano_instance.current.setInput(document, dispatch);
@@ -185,8 +186,12 @@ const StageScene = () => {
       }
     }, this)
 
+    const tempoInfo = this.add.text(window.innerWidth* window.devicePixelRatio - 300, 50, 'tempo: ' + this.tempo, { fill: '#fff' });
 
+    const progressRate = this.add.text(50, 50, '진행시간 / 전체곡시간 ', { fill: '#fff' });
   }
+
+  
 
   function update(time, delta) {
     if (isPaused.current) return;

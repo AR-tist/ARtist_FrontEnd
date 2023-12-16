@@ -417,6 +417,32 @@ const Header = () => {
                   })()}
                 </p>
               </div>
+              <div style={{ width: "39px", height: "42px"}}>
+              <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "530px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#A4A4A4",
+                  }}
+                >
+                  Tempo
+                </p>
+                <p
+                  style={{
+                    position: "absolute",
+                    left: "90px",
+                    top: "550px",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    color: "#7f7f7f",
+                  }}
+                >
+                  {user_instance.tempo}
+                </p>
+              </div>
             </div>
           </div>
         </div>
