@@ -47,9 +47,9 @@ class Client {
       this.nickname =
         nickname ||
         random_nick_1[Math.floor(Math.random() * random_nick_1.length)] +
-          random_nick_2[Math.floor(Math.random() * random_nick_2.length)] +
-          Math.floor(Math.random() * 100);
-      this.device = device || 0;
+        random_nick_2[Math.floor(Math.random() * random_nick_2.length)] +
+        Math.floor(Math.random() * 100);
+      this.device = device || 1;
       this.play_mode = play_mode || 0;
       this.tempo = tempo || 2;
       cookie.save("user_instance", this);

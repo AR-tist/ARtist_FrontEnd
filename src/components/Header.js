@@ -8,7 +8,7 @@ import { setNickname, setClient } from "../store/slices/user/userAction";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user_instance = cookie.load("user_instance");
+  const user_instance = useSelector((state) => state.user.user_instance);
   const [isPopupVisible, setPopupVisible] = useState(false);
   const handleUploadClick = () => {
     setPopupVisible(true); // 팝업 창 열기
@@ -38,15 +38,12 @@ const Header = () => {
   const setCookie = (tempNickname) => {
     // const expires = new Date();
     // expires.setDate(expires.getDate() + 7); // 7일 후 만료
-    user_instance.nickname = tempNickname;
 
     dispatch(setNickname(tempNickname));
-    // console.log(user_instance);
-    dispatch(setClient(user_instance));
 
     document.getElementById("nickname_input").placeholder =
-      user_instance.nickname;
-    alert('닉네임이 "' + user_instance.nickname + '"로 변경되었습니다.');
+      tempNickname;
+    alert('닉네임이 "' + tempNickname + '"로 변경되었습니다.');
   };
 
   const navigateToWholeSong = () => {
@@ -369,11 +366,11 @@ const Header = () => {
                   {(() => {
                     switch (user_instance.device) {
                       case 0:
-                        return "키보드";
+                        return "어플리케이션";
                       case 1:
-                        return "피아노";
+                        return "키보드";
                       case 2:
-                        return "휴대폰";
+                        return "MIDI 디바이스";
                       default:
                         return "Unknown Device";
                     }
@@ -417,8 +414,8 @@ const Header = () => {
                   })()}
                 </p>
               </div>
-              <div style={{ width: "39px", height: "42px"}}>
-              <p
+              <div style={{ width: "39px", height: "42px" }}>
+                <p
                   style={{
                     position: "absolute",
                     left: "90px",

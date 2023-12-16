@@ -29,16 +29,17 @@ import { setOngoingFalse } from "../store/slices/room/roomAction";
 
 
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+export const random_images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+
 
 const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user_instance = useSelector((state) => state.user.user_instance);
   const [randomImageIndex] = useState(
-    Math.floor(Math.random() * images.length)
+    Math.floor(Math.random() * random_images.length)
   );
-  const randomImage = images[randomImageIndex];
+  const randomImage = random_images[randomImageIndex];
 
   const midiLoad = async (dest) => {
     const fullDownloadUrl = `${axiosInstance.getUri()}${props.download_url}`;
@@ -65,6 +66,10 @@ const Row = (props) => {
     // Play 로직 작성
     midiLoad(`/graphic`);
   };
+
+  const getImgUrl = (imgurl) => {
+    return axiosInstance.getUri() + imgurl;
+  }
 
   const handleDownload = () => {
     // Download 로직 작성
@@ -162,7 +167,7 @@ const Row = (props) => {
                 borderRadius: "4px",
               }}
               alt="이미지"
-              src={randomImage}
+              src={props.imgurl ? getImgUrl(props.imgurl) : randomImage}
             />
           </div>
           <div
@@ -444,7 +449,7 @@ const MusicList = ({ midiList }) => {
               delete_url={midi.delete_url}
               moreIndex={moreIndex}
               setMoreIndex={setMoreIndex}
-              imgurl={undefined}
+              imgurl={midi.imgurl}
               subtitle={midi.subtitle}
               poster={midi.poster}
               like={midi.like}
