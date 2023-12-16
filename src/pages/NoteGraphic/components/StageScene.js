@@ -84,9 +84,9 @@ const StageScene = () => {
 
           console.log(dataSplit);
           if (dataSplit[2].trim() === "0")
-            piano_instance.current.pushNoteAR(handLH, pushNote);
+            piano_instance.current.pushNoteAR(handLH, pushNote, dispatch);
           else
-            piano_instance.current.releaseNoteAR(handLH, pushNote);
+            piano_instance.current.releaseNoteAR(handLH, pushNote, dispatch);
           break;
         default:
           console.log("unknown tag");
