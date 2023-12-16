@@ -74,6 +74,7 @@ const Room = () => {
           nickname: user_instance.nickname,
           user_id: user_instance.user_id,
           device: user_instance.device,
+          play_mode: user_instance.play_mode,
         },
       });
     } else {
