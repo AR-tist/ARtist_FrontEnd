@@ -19,9 +19,9 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
             const payload = action.payload
             console.log(payload)
 
-            let queryPath = `?filename=${payload.filename}&nickname=${payload.nickname}&user_id=${payload.user_id}&device=${payload.device}`;
+            let queryPath = `?filename=${payload.filename}&nickname=${payload.nickname}&user_id=${payload.user_id}&device=${payload.device}&play_mode=${payload.play_mode}`;
             if (payload.room_id !== undefined) {
-                queryPath = `?room_id=${payload.room_id}&nickname=${payload.nickname}&user_id=${payload.user_id}&device=${payload.device}`;
+                queryPath = `?room_id=${payload.room_id}&nickname=${payload.nickname}&user_id=${payload.user_id}&device=${payload.device}&play_mode=${payload.play_mode}`;
             }
             socket.connect(`${wsbaseURL}${queryPath}`)
 

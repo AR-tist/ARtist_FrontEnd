@@ -496,7 +496,8 @@ const Room = () => {
               <Participant
                 profileImage="../img/프로필2.jpg"
                 nickname={value.nickname}
-                equipment="AR Piano"
+                device={value.device}
+                play_mode={value.play_mode}
                 statusColor="#FE4949"
               />
             );

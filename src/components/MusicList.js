@@ -98,11 +98,11 @@ const Row = (props) => {
     // is_host={true}
     // host_nickname={loadCookie()}
     // device={0}/>;
-    CreateRoom(props.filename, user_instance.nickname, '1234', 0);
+    CreateRoom(props.filename, user_instance.nickname, user_instance.user_id, user_instance.device, user_instance.play_mode);
   };
 
-  const CreateRoom = (filename, nickname, user_id, device) => {
-    dispatch({ type: 'socket/connect', payload: { filename, nickname, user_id, device } });
+  const CreateRoom = (filename, nickname, user_id, device, play_mode) => {
+    dispatch({ type: 'socket/connect', payload: { filename, nickname, user_id, device, play_mode } });
   };
 
   const moreButtonStyle = {
