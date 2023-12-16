@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { NoteGenerator } from "./NoteGenerator";
 import { Keyboard } from "./keyboard";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { extarctEvent, assignLh } from '../../../utils/Utils';
 import { useDispatch } from 'react-redux';
@@ -19,6 +19,19 @@ const StageScene = () => {
   const start = useRef(new Date().getTime());
   const isPaused = useRef(true);
   const user_instance = cookie.load('user_instance');
+
+  var progressRate;
+  var startTime;
+  var elapsedTime = 0;
+
+  var minutes;
+  var remainingSeconds;
+
+
+
+  //  // 초를 분과 초로 분해
+  //   const progressminutes = Math.floor(progressTime / 60);
+  //   const progrssremainingSeconds = Math.floor(progressTime % 60);
 
   const phoneSocket = getPhoneWsbaseURL();
   // try {
@@ -99,31 +112,29 @@ const StageScene = () => {
     dispatch({ type: 'socket/keyUp', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.current.start_idx } });
   }
 
-  console.log(midiFile);
+  // console.log(midiFile);
   const device = useSelector(state => state.user.user_instance.device);
-  console.log(phoneSocket);
+  // console.log(phoneSocket);
 
   const keydown = useSelector(state => state.room.keydown);
   const keyup = useSelector(state => state.room.keyup);
 
   function preload() { }
 
+  
+
+
   function create() {
     dispatch(setStart(0));
     const { x, y, width, height } = this.cameras.main;
-    // const width = 2000;
-    // const height = 1000;
-    // let user_instance = cookie.load('user_instance');
     this.tempo = user_instance.tempo;
-
+  
     this.cameras.main.setBackgroundColor('#27283B')
-
-    // const track = midiFile.track[extarctEvent(midiFile.track)].event;
-
+  
     let _track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
     const track = assignLh(_track);
     console.log(track);
-
+  
     let time = 0;
     let pre_notes = {}
     track.forEach((e, i) => {
@@ -137,7 +148,7 @@ const StageScene = () => {
       }
       time += e.deltaTime * midiFile.timeDivision / 96.3;
     })
-
+  
     let notes = [];
     for (let key in pre_notes) {
       pre_notes[key].forEach(e => {
@@ -145,60 +156,68 @@ const StageScene = () => {
       })
     }
     console.log(notes);
-
+    let totalTimens = notes[notes.length-1].endAt
+    const seconds = totalTimens / 1000;
+  
+    minutes = Math.floor(seconds / 60);
+    remainingSeconds = Math.floor(seconds % 60);
+  
+  
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.play_mode, this.tempo);
-    // Piano Section
     piano_instance.current = new Keyboard(this, width, height, 2, 7, user_instance.device);
     piano_instance.current.setInput(document, dispatch);
-
+  
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
-
-    // ====================
-
-
+  
     dispatch({ type: 'socket/imready' });
-
-    // // timer
-    // this.time.addEvent({
-    //   delay: 1, // 시간 단위 ms
-    //   callback: () => this.timerCount += 1, // delay 주기마다 수행할 로직
-    //   callbackScope: this, // callback 범위
-    //   loop: true, // 반복 여부
-    // });
-
-    // pause 버튼
+  
     const pauseButton = this.add.text(window.innerWidth * window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
     pauseButton.setInteractive();
-
+  
     this.temp = 0;
-    this.clickCount = 0; //temp
+    this.clickCount = 0;
     pauseButton.on('pointerup', function () {
       this.clickCount += 1;
       if (this.clickCount % 2) {
-        // this.temp = this.timerCount;
         isPaused.current = true;
         this.rec = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setDepth(4);
       }
       else {
-        // this.timerCount = this.temp;
         isPaused.current = false;
         this.rec.destroy();
       }
     }, this)
 
-    const tempoInfo = this.add.text(window.innerWidth* window.devicePixelRatio - 300, 50, 'tempo: ' + this.tempo, { fill: '#fff' });
-
-    const progressRate = this.add.text(50, 50, '진행시간 / 전체곡시간 ', { fill: '#fff' });
+     // 시작 시간을 기록합니다.
+    startTime = new Date();
+  
+    const tempoInfo = this.add.text(window.innerWidth * window.devicePixelRatio - 300, 50, 'tempo: ' + this.tempo, { fill: '#fff' });
+  
+    progressRate = this.add.text(50, 50, `0 분 0 초` + ' /  ' + `${minutes} 분 ${remainingSeconds} 초`, { fill: '#fff' });
   }
 
-  
 
   function update(time, delta) {
     if (isPaused.current) return;
     this.noteGraphic.goDown(start.current);
+    elapsedTime = new Date() - startTime;
+    
+    // 경과 시간을 초 단위로 변환합니다.
+    var elapsedSeconds = Math.floor(elapsedTime / 1000) % 60;
+    
+    // 텍스트를 업데이트합니다.
+    var elapsedMinutes = Math.floor(elapsedTime / (1000 * 60));
+    
+    // Adjust elapsedMinutes when elapsedSeconds reaches 60
+    if (elapsedSeconds === 60) {
+        elapsedMinutes += 1;
+        elapsedSeconds = 0; // Reset elapsedSeconds to 0
+    }
 
-  }
+    progressRate.setText(`${elapsedMinutes} 분 ${elapsedSeconds} 초` + ' /  ' + `${minutes} 분 ${remainingSeconds} 초`);
+}
+
 
   useEffect(() => {
     if (_start === 0) return;
