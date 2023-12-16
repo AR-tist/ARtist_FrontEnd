@@ -170,6 +170,11 @@ const Room = () => {
             <h1 style={{ fontSize: "25px" }}>{room.host_nickname}의 방</h1>
             <div style={{ display: "flex", alignItems: "center" }}>
 
+            <div>
+              <div style={{ display: "flex", alignItems: "center", marginLeft: "30px", fontSize: "15px", marginBottom: "5px", color: "gray" }}>
+                Tempo               
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
             <button style={{
                   width: "30px",
                   height: "25px",
@@ -201,7 +206,8 @@ const Room = () => {
                   marginRight: "50px",
                 }}
                 onClick={addTempo}>+</button>
-            
+              </div>
+              </div>
               <button
                 style={{
                   width: "70px",
