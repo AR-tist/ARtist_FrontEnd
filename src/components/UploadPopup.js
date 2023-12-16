@@ -98,7 +98,6 @@ const UploadPopup = ({ onClose }) => {
 
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
-    setFileType("image");
   };
 
   const uploadMIDI = (file, img, title, subtitle, poster, password) => {
@@ -110,6 +109,8 @@ const UploadPopup = ({ onClose }) => {
     formData.append("subtitle", subtitle);
     formData.append("poster", poster);
     formData.append("password", password);
+    if (img)
+      formData.append("img", img);
 
     axiosInstance
       .post("/midi/upload", formData, {
@@ -124,33 +125,7 @@ const UploadPopup = ({ onClose }) => {
       .catch((error) => {
         console.error("Upload failed:", error);
       });
-      dispatch(setLoading(false))
-  };
-
-  //DB 수정하면 
-  const uploadMIDIandImage = (image, file, title, password) => {
-    console.log("Uploading MIDI file...");
-
-    const formData = new FormData();
-
-    formData.append("image", image);
-    formData.append("file", file);
-    formData.append("title", title);
-    formData.append("password", password);
-
-    axiosInstance
-      .post("/midi/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("Upload successful:", response.data);
-        dispatch(fetchMidiList());
-      })
-      .catch((error) => {
-        console.error("Upload failed:", error);
-      });
+    dispatch(setLoading(false))
   };
 
   const handleUpload = () => {
@@ -161,10 +136,10 @@ const UploadPopup = ({ onClose }) => {
         // Check the file extension to determine the type
         const fileType = fileName.endsWith(".midi") || fileName.endsWith('.mid') ? "MIDI" : "MP3";
 
-        
+
         if (fileType === "MIDI") {
           console.log("Uploading MIDI file:", file);
-          uploadMIDI(file, undefined, title, subtitle, name, password);
+          uploadMIDI(file, image, title, subtitle, name, password);
         } else if (fileType === "MP3") {
           const model = new mm.OnsetsAndFrames(
             "https://storage.googleapis.com/magentadata/js/checkpoints/transcription/onsets_frames_uni"
@@ -179,11 +154,11 @@ const UploadPopup = ({ onClose }) => {
               fileName += ".mid";
 
               console.log(new File([blob], fileName, { type: "audio/mid" }));
-              uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), undefined, title, subtitle, name, password);
+              uploadMIDI(new File([blob], fileName, { type: "audio/mid" }), image, title, subtitle, name, password);
             });
           });
         }
-        
+
       } else {
         console.log("Invalid file type selected. Not uploading.");
       }
@@ -286,20 +261,13 @@ const UploadPopup = ({ onClose }) => {
               ) : (
                 <>
                   <div className="DragAndDrop-container">
-                    {fileType === "image" ? (
+                    <>
                       <img
                         className="DragAndDrop-img"
                         src="img\파일업로드이미지.png"
                       />
-                    ) : (
-                      <>
-                        <img
-                          className="DragAndDrop-img"
-                          src="img\파일업로드이미지.png"
-                        />
-                        <p>{fileType === "file" ? "MP3 또는 MIDI 파일" : "이미지(아이콘)"}</p>
-                      </>
-                    )}
+                      <p>{"이미지(아이콘)"}</p>
+                    </>
                   </div>
                 </>
               )}
