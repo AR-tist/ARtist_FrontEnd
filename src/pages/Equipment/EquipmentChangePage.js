@@ -4,19 +4,20 @@ import Layout from "../../components/Layout";
 import ConnectPhone from "./components/ConnectPhone";
 import ConnectKeyboard from "./components/ConnectKeyboard";
 import ConnectPiano from "./components/ConnectPiano";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setDevice } from "../../store/slices/user/userAction";
 
 const EquipmentChangePage = () => {
-  const nickname = useSelector((state) => state.user.name);
-  const [selectedButton, setSelectedButton] = useState(2);
-
+  const dispatch = useDispatch();
+  const user_instance = useSelector((state) => state.user.user_instance);
+  console.log(user_instance);
   const handleButtonClick = (buttonNumber) => {
-    setSelectedButton(buttonNumber);
+    dispatch(setDevice(buttonNumber));
   };
 
   return (
     <>
-      <Header user={nickname} />
+      <Header />
       <Layout></Layout>
 
       <div id="app" className="container" style={{}}>
@@ -44,7 +45,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
-              onClick={() => handleButtonClick(1)}
+              onClick={() => handleButtonClick(0)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -75,7 +76,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
-              onClick={() => handleButtonClick(2)}
+              onClick={() => handleButtonClick(1)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -106,7 +107,7 @@ const EquipmentChangePage = () => {
             }}
           >
             <button
-              onClick={() => handleButtonClick(3)}
+              onClick={() => handleButtonClick(2)}
               style={{
                 display: "block",
                 backgroundColor: "transparent",
@@ -129,9 +130,9 @@ const EquipmentChangePage = () => {
           </div>
         </div>
         <div>
-          {selectedButton === 1 && <ConnectPhone />}
-          {selectedButton === 2 && <ConnectKeyboard />}
-          {selectedButton === 3 && <ConnectPiano />}
+          {user_instance.device === 0 && <ConnectPhone />}
+          {user_instance.device === 1 && <ConnectKeyboard />}
+          {user_instance.device === 2 && <ConnectPiano />}
         </div>
       </div>
     </>

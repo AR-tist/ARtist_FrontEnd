@@ -18,7 +18,7 @@ const StageScene = () => {
   const piano_instance = useRef(null);
   const start = useRef(new Date().getTime());
   const isPaused = useRef(true);
-  const user_instance = cookie.load('user_instance');
+  const user_instance = useSelector(state => state.user.user_instance);
 
   var progressRate;
   var startTime;
@@ -113,7 +113,6 @@ const StageScene = () => {
   }
 
   // console.log(midiFile);
-  const device = useSelector(state => state.user.user_instance.device);
   // console.log(phoneSocket);
 
   const keydown = useSelector(state => state.room.keydown);
@@ -121,20 +120,20 @@ const StageScene = () => {
 
   function preload() { }
 
-  
+
 
 
   function create() {
     dispatch(setStart(0));
     const { x, y, width, height } = this.cameras.main;
     this.tempo = user_instance.tempo;
-  
+
     this.cameras.main.setBackgroundColor('#27283B')
-  
+
     let _track = onebyoneMIDI(midiFile.track[extarctEvent(midiFile.track)].event);
     const track = assignLh(_track);
     console.log(track);
-  
+
     let time = 0;
     let pre_notes = {}
     track.forEach((e, i) => {
@@ -148,7 +147,7 @@ const StageScene = () => {
       }
       time += e.deltaTime * midiFile.timeDivision / 96.3;
     })
-  
+
     let notes = [];
     for (let key in pre_notes) {
       pre_notes[key].forEach(e => {
@@ -156,25 +155,25 @@ const StageScene = () => {
       })
     }
     console.log(notes);
-    let totalTimens = notes[notes.length-1].endAt
+    let totalTimens = notes[notes.length - 1].endAt
     const seconds = totalTimens / 1000;
-  
+
     minutes = Math.floor(seconds / 60);
     remainingSeconds = Math.floor(seconds % 60);
-  
-  
+
+
     this.noteGraphic = new NoteGenerator(this, width, height, notes, 2, 7, midiFile.timeDivision, user_instance.play_mode, this.tempo);
     piano_instance.current = new Keyboard(this, width, height, 2, 7, user_instance.device);
     piano_instance.current.setInput(document, dispatch);
-  
+
     document.addEventListener('keydown', keydown_event);
     document.addEventListener('keyup', keyup_event);
-  
+
     dispatch({ type: 'socket/imready' });
-  
+
     const pauseButton = this.add.text(window.innerWidth * window.devicePixelRatio - 100, 50, 'Pause', { fill: '#fff' });
     pauseButton.setInteractive();
-  
+
     this.temp = 0;
     this.clickCount = 0;
     pauseButton.on('pointerup', function () {
@@ -189,11 +188,11 @@ const StageScene = () => {
       }
     }, this)
 
-     // 시작 시간을 기록합니다.
+    // 시작 시간을 기록합니다.
     startTime = new Date();
-  
+
     const tempoInfo = this.add.text(window.innerWidth * window.devicePixelRatio - 300, 50, 'tempo: ' + this.tempo, { fill: '#fff' });
-  
+
     progressRate = this.add.text(50, 50, `0 분 0 초` + ' /  ' + `${minutes} 분 ${remainingSeconds} 초`, { fill: '#fff' });
   }
 
@@ -202,21 +201,21 @@ const StageScene = () => {
     if (isPaused.current) return;
     this.noteGraphic.goDown(start.current);
     elapsedTime = new Date() - startTime;
-    
+
     // 경과 시간을 초 단위로 변환합니다.
     var elapsedSeconds = Math.floor(elapsedTime / 1000) % 60;
-    
+
     // 텍스트를 업데이트합니다.
     var elapsedMinutes = Math.floor(elapsedTime / (1000 * 60));
-    
+
     // Adjust elapsedMinutes when elapsedSeconds reaches 60
     if (elapsedSeconds === 60) {
-        elapsedMinutes += 1;
-        elapsedSeconds = 0; // Reset elapsedSeconds to 0
+      elapsedMinutes += 1;
+      elapsedSeconds = 0; // Reset elapsedSeconds to 0
     }
 
     progressRate.setText(`${elapsedMinutes} 분 ${elapsedSeconds} 초` + ' /  ' + `${minutes} 분 ${remainingSeconds} 초`);
-}
+  }
 
 
   useEffect(() => {
