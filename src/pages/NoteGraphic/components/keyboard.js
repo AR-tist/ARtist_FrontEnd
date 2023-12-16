@@ -27,7 +27,7 @@ function getKeyFromNoteAndMode(noteIdx, mode) {
 export class Keyboard {
 
 
-    constructor(scene, width, height, start_idx = 1, last_idx = 4, device) {
+    constructor(scene, width, height, start_idx = 1, last_idx = 4, device, user_id) {
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -67,6 +67,8 @@ export class Keyboard {
                 this.tone.triggerAttackRelease(["C5"], 0.05);
             }
         }).toDestination();
+
+        this.user_id = user_id;
 
         this.pressedNotes = {};
         this.w_notes = [];
@@ -187,7 +189,7 @@ export class Keyboard {
             const currentProtocol = window.location.protocol;
             const baseIP = window.location.hostname;
             console.log(baseIP);
-            if (err || ((currentProtocol !== 'https:') || (baseIP !== 'localhost'))) {
+            if (err || ((currentProtocol !== 'https:') && (baseIP !== 'localhost'))) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {
@@ -221,9 +223,8 @@ export class Keyboard {
                     default: return;
                 }
 
-                const user_id = "test"; // 임시
                 if (action === 'down') {
-                    instance.pushNote(noteidx, mode, octave, 2, user_id);
+                    instance.pushNote(noteidx, mode, octave, 2, this.user_id);
 
                     const key = getKeyFromNoteAndMode(noteidx, mode);
 
@@ -231,7 +232,7 @@ export class Keyboard {
                     dispatch({ type: 'socket/keyDown', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
                 else if (action === 'up') {
-                    instance.releaseNote(noteidx, mode, octave, 2, user_id);
+                    instance.releaseNote(noteidx, mode, octave, 2, this.user_id);
                     const key = getKeyFromNoteAndMode(noteidx, mode);
                     dispatch({ type: 'socket/keyUp', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
@@ -475,9 +476,8 @@ export class Keyboard {
 
         console.log(this.pressedNotes)
 
-        const user_id = "test"; // 임시
 
-        this.pushNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
+        this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
         const key = getKeyFromNoteAndMode(noteIdx, mode);
         dispatch({ type: 'socket/keyDown', payload: { key: key, octave: this.octave, start_idx: this.start_idx } });
     }
@@ -489,10 +489,9 @@ export class Keyboard {
         // const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
         // let noteIdx = 0;
         // let mode = 0;
-        const user_id = "test"; // 임시
 
         if (finger in this.pressedNotes) {
-            this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, user_id);
+            this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, this.user_id);
             const key = getKeyFromNoteAndMode(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode);
             dispatch({ type: 'socket/keyUp', payload: { key: key, octave: this.octave, start_idx: this.start_idx } });
             delete this.pressedNotes[finger];
