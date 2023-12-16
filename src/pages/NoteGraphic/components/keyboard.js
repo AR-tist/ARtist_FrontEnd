@@ -24,6 +24,55 @@ function getKeyFromNoteAndMode(noteIdx, mode) {
 
     return key;
 }
+
+function getKeyFromNoteAndModeAr(noteIdx, mode) {
+    let key;
+    let add_octave = 0;
+
+    switch (noteIdx) {
+        case 0: key = mode === 0 ? 97 : 119; break;
+        case 1: key = mode === 0 ? 115 : 101; break;
+        case 2: key = mode === 0 ? 100 : 116; break;
+        case 3: key = mode === 0 ? 102 : 121; break;
+        case 4: key = mode === 0 ? 103 : 117; break;
+        case 5: key = mode === 0 ? 104 : 111; break;
+        case 6: key = mode === 0 ? 106 : 112; break;
+        case 7:
+            key = mode === 0 ? 107 : 116;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 8:
+            key = mode === 0 ? 108 : 121;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 9:
+            key = mode === 0 ? 59 : 117;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 10:
+            key = mode === 0 ? 39 : 111;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 11:
+            key = mode === 0 ? 102 : 112;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        case 12:
+            key = mode === 0 ? 103 : 116;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        case 13:
+            key = mode === 0 ? 104 : 121;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        default:
+            break;
+    }
+
+    return { key: key, add_octave: add_octave };
+}
+
+
 export class Keyboard {
 
 
@@ -478,8 +527,8 @@ export class Keyboard {
 
 
         this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
-        const key = getKeyFromNoteAndMode(Math.floor(noteIdx % 11), mode);
-        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: this.octave + Math.floor(noteIdx / 11), start_idx: this.start_idx } });
+        const keyandoctave = getKeyFromNoteAndModeAr(noteIdx, mode);
+        dispatch({ type: 'socket/keyDown', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
     }
 
     releaseNoteAR(hand, finger, dispatch) {
@@ -492,8 +541,8 @@ export class Keyboard {
 
         if (finger in this.pressedNotes) {
             this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, this.user_id);
-            const key = getKeyFromNoteAndMode(Math.floor(this.pressedNotes[finger].noteIdx % 11), this.pressedNotes[finger].mode);
-            dispatch({ type: 'socket/keyUp', payload: { key: key, octave: this.octave + Math.floor(this.pressedNotes[finger].noteIdx / 11), start_idx: this.start_idx } });
+            const keyandoctave = getKeyFromNoteAndModeAr(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode);
+            dispatch({ type: 'socket/keyUp', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
             delete this.pressedNotes[finger];
         } else {
             return;
