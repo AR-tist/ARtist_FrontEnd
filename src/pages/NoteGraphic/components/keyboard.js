@@ -478,8 +478,8 @@ export class Keyboard {
 
 
         this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
-        const key = getKeyFromNoteAndMode(noteIdx, mode);
-        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: this.octave, start_idx: this.start_idx } });
+        const key = getKeyFromNoteAndMode(Math.floor(noteIdx % 11), mode);
+        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: this.octave + Math.floor(noteIdx / 11), start_idx: this.start_idx } });
     }
 
     releaseNoteAR(hand, finger, dispatch) {
@@ -492,8 +492,8 @@ export class Keyboard {
 
         if (finger in this.pressedNotes) {
             this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, this.user_id);
-            const key = getKeyFromNoteAndMode(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode);
-            dispatch({ type: 'socket/keyUp', payload: { key: key, octave: this.octave, start_idx: this.start_idx } });
+            const key = getKeyFromNoteAndMode(Math.floor(this.pressedNotes[finger].noteIdx % 11), this.pressedNotes[finger].mode);
+            dispatch({ type: 'socket/keyUp', payload: { key: key, octave: this.octave + Math.floor(this.pressedNotes[finger].noteIdx / 11), start_idx: this.start_idx } });
             delete this.pressedNotes[finger];
         } else {
             return;
