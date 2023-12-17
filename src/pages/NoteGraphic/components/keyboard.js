@@ -1,6 +1,7 @@
 import * as Tone from 'tone';
 import { inxtoNoteW, inxtoNoteB } from '../../../utils/tone';
 import { WebMidi } from 'webmidi';
+import cookie from 'react-cookies';
 
 Tone.context.lookAhead = 0;
 
@@ -233,69 +234,72 @@ export class Keyboard {
         document.addEventListener('keyup', this.boundKeyup);
 
         const instance = this;
-        WebMidi.enable(function (err) {
+        if (this.device === 2) {
+            WebMidi.enable(function (err) {
 
-            const currentProtocol = window.location.protocol;
-            const baseIP = window.location.hostname;
-            console.log(baseIP);
-            if (err || ((currentProtocol !== 'https:') && (baseIP !== 'localhost'))) {
-                console.log("WebMidi could not be enabled.", err);
-                return;
-            } else {
-                console.log("WebMidi enabled!");
+                const currentProtocol = window.location.protocol;
+                const baseIP = window.location.hostname;
+                console.log(baseIP);
+
+                if (err || ((currentProtocol !== 'https:') && (baseIP !== 'localhost'))) {
+                    console.log("WebMidi could not be enabled.", err);
+                    return;
+                } else {
+                    console.log("WebMidi enabled!");
+                }
+
+                console.log(WebMidi.inputs);
+                console.log(instance);
+
+                const Myinputs = WebMidi.inputs[0];
+
+                const classifiy = (note, action) => {
+                    note = note - 48;
+                    const key = (note) % 12;
+                    const octave = Math.floor(note / 12);
+                    let noteidx = 0;
+                    let mode = 0;
+                    switch (key) {
+                        case 0: noteidx = 0; break;
+                        case 1: noteidx = 0; mode = 1; break;
+                        case 2: noteidx = 1; break;
+                        case 3: noteidx = 1; mode = 1; break;
+                        case 4: noteidx = 2; break;
+                        case 5: noteidx = 3; break;
+                        case 6: noteidx = 2; mode = 1; break;
+                        case 7: noteidx = 4; break;
+                        case 8: noteidx = 3; mode = 1; break;
+                        case 9: noteidx = 5; break;
+                        case 10: noteidx = 4; mode = 1; break;
+                        case 11: noteidx = 6; break;
+                        default: return;
+                    }
+
+                    if (action === 'down') {
+                        instance.pushNote(noteidx, mode, octave, 2, this.user_id);
+
+                        const key = getKeyFromNoteAndMode(noteidx, mode);
+
+
+                        dispatch({ type: 'socket/keyDown', payload: { key: key, octave: octave, start_idx: 2 } });
+                    }
+                    else if (action === 'up') {
+                        instance.releaseNote(noteidx, mode, octave, 2, this.user_id);
+                        const key = getKeyFromNoteAndMode(noteidx, mode);
+                        dispatch({ type: 'socket/keyUp', payload: { key: key, octave: octave, start_idx: 2 } });
+                    }
+                }
+                Myinputs.addListener('noteon', e => {
+                    classifiy(e.data[1], 'down');
+
+                }, { channels: [1] });
+
+                Myinputs.addListener('noteoff', e => {
+                    classifiy(e.data[1], 'up');
+                }, { channels: [1] });
             }
-
-            console.log(WebMidi.inputs);
-            console.log(instance);
-
-            const Myinputs = WebMidi.inputs[0];
-
-            const classifiy = (note, action) => {
-                note = note - 48;
-                const key = (note) % 12;
-                const octave = Math.floor(note / 12);
-                let noteidx = 0;
-                let mode = 0;
-                switch (key) {
-                    case 0: noteidx = 0; break;
-                    case 1: noteidx = 0; mode = 1; break;
-                    case 2: noteidx = 1; break;
-                    case 3: noteidx = 1; mode = 1; break;
-                    case 4: noteidx = 2; break;
-                    case 5: noteidx = 3; break;
-                    case 6: noteidx = 2; mode = 1; break;
-                    case 7: noteidx = 4; break;
-                    case 8: noteidx = 3; mode = 1; break;
-                    case 9: noteidx = 5; break;
-                    case 10: noteidx = 4; mode = 1; break;
-                    case 11: noteidx = 6; break;
-                    default: return;
-                }
-
-                if (action === 'down') {
-                    instance.pushNote(noteidx, mode, octave, 2, this.user_id);
-
-                    const key = getKeyFromNoteAndMode(noteidx, mode);
-
-
-                    dispatch({ type: 'socket/keyDown', payload: { key: key, octave: octave, start_idx: 2 } });
-                }
-                else if (action === 'up') {
-                    instance.releaseNote(noteidx, mode, octave, 2, this.user_id);
-                    const key = getKeyFromNoteAndMode(noteidx, mode);
-                    dispatch({ type: 'socket/keyUp', payload: { key: key, octave: octave, start_idx: 2 } });
-                }
-            }
-            Myinputs.addListener('noteon', e => {
-                classifiy(e.data[1], 'down');
-
-            }, { channels: [1] });
-
-            Myinputs.addListener('noteoff', e => {
-                classifiy(e.data[1], 'up');
-            }, { channels: [1] });
+            );
         }
-        );
     }
     removeInput(document) {
         document.removeEventListener('keydown', this.boundKeydown);
