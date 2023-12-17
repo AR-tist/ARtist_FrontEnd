@@ -10,13 +10,47 @@ const userSlice = createSlice({
     },
 
     reducers: {
-        setnickname(state, action) {
-            state.user_instance.nickname = action.payload.nickname;
+        setClient(state, action) {
+            state.user_instance = action.payload.user_instance;
             cookie.save('user_instance', state.user_instance);
         },
 
-        setClient(state, action) {
-            state.user_instance = action.payload.user_instance;
+        setnickname(state, action) {
+            const user_instance = { ...state.user_instance };
+
+            user_instance.nickname = action.payload.nickname
+
+            state.user_instance = user_instance;
+
+            cookie.save('user_instance', state.user_instance);
+        },
+
+        setDevice(state, action) {
+            const user_instance = { ...state.user_instance };
+
+            user_instance.device = action.payload.device
+
+            state.user_instance = user_instance;
+
+            cookie.save('user_instance', state.user_instance);
+        },
+        setPlayMode(state, action) {
+            const user_instance = { ...state.user_instance };
+
+            user_instance.play_mode = action.payload.play_mode
+
+            state.user_instance = user_instance;
+
+            cookie.save('user_instance', state.user_instance);
+        },
+        setTempo(state, action) {
+            const user_instance = { ...state.user_instance };
+
+            user_instance.tempo = action.payload.tempo
+
+            state.user_instance = user_instance;
+
+
             cookie.save('user_instance', state.user_instance);
         }
     },

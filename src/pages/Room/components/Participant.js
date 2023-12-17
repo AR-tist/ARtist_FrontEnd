@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import cookie from "react-cookies";
+import { useSelector } from 'react-redux';
 
-const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
-  const user_instance = cookie.load("user_instance");
+const Participant = ({ profileImage, nickname, device, play_mode, statusColor }) => {
 
   return (
     <div style={{ marginTop: "50px", marginRight: "110px" }}>
@@ -30,10 +30,23 @@ const Participant = ({ profileImage, nickname, equipment, statusColor }) => {
           />
           <div>
             <h3 style={{ marginTop: "10px" }}>{nickname}</h3>
-            <p style={{ marginTop: "10px", color: "#BBBBBB" }}>{equipment}</p>
+            <p style={{ marginTop: "10px", color: "#BBBBBB" }}>{
+              (() => {
+                switch (device) {
+                  case 0:
+                    return "AR 피아노";
+                  case 1:
+                    return "키보드";
+                  case 2:
+                    return "MIDI 디바이스";
+                  default:
+                    return "Unknown equipment";
+                }
+              })()
+            }</p>
             <p style={{ marginTop: "5px", color: "#BBBBBB" }}>
               {(() => {
-                switch (user_instance.play_mode) {
+                switch (play_mode) {
                   case 0:
                     return "연주 모드 - 기본";
                   case 1:

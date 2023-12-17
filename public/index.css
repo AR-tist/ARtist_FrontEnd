@@ -6,11 +6,11 @@
 }
 
 html {
+    font-family: "Pretendard-Regular";
     overscroll-behavior: none;
 }
 
 body {
-    font-family: "Pretendard-Regular";
     margin: 0px;
     padding: 0px;
 }

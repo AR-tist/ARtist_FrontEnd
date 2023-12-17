@@ -4,10 +4,79 @@ import { WebMidi } from 'webmidi';
 
 Tone.context.lookAhead = 0;
 
+function getKeyFromNoteAndMode(noteIdx, mode) {
+    let key;
+
+    switch (noteIdx) {
+        case 0: key = mode === 1 ? 119 : 97; break;
+        case 1: key = mode === 1 ? 101 : 115; break;
+        case 2: key = mode === 1 ? 116 : 100; break;
+        case 3: key = mode === 1 ? 121 : 102; break;
+        case 4: key = mode === 1 ? 117 : 103; break;
+        case 5: key = mode === 1 ? 111 : 104; break;
+        case 6: key = mode === 1 ? 112 : 106; break;
+        case 7: key = mode === 1 ? 107 : 0; break;
+        case 8: key = mode === 1 ? 108 : 0; break;
+        case 9: key = mode === 1 ? 0 : 59; break;
+        case 10: key = mode === 1 ? 0 : 39; break;
+        default: key = 0; break;
+    }
+
+    return key;
+}
+
+function getKeyFromNoteAndModeAr(noteIdx, mode) {
+    let key;
+    let add_octave = 0;
+
+    switch (noteIdx) {
+        case 0: key = mode === 0 ? 97 : 119; break;
+        case 1: key = mode === 0 ? 115 : 101; break;
+        case 2: key = mode === 0 ? 100 : 116; break;
+        case 3: key = mode === 0 ? 102 : 121; break;
+        case 4: key = mode === 0 ? 103 : 117; break;
+        case 5: key = mode === 0 ? 104 : 111; break;
+        case 6: key = mode === 0 ? 106 : 112; break;
+        case 7:
+            key = mode === 0 ? 107 : 116;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 8:
+            key = mode === 0 ? 108 : 121;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 9:
+            key = mode === 0 ? 59 : 117;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 10:
+            key = mode === 0 ? 39 : 111;
+            add_octave = mode === 0 ? 0 : 1;
+            break;
+        case 11:
+            key = mode === 0 ? 102 : 112;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        case 12:
+            key = mode === 0 ? 103 : 116;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        case 13:
+            key = mode === 0 ? 104 : 121;
+            add_octave = mode === 0 ? 1 : 2;
+            break;
+        default:
+            break;
+    }
+
+    return { key: key, add_octave: add_octave };
+}
+
+
 export class Keyboard {
 
 
-    constructor(scene, width, height, start_idx = 1, last_idx = 4, device) {
+    constructor(scene, width, height, start_idx = 1, last_idx = 4, device, user_id) {
         this.tone = new Tone.Sampler({
             urls: {
                 A0: "A0.mp3",
@@ -47,6 +116,8 @@ export class Keyboard {
                 this.tone.triggerAttackRelease(["C5"], 0.05);
             }
         }).toDestination();
+
+        this.user_id = user_id;
 
         this.pressedNotes = {};
         this.w_notes = [];
@@ -96,7 +167,7 @@ export class Keyboard {
         this.playRangeRect.lineStyle(lineThick, 0x625BF7, 0.4);
 
         // 키보드일 때 텍스트
-        if (device == 0) {
+        if (device === 1) {
             this.texts = [];
             const textSize = 18;
             this.texts.push(scene.add.text(0 * s_w + s_w / 2 - textSize * 0.3, height - s_h + 5, 'A', { fill: '#000000' }).setDepth(4).setFontSize(textSize));
@@ -121,7 +192,7 @@ export class Keyboard {
             this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 11 / 7 - lineThick, s_h - lineThick);
         }
         // AR 피아노 인풋일 때 그래픽
-        else if (device == 2) {
+        else if (device === 0) {
             // 연주 범위 사각형
             this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 2 - lineThick, s_h - lineThick);
             // 손가락 위치 원
@@ -149,7 +220,6 @@ export class Keyboard {
         ];
     }
 
-
     webMidiEnable(err) {
 
     }
@@ -168,7 +238,7 @@ export class Keyboard {
             const currentProtocol = window.location.protocol;
             const baseIP = window.location.hostname;
             console.log(baseIP);
-            if (err || ((currentProtocol !== 'https:') || (baseIP !== 'localhost'))) {
+            if (err || ((currentProtocol !== 'https:') && (baseIP !== 'localhost'))) {
                 console.log("WebMidi could not be enabled.", err);
                 return;
             } else {
@@ -202,30 +272,8 @@ export class Keyboard {
                     default: return;
                 }
 
-                const getKeyFromNoteAndMode = (noteIdx, mode) => {
-                    let key;
-
-                    switch (noteIdx) {
-                        case 0: key = mode === 1 ? 119 : 97; break;
-                        case 1: key = mode === 1 ? 101 : 115; break;
-                        case 2: key = mode === 1 ? 116 : 100; break;
-                        case 3: key = mode === 1 ? 121 : 102; break;
-                        case 4: key = mode === 1 ? 117 : 103; break;
-                        case 5: key = mode === 1 ? 111 : 104; break;
-                        case 6: key = mode === 1 ? 112 : 106; break;
-                        case 7: key = mode === 1 ? 107 : 0; break;
-                        case 8: key = mode === 1 ? 108 : 0; break;
-                        case 9: key = mode === 1 ? 0 : 59; break;
-                        case 10: key = mode === 1 ? 0 : 39; break;
-                        default: key = 0; break;
-                    }
-
-                    return key;
-                }
-
-                const user_id = "test"; // 임시
                 if (action === 'down') {
-                    instance.pushNote(noteidx, mode, octave, 2, user_id);
+                    instance.pushNote(noteidx, mode, octave, 2, this.user_id);
 
                     const key = getKeyFromNoteAndMode(noteidx, mode);
 
@@ -233,7 +281,7 @@ export class Keyboard {
                     dispatch({ type: 'socket/keyDown', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
                 else if (action === 'up') {
-                    instance.releaseNote(noteidx, mode, octave, 2, user_id);
+                    instance.releaseNote(noteidx, mode, octave, 2, this.user_id);
                     const key = getKeyFromNoteAndMode(noteidx, mode);
                     dispatch({ type: 'socket/keyUp', payload: { key: key, octave: octave, start_idx: 2 } });
                 }
@@ -261,6 +309,7 @@ export class Keyboard {
         if (this.tone.loaded !== true) return;
         const key = event.key.charCodeAt(0);
         this.handleKey(key, 'down', this.octave, this.start_idx);
+
     }
 
     onKeyup(event) {
@@ -269,7 +318,7 @@ export class Keyboard {
         const key = event.key.charCodeAt(0);
 
         /* 키보드 인풋일 때 처리 */
-        if (this.device == 0) {
+        if (this.device === 1) {
             if (key === 120 & this.octave < this.num - 1) {
                 for (let idx = 0; idx < 7; idx++)
                     this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
@@ -301,7 +350,7 @@ export class Keyboard {
             this.handleKey(key, 'up', this.octave, this.start_idx);
         }
         /* AR피아노 인풋일 때 처리 */
-        else if (this.device == 2) {
+        else if (this.device === 0) {
             if (key === 120 & this.octave < this.num - 1) {
                 for (let idx = 0; idx < 7; idx++)
                     this.w_notes[idx + (this.octave) * 7].getRect().setFillStyle(0xffffff);
@@ -387,7 +436,8 @@ export class Keyboard {
             this.users.push(user_id);
             user_idx = this.users.findIndex(e => e == user_id);
         }
-        console.log(this.users)
+        console.log(this.users);
+
 
         const color = (user_id == undefined) ? 0xB0B0B0 : this.colors[user_idx % 6];
 
@@ -430,7 +480,7 @@ export class Keyboard {
     }
 
 
-    pushNoteAR(hand, finger) {
+    pushNoteAR(hand, finger, dispatch) {
         // console.log(finger);
         if (Array.isArray(finger)) return;
         const nowX = (hand == 1) ? this.rightHand[finger].x - this.octave * this.o_w : this.leftHand[finger].x - this.octave * this.o_w;
@@ -477,55 +527,29 @@ export class Keyboard {
 
         console.log(this.pressedNotes)
 
-        const user_id = "test"; // 임시
-        this.pushNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
+
+        this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
+        const keyandoctave = getKeyFromNoteAndModeAr(noteIdx, mode);
+        console.log(noteIdx, mode, keyandoctave.key, keyandoctave.add_octave);
+        dispatch({ type: 'socket/keyDown', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
     }
 
-    releaseNoteAR(hand, finger) {
+    releaseNoteAR(hand, finger, dispatch) {
         // console.log(finger);
         if (Array.isArray(finger)) return;
         // const nowX = (hand == 1) ? this.rightHand[finger].x : this.leftHand[finger].x;
         // const nowY = (hand == 1) ? this.rightHand[finger].y : this.leftHand[finger].y;
         // let noteIdx = 0;
         // let mode = 0;
-        const user_id = "test"; // 임시
 
         if (finger in this.pressedNotes) {
-            this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, user_id);
+            this.releaseNote(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode, this.pressedNotes[finger].octave, this.pressedNotes[finger].startIdx, this.user_id);
+            const keyandoctave = getKeyFromNoteAndModeAr(this.pressedNotes[finger].noteIdx, this.pressedNotes[finger].mode);
+            dispatch({ type: 'socket/keyUp', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
             delete this.pressedNotes[finger];
         } else {
             return;
         }
-
-        // if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
-        //     noteIdx = Math.floor(nowX / this.o_w * 7);
-        //     if (noteIdx > 9) return;
-        // } else {    // 검은 건반, 흰 건반 같이 있는 부분
-        //     noteIdx = Math.round(nowX / this.o_w * 7) - 1;
-        //     // console.log(noteIdx);
-        //     if (noteIdx == -1) noteIdx = 0;
-
-        //     if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
-        //         noteIdx = Math.floor(nowX / this.o_w * 7);
-        //     } else {
-        //         mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
-        //         if (noteIdx >= 9) return;
-        //         if (noteIdx > 2 && noteIdx < 6) {
-        //             noteIdx -= 1;
-        //         } else if (noteIdx > 6 && noteIdx < 9) {
-        //             noteIdx -= 2;
-        //         }
-        //     }
-        // }
-
-        // Release the note
-
-        // this.releaseNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
-
-
-        // Remove the note from the pressedNotes dictionary
-        // delete this.pressedNotes[finger];
-        // console.log(this.pressedNotes)
     }
 
 

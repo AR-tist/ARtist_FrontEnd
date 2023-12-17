@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Participant from "./components/Participant";
 import Header from "../../components/Header";
 import Layout from "../../components/Layout";
@@ -14,14 +14,17 @@ import Modal from "react-modal";
 import axios from "axios";
 import { getIsLike, postLike } from "../../utils/api/room_RESTapi";
 import cookie from "react-cookies";
+import { setPlayMode, setTempo } from './../../store/slices/user/userAction';
+import { random_images } from "../../components/MusicList";
 
 const Room = () => {
   let { room_id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user_instance = cookie.load("user_instance");
+  const user_instance = useSelector((state) => state.user.user_instance);
   const room = useSelector((state) => state.room.room);
-  
+  const image_path = useRef(room.music_instance.imgurl === '' ? random_images[Math.floor(Math.random() * random_images.length)] : axiosInstance.getUri() + room.music_instance.imgurl);
+
 
   const [liked, setLiked] = useState(false); // 좋아요 버튼의 상태를 저장
   const handleLikeClick = async () => {
@@ -42,9 +45,8 @@ const Room = () => {
       else if (room.error_code === 2) alert("방장이 방을 나갔습니다.");
       navigate("/");
     } else if (room.ongoing_code === 2) {
-      const fullDownloadUrl = `${axiosInstance.getUri()}${
-        room.music_instance.download_url
-      }`;
+      const fullDownloadUrl = `${axiosInstance.getUri()}${room.music_instance.download_url
+        }`;
 
       console.log("fullDownloadUrl", fullDownloadUrl);
       dispatch(setLoading(true));
@@ -72,6 +74,7 @@ const Room = () => {
           nickname: user_instance.nickname,
           user_id: user_instance.user_id,
           device: user_instance.device,
+          play_mode: user_instance.play_mode,
         },
       });
     } else {
@@ -116,7 +119,6 @@ const Room = () => {
     }
   }
 
-  const [tempo, setTempo] = useState(user_instance.tempo);
 
   function roundToDecimal(number, decimalPlaces) {
     const factor = 10 ** decimalPlaces;
@@ -125,29 +127,25 @@ const Room = () => {
 
 
   const addTempo = () => {
-    if (tempo < 5 && tempo >= 1) {
-      setTempo(tempo + 1); // Update tempo state
-      user_instance.tempo = tempo + 1; // Update user_instance
+    const tempo = user_instance.tempo;
+    if (tempo < 10 && tempo >= 1) {
+      dispatch(setTempo(tempo + 1)); // Update tempo state
       cookie.save("user_instance", user_instance);
     } else if (tempo < 1) {
-      setTempo(roundToDecimal(tempo + 0.1, 1));
-      user_instance.tempo = roundToDecimal(tempo + 0.1, 1);
+      dispatch(setTempo(roundToDecimal(tempo + 0.1, 1)));
       cookie.save("user_instance", user_instance);
     }
 
   }
-  
+
   const minusTempo = () => {
-    if (tempo === 0.1) return;
-  
+    const tempo = user_instance.tempo;
+    if (tempo === 0.5) return;
+
     if (tempo > 1) {
-      setTempo(tempo - 1); // Update tempo state
-      user_instance.tempo = tempo - 1; // Update user_instance
-      cookie.save("user_instance", user_instance);
+      dispatch(setTempo(tempo - 1)); // Update tempo state
     } else {
-      setTempo(roundToDecimal(tempo - 0.1, 1));
-      user_instance.tempo = roundToDecimal(tempo - 0.1, 1);
-      cookie.save("user_instance", user_instance);
+      dispatch(setTempo(roundToDecimal(tempo - 0.1, 1)));
     }
   }
 
@@ -170,38 +168,44 @@ const Room = () => {
             <h1 style={{ fontSize: "25px" }}>{room.host_nickname}의 방</h1>
             <div style={{ display: "flex", alignItems: "center" }}>
 
-            <button style={{
-                  width: "30px",
-                  height: "25px",
-                  backgroundColor: "#dee2e6",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  
-                }}
-                onClick={minusTempo}>-</button>
-               <span
-                style={{
-                  width: "50px",
-                  height: "25px",
-                  border: "1px solid #dee2e6",
-                  borderRadius: "2px",
-                  textAlign: "center",
-                }}
-              >
-                {tempo}
-              </span>
-              <button style={{
-                  width: "30px",
-                  height: "25px",
-                  backgroundColor: "#dee2e6",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  marginRight: "50px",
-                }}
-                onClick={addTempo}>+</button>
-            
+              <div>
+                <div style={{ display: "flex", alignItems: "center", marginLeft: "30px", fontSize: "15px", marginBottom: "5px", color: "gray" }}>
+                  Tempo
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <button style={{
+                    width: "30px",
+                    height: "25px",
+                    backgroundColor: "#dee2e6",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+
+                  }}
+                    onClick={minusTempo}>-</button>
+                  <span
+                    style={{
+                      width: "50px",
+                      height: "25px",
+                      border: "1px solid #dee2e6",
+                      borderRadius: "2px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {user_instance.tempo}
+                  </span>
+                  <button style={{
+                    width: "30px",
+                    height: "25px",
+                    backgroundColor: "#dee2e6",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginRight: "50px",
+                  }}
+                    onClick={addTempo}>+</button>
+                </div>
+              </div>
               <button
                 style={{
                   width: "70px",
@@ -215,7 +219,7 @@ const Room = () => {
                 }}
                 onClick={() => {
                   dispatch({ type: "socket/host_play" });
-                }} 
+                }}
               >
                 PLAY
               </button>
@@ -287,9 +291,7 @@ const Room = () => {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        user_instance.play_mode = 2;
-                        cookie.save("user_instance", user_instance);
-                        console.log(user_instance.play_mode);
+                        dispatch(setPlayMode(2));
                         setModalIsOpen(false);
                       }}
                     >
@@ -310,9 +312,7 @@ const Room = () => {
                         marginLeft: "20px",
                       }}
                       onClick={() => {
-                        user_instance.play_mode = 1;
-                        cookie.save("user_instance", user_instance);
-                        console.log(user_instance.play_mode);
+                        dispatch(setPlayMode(1));
                         setModalIsOpen(false);
                       }}
                     >
@@ -362,9 +362,7 @@ const Room = () => {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        user_instance.play_mode = 0;
-                        cookie.save("user_instance", user_instance);
-                        console.log(user_instance.play_mode);
+                        dispatch(setPlayMode(0));
                         setModalIsOpen(false);
                       }}
                     >
@@ -384,7 +382,7 @@ const Room = () => {
           >
             <div style={{}}>
               <img
-                src="../img/하입보이앨범커버.jpg"
+                src={image_path.current}
                 alt="앨범 커버"
                 style={{
                   float: "left",
@@ -444,24 +442,23 @@ const Room = () => {
               </div>
 
               <div style={{ marginTop: "80px" }}>
-                <p
+                {/* <p
                   style={{
                     fontSize: "15px",
                     color: "#505050",
                     display: "inline-block",
                   }}
                 >
-                  곡 길이
-                </p>
+                </p> */}
                 <p
                   style={{
                     fontSize: "15px",
                     color: "#505050",
                     display: "inline-block",
-                    marginLeft: "5px",
+                    // marginLeft: "5px",
                   }}
                 >
-                  {room.music_instance.music_length}
+                  {Math.floor(room.music_instance.music_length / 60)}:{String(Math.floor(room.music_instance.music_length % 60)).padEnd(2, '0')}
                 </p>
               </div>
             </div>
@@ -500,7 +497,8 @@ const Room = () => {
               <Participant
                 profileImage="../img/프로필2.jpg"
                 nickname={value.nickname}
-                equipment="AR Piano"
+                device={value.device}
+                play_mode={value.play_mode}
                 statusColor="#FE4949"
               />
             );
