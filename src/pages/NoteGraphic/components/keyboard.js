@@ -118,7 +118,7 @@ export class Keyboard {
             this.texts.push(scene.add.text(8 * s_w - textSize * 0.3, height - s_h + 5, 'O', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
             this.texts.push(scene.add.text(9 * s_w - textSize * 0.3, height - s_h + 5, 'P', { fill: '#FFFFFF' }).setDepth(4).setFontSize(textSize));
             // 연주 범위 사각형
-            this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 10 / 7 - lineThick, s_h - lineThick);
+            this.playRangeRect.strokeRect(0 + lineThick / 2, height - s_h + lineThick / 2, this.o_w * 11 / 7 - lineThick, s_h - lineThick);
         }
         // AR 피아노 인풋일 때 그래픽
         else if (device == 2) {
