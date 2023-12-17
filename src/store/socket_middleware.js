@@ -31,7 +31,7 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
             })
             socket.on('message', (event) => {
 
-                console.log('WebSocket message received:', event);
+                // console.log('WebSocket message received:', event);
                 const data = JSON.parse(event.data);
                 if (data.type === 'connect') {
                     if (payload.room_id === undefined) {

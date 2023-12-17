@@ -309,6 +309,7 @@ export class Keyboard {
         if (this.tone.loaded !== true) return;
         const key = event.key.charCodeAt(0);
         this.handleKey(key, 'down', this.octave, this.start_idx);
+
     }
 
     onKeyup(event) {
@@ -435,7 +436,8 @@ export class Keyboard {
             this.users.push(user_id);
             user_idx = this.users.findIndex(e => e == user_id);
         }
-        console.log(this.users)
+        console.log(this.users);
+
 
         const color = (user_id == undefined) ? 0xB0B0B0 : this.colors[user_idx % 6];
 
@@ -528,7 +530,7 @@ export class Keyboard {
 
         this.pushNote(noteIdx, mode, this.octave, this.start_idx,);  // user_id를 받아와야함
         const keyandoctave = getKeyFromNoteAndModeAr(noteIdx, mode);
-        console.log(noteIdx, mode ,keyandoctave.key, keyandoctave.add_octave);
+        console.log(noteIdx, mode, keyandoctave.key, keyandoctave.add_octave);
         dispatch({ type: 'socket/keyDown', payload: { key: keyandoctave.key, octave: this.octave + keyandoctave.add_octave, start_idx: this.start_idx } });
     }
 
@@ -548,36 +550,6 @@ export class Keyboard {
         } else {
             return;
         }
-
-        // if (nowY > this.keyboardStartY + this.s_h / 2) {    // 흰 건반만 있는 부분
-        //     noteIdx = Math.floor(nowX / this.o_w * 7);
-        //     if (noteIdx > 9) return;
-        // } else {    // 검은 건반, 흰 건반 같이 있는 부분
-        //     noteIdx = Math.round(nowX / this.o_w * 7) - 1;
-        //     // console.log(noteIdx);
-        //     if (noteIdx == -1) noteIdx = 0;
-
-        //     if (noteIdx == 2 || noteIdx == 6) { // 미 or 파 or 시 or 도
-        //         noteIdx = Math.floor(nowX / this.o_w * 7);
-        //     } else {
-        //         mode = 1;   // 정확도를 위해 위쪽에 있으면 보통은 검은 건반으로 처리
-        //         if (noteIdx >= 9) return;
-        //         if (noteIdx > 2 && noteIdx < 6) {
-        //             noteIdx -= 1;
-        //         } else if (noteIdx > 6 && noteIdx < 9) {
-        //             noteIdx -= 2;
-        //         }
-        //     }
-        // }
-
-        // Release the note
-
-        // this.releaseNote(noteIdx, mode, this.octave, this.start_idx, user_id);  // user_id를 받아와야함
-
-
-        // Remove the note from the pressedNotes dictionary
-        // delete this.pressedNotes[finger];
-        // console.log(this.pressedNotes)
     }
 
 

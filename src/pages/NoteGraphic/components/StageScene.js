@@ -27,31 +27,7 @@ const StageScene = () => {
   var minutes;
   var remainingSeconds;
 
-
-
-  //  // 초를 분과 초로 분해
-  //   const progressminutes = Math.floor(progressTime / 60);
-  //   const progrssremainingSeconds = Math.floor(progressTime % 60);
-
   const phoneSocket = getPhoneWsbaseURL();
-  // try {
-  //   const dataString = e.data;
-  //   const tag = dataString.split("!", 2);
-  //   const data = tag[1];
-  //   console.log(tag[1]);
-
-  //   switch (tag[0]) {
-  //     case "0":
-  //       drawHand(data);
-  //       break;
-  //     case "1":
-  //       console.log(data);
-  //       break;
-  //     default:
-  //       console.log("unknown tag");
-  //       break;
-  //   }
-  // } catch (error) { }
 
   phoneSocket.onmessage = (e) => {
     try {
@@ -103,6 +79,8 @@ const StageScene = () => {
     if (piano_instance.current.tone.loaded !== true) return;
     const key = event.key.charCodeAt(0);
     dispatch({ type: 'socket/keyDown', payload: { key: key, octave: piano_instance.current.octave, start_idx: piano_instance.current.start_idx } });
+
+    console.log(new Date().getTime() + "   내가 입력한 시간");
   }
 
   const keyup_event = (event) => {
@@ -221,8 +199,8 @@ const StageScene = () => {
     if (_start === 0) return;
     start.current = _start + 1000;
     isPaused.current = false;
-    console.log(new Date().getTime());
-    console.log(start.current);
+    // console.log(new Date().getTime());
+    // console.log(start.current);
   }, [_start]);
 
   // let users = [];
@@ -232,7 +210,7 @@ const StageScene = () => {
   useEffect(() => {
     if (piano_instance.current === null) return;
     piano_instance.current.handleKey(keydown.key, 'down', keydown.octave, keydown.start_idx, keydown.user_id);
-
+    console.log(new Date().getTime() + "   서버로부터 받은 입력 시간");
   }, [keydown]);
 
   useEffect(() => {
